@@ -12,7 +12,7 @@ before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq libcunit1 libcunit1-doc libcunit1-dev
  - sudo apt-get install -qq python-pip
- - sudo pip install cpp-coveralls
+ - sudo pip install cpp-coveralls PyYAML
 
 env:
   matrix:
@@ -23,7 +23,7 @@ env:
 script: make CONF=$CONFIG && make CONF=$CONFIG test
 
 after_success:
-  - if [ "$CONFIG" = "Cov" ] ; then coveralls --exclude third_party --exclude gens -b. --gcov-options '\-p' ; fi
+  - if [ "$CONFIG" = "Cov" ] ; then coveralls --exclude third_party --gcov-options '\-lp' ; fi
 
 notifications:
   email: false
