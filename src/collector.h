@@ -1,20 +1,57 @@
-/* 
- * File:   collector.h
- * Author: a
+/** 
+ * @file collector.h
+ * @author Aldi Alimucaj
  *
- * Created on March 8, 2015, 11:29 AM
+ * @date March 8, 2015, 11:29 AM
+ * 
+ * @brief The collector manages the life cycle of measurements.
+ * 
+ * It offers functions to create a new measurement, update, 
+ * publish and destroy it.
  */
 
 #ifndef COLLECTOR_H
 #define	COLLECTOR_H
 
+#include "pg_utils.h"
 #include "queue.h"
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
 
-    extern struct pg_measurement_item* pg_start_collecting(char *path, pg_mtype_t type);
+    /** @brief Create a new measurement.
+     * 
+     * The new event should have as initial values a unique path to
+     * distinguish it from other events. If a new path is identical to 
+     * one that is active then the measurement will be refused. 
+     * <i>Resources passed to this function are duplicated. Make
+     * sure to release them because the destroy function wont.</i> 
+     * 
+     * @param path example "calc/fin/interest_rate"
+     * @param type of measurement @ref pg_mtype_t
+     * @sa pg_mtype_t
+     * @return measurement_item or NULL
+     */
+    PG_PUBLIC_API pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type);
+
+
+    /** @brief Stop collecting and publish the measurement.
+     * 
+     * This also cleans up the measurement.
+     * 
+     * @param measurement
+     * @return 0 = OK
+     */
+    PG_PUBLIC_API int pg_stop_collecting(pg_m_item_t measurement);
+
+
+    /** @brief Publish measurement for consumption
+     * 
+     * @param measurement
+     * @return 
+     */
+    PG_PUBLIC_API int pg_publish_measurement(pg_m_item_t measurement);
 
 
 #ifdef	__cplusplus

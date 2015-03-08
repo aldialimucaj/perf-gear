@@ -18,12 +18,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "pg_utils.h"
 
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
+
+    typedef struct pg_measurement_item* pg_m_item_t;
+    typedef struct pg_measurement_sequence* pg_mseq_t;
+    typedef struct pg_queue_item* pg_q_item_t;
 
     /** @brief Shared memory queue for dispatching finished measurements.
      * 
@@ -47,9 +51,9 @@ extern "C" {
 
     /** @brief Measurement Types
      * 
-     * PG_MEASUREMENT_TYPE_UNKNOWN is an undefined state and indicates an error.
-     * PG_MEASUREMENT_TYPE_HIT counts the hits that this event has fired.
-     * PG_MEASUREMENT_TYPE_TIME measures the time between event creation and destruction.
+     * - PG_MEASUREMENT_TYPE_UNKNOWN is an undefined state and indicates an error.
+     * - PG_MEASUREMENT_TYPE_HIT counts the hits that this event has fired.
+     * - PG_MEASUREMENT_TYPE_TIME measures the time between event creation and destruction.
      * 
      */
     typedef enum {
@@ -88,7 +92,7 @@ extern "C" {
      * 
      * @return pointer to the queue element.
      */
-    struct pg_queue* pg_init_queue(void);
+    PG_PUBLIC_API struct pg_queue* pg_init_queue(void);
 
     /** @brief Destroys the queue.
      * 
@@ -98,7 +102,7 @@ extern "C" {
      * 
      * @return 0 = ok, error if the queue is not empty
      */
-    int pg_destroy_queue(void);
+    PG_PUBLIC_API int pg_destroy_queue(void);
 
     /** @brief Enqueue item into pg_queue 
      * 
