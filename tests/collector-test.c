@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <CUnit/Basic.h>
 
+#include "../src/collector.h"
+
 /*
  * CUnit Test Suite
  */
@@ -21,12 +23,8 @@ int clean_suite(void) {
     return 0;
 }
 
-void test1() {
-    CU_ASSERT(2 * 2 == 4);
-}
+void test_pg_start_collecting(void) {
 
-void test2() {
-    CU_ASSERT(2 * 2 == 5);
 }
 
 int main() {
@@ -44,11 +42,7 @@ int main() {
     }
 
     /* Add the tests to the suite */
-    if ((NULL == CU_add_test(pSuite, "test1", test1)) ||
-            (NULL == CU_add_test(pSuite, "test2", test2))) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
+    CU_add_test(pSuite, "test_pg_start_collecting", test_pg_start_collecting);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

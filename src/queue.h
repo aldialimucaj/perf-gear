@@ -19,17 +19,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define PG_MEASUREMENT_TYPE_UNKNOWN -1
-#define PG_MEASUREMENT_TYPE_HIT   0
-#define PG_MEASUREMENT_TYPE_TIME  1
 
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
 
-    /**
-     * @brief Shared memory queue for dispatching finished measurements.
+    /** @brief Shared memory queue for dispatching finished measurements.
      * 
      * The queue where all results from test measurements will be stored
      * and retrieved for storage and persistence.
@@ -37,7 +33,7 @@ extern "C" {
     struct pg_queue {
         struct pg_queue_item *head; /**< Head of the queue */
         struct pg_queue_item *tail; /**< Tail of the queue */
-        long size;                  /**< Show the current number of elements */
+        long size; /**< Show the current number of elements */
     };
 
     /** @brief Representation of a queue item .
@@ -49,11 +45,24 @@ extern "C" {
         struct pg_queue_item *next; /**< Next in line */
     };
 
+    /** @brief Measurement Types
+     * 
+     * PG_MEASUREMENT_TYPE_UNKNOWN is an undefined state and indicates an error.
+     * PG_MEASUREMENT_TYPE_HIT counts the hits that this event has fired.
+     * PG_MEASUREMENT_TYPE_TIME measures the time between event creation and destruction.
+     * 
+     */
+    typedef enum {
+        PG_MEASUREMENT_TYPE_UNKNOWN = 0,
+        PG_MEASUREMENT_TYPE_HIT = 1,
+        PG_MEASUREMENT_TYPE_TIME = 2
+    } pg_mtype_t;
+
     /** @brief Measurement result to be stored in a queue 
      */
     struct pg_measurement_item {
         char *path; /**< path describing the measurement eg. 'calc/math/fibonaci/hits' */
-        char type; /**< Type of measurement HIT|TIME|MEMORY */
+        pg_mtype_t type; /**< Type of measurement HIT|TIME|MEMORY */
         long hitValue; /**< Value for hits */
         long timeSpentValue; /**< Value for time */
         struct pg_measurement_sequence *sequence; /**< a sequence of events */
@@ -81,8 +90,7 @@ extern "C" {
      */
     struct pg_queue* pg_init_queue(void);
 
-    /**
-     * @brief Destroys the queue.
+    /** @brief Destroys the queue.
      * 
      * Releases the queue but before checks if the queue is empty.
      * A queue with elements cannot be intentionally destroyed because
@@ -102,8 +110,7 @@ extern "C" {
     int pg_enqueue(struct pg_queue_item *item);
 
 
-    /** 
-     * @brief Pops the first element out of the queue
+    /** @brief Pops the first element out of the queue
      * 
      * The element is still in the shared memory. No copy was made.
      * Make sure to clean up after finished using it.

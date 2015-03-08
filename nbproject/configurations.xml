@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>src/collector.h</itemPath>
+      <itemPath>src/pg_utils.h</itemPath>
       <itemPath>src/queue.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -40,6 +41,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>.coveralls.yml</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -51,6 +53,8 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
+      </item>
       <folder path="TestFiles/f1">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
@@ -70,6 +74,8 @@
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/pg_utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/queue.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -100,6 +106,8 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
+      </item>
       <folder path="TestFiles/f1">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
@@ -120,7 +128,53 @@
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/pg_utils.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/queue.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/queue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Cov" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <commandLine>-fprofile-arcs -ftest-coverage</commandLine>
+        </cTool>
+      </compileType>
+      <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="src/collector.c" ex="false" tool="0" flavor2="9">
+      </item>
+      <item path="src/collector.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/pg_utils.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/queue.c" ex="false" tool="0" flavor2="9">
       </item>
       <item path="src/queue.h" ex="false" tool="3" flavor2="0">
       </item>

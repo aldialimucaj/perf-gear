@@ -22,6 +22,14 @@ CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/libperf-gear.so
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
 CND_PACKAGE_NAME_Release=libperf-gear.so.tar
 CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/libperf-gear.so.tar
+# Cov configuration
+CND_PLATFORM_Cov=GNU-Linux-x86
+CND_ARTIFACT_DIR_Cov=dist/Cov/GNU-Linux-x86
+CND_ARTIFACT_NAME_Cov=libperf-gear.so
+CND_ARTIFACT_PATH_Cov=dist/Cov/GNU-Linux-x86/libperf-gear.so
+CND_PACKAGE_DIR_Cov=dist/Cov/GNU-Linux-x86/package
+CND_PACKAGE_NAME_Cov=libperf-gear.so.tar
+CND_PACKAGE_PATH_Cov=dist/Cov/GNU-Linux-x86/package/libperf-gear.so.tar
 #
 # include compiler specific variables
 #

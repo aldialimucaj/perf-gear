@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-    extern struct pg_measurement_item* pg_start_collecting(char *path, char type);
+    extern struct pg_measurement_item* pg_start_collecting(char *path, pg_mtype_t type);
 
 
 #ifdef	__cplusplus
