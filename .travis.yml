@@ -23,9 +23,7 @@ env:
 script: make CONF=$CONFIG && make CONF=$CONFIG test
 
 after_success:
-  - if [ "$CONFIG" = "Cov" ] ; then coveralls -b. --gcov-options '\-lp' ; fi
+  - if [ "$CONFIG" = "Cov" ] && [ "$CC" = "gcc" ]; then coveralls -b. --gcov-options '\-lp' ; fi
 
 notifications:
   email: false
-  webhooks:
-    - https://coveralls.io/webhook?repo_token=I1YLdEIAI4Xz0lm7jRauwLwPzHOxD7O2p
