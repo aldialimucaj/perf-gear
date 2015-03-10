@@ -23,7 +23,7 @@ env:
 script: make CONF=$CONFIG && make CONF=$CONFIG test
 
 after_success:
-  - if [ "$CONFIG" = "Cov" ] ; then coveralls --exclude tests --gcov-options '\-lp' ; fi
+  - if [ "$CONFIG" = "Cov" ] ; then coveralls --gcov-options '\-lp' ; fi
 
 notifications:
   email: false
