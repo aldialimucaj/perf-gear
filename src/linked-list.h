@@ -68,13 +68,26 @@ extern "C" {
      * @param path
      * @return 
      */
-    pg_ll_item_t pg_ll_get(char *path);
+    pg_m_item_t pg_ll_get(char *path);
+
+    /** @brief Get the last item and remove from the list.
+     * 
+     * @param path
+     * @return 
+     */
+    pg_m_item_t pg_ll_pop(void);
 
     /** @brief Returns the last element of the list.
      * 
      * @return 
      */
     pg_ll_item_t pg_ll_get_last(void);
+
+    /** @brief Returns the size of the chain.
+     * 
+     * @return 
+     */
+    long pg_ll_get_size(void);
 
 
     /** @brief Remove all items form the list

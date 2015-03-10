@@ -1,6 +1,6 @@
 /*
  * File:   linked-list-test.c
- * Author: a
+ * Author: Aldi Alimucaj
  *
  * Created on Mar 10, 2015, 2:51:33 PM
  */
@@ -25,8 +25,26 @@ int clean_suite(void) {
 void test_pg_ll_create() {
     pg_ll_item_t item = pg_ll_create();
     CU_ASSERT_PTR_NOT_NULL(item);
-    int result = pg_ll_destroy(item);
+    pg_err_t result = pg_ll_destroy(item);
     CU_ASSERT_EQUAL(result, 0);
+}
+
+void test_pg_ll_add() {
+    pg_err_t result = pg_ll_add(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+    long size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 0);
+    pg_m_item_t item = pg_create_measurement_item();
+    result = pg_ll_add(item);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 1);
+    pg_m_item_t same_item = pg_ll_pop();
+    CU_ASSERT_PTR_EQUAL(item, same_item);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 0);
+    result = pg_destroy_measurement_item(item);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
 
 int main() {
@@ -45,6 +63,7 @@ int main() {
 
     /* Add the tests to the suite */
     CU_add_test(pSuite, "test_pg_ll_create", test_pg_ll_create);
+    CU_add_test(pSuite, "test_pg_ll_add", test_pg_ll_add);
 
 
     /* Run all tests using the CUnit Basic interface */
