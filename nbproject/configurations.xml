@@ -42,6 +42,7 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
     <itemPath>.coveralls.yml</itemPath>
+    <itemPath>.travis.yml</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

@@ -57,6 +57,22 @@ void test_pg_stop_collecting(void) {
     CU_ASSERT_EQUAL(result, 0);
 }
 
+void test_pg_increase_hit(void) {
+    pg_err_t result = pg_increase_hit(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+
+    pg_m_item_t m = pg_create_measurement_item();
+    m->type = PG_MEASUREMENT_TYPE_UNKNOWN;
+    result = pg_increase_hit(m);
+    CU_ASSERT_EQUAL(result, PG_ERR_WRONG_MEASUREMENT_TYPE);
+
+    m->type = PG_MEASUREMENT_TYPE_HIT;
+    result = pg_increase_hit(m);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    int destroy_res = pg_destroy_measurement_item(m);
+    CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -74,6 +90,7 @@ int main() {
     /* Add the tests to the suite */
     CU_add_test(pSuite, "test_pg_start_collecting", test_pg_start_collecting);
     CU_add_test(pSuite, "test_pg_stop_collecting", test_pg_stop_collecting);
+    CU_add_test(pSuite, "test_pg_increase_hit", test_pg_increase_hit);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

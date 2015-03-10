@@ -20,6 +20,8 @@
 extern "C" {
 #endif
 
+
+
     /** @brief Create a new measurement.
      * 
      * The new event should have as initial values a unique path to
@@ -43,7 +45,7 @@ extern "C" {
      * @param measurement
      * @return 0 = OK
      */
-    PG_PUBLIC_API int pg_stop_collecting(pg_m_item_t measurement);
+    PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement);
 
 
     /** @brief Publish measurement for consumption
@@ -51,7 +53,17 @@ extern "C" {
      * @param measurement
      * @return 
      */
-    PG_PUBLIC_API int pg_publish_measurement(pg_m_item_t measurement);
+    PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement);
+
+
+    /** @brief Increases the hit counter for a hit measurement.
+     * 
+     * If the measurement is not a hit counter then an error is returned.
+     * 
+     * @param measurement
+     * @return 0 = OK
+     */
+    PG_PUBLIC_API pg_err_t pg_increase_hit(pg_m_item_t measurement);
 
 
 #ifdef	__cplusplus

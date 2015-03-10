@@ -19,6 +19,16 @@ extern "C" {
 #define PG_STRLEN(x) sizeof(char) * strlen(x) + 1
 #define PG_STRDUP strdup
 
+    /** @brief Error types returned by collector functions.
+     * 
+     */
+    typedef enum {
+        PG_NO_ERROR = 0, /*!< No Error, everything went fine */
+        PG_ERR_NO_MEASUREMENT, /*!< No Measurement */
+        PG_ERR_WRONG_MEASUREMENT_TYPE, /*!< Passed wrong measurement type for this operation */
+        PG_ERR_UNKNOWN_ERROR /*!< Uncategorized error occured */
+    } pg_err_t;
+
 
 #ifdef	__cplusplus
 }
