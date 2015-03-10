@@ -69,6 +69,7 @@ void test_pg_increase_hit(void) {
     m->type = PG_MEASUREMENT_TYPE_HIT;
     result = pg_increase_hit(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    CU_ASSERT_EQUAL(m->hitValue, 1);
     int destroy_res = pg_destroy_measurement_item(m);
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }

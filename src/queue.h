@@ -51,15 +51,11 @@ extern "C" {
 
     /** @brief Measurement Types
      * 
-     * - PG_MEASUREMENT_TYPE_UNKNOWN is an undefined state and indicates an error.
-     * - PG_MEASUREMENT_TYPE_HIT counts the hits that this event has fired.
-     * - PG_MEASUREMENT_TYPE_TIME measures the time between event creation and destruction.
-     * 
      */
     typedef enum {
-        PG_MEASUREMENT_TYPE_UNKNOWN = 0,
-        PG_MEASUREMENT_TYPE_HIT = 1,
-        PG_MEASUREMENT_TYPE_TIME = 2
+        PG_MEASUREMENT_TYPE_UNKNOWN = 0, /*!< is an undefined state and indicates an error. */
+        PG_MEASUREMENT_TYPE_HIT = 1, /*!< counts the hits that this event has fired. */
+        PG_MEASUREMENT_TYPE_TIME = 2 /*!< measures the time between event creation and destruction. */
     } pg_mtype_t;
 
     /** @brief Measurement result to be stored in a queue 

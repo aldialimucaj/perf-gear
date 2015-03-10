@@ -1,8 +1,8 @@
-/* 
- * File:   pg_utils.h
- * Author: a
+/** 
+ * @file pg_utils.h
+ * @author Aldi Alimucaj
  *
- * Created on March 8, 2015, 12:08 PM
+ * @date March 8, 2015, 12:08 PM
  */
 
 #ifndef PG_UTILS_H
