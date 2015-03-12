@@ -10,11 +10,15 @@ pg_ll_item_t pg_ll_create(void) {
     return item;
 }
 
+/* ========================================================================= */
+
 pg_err_t pg_ll_destroy(pg_ll_item_t item) {
     free(item);
     item = NULL;
     return 0;
 }
+
+/* ========================================================================= */
 
 pg_err_t pg_ll_add(pg_m_item_t item) {
     if (!item) return PG_ERR_NO_MEASUREMENT; // no measurement;
@@ -30,6 +34,8 @@ pg_err_t pg_ll_add(pg_m_item_t item) {
     }
     return PG_NO_ERROR;
 }
+
+/* ========================================================================= */
 
 pg_m_item_t pg_ll_get(char *path) {
     if (!path) return NULL; // no path;
@@ -47,6 +53,8 @@ pg_m_item_t pg_ll_get(char *path) {
 
     return NULL;
 }
+
+/* ========================================================================= */
 
 pg_m_item_t pg_ll_pop(void) {
     if (!pg_ll_first_item) return NULL; // no pg_ll_first_item;
@@ -71,6 +79,8 @@ pg_m_item_t pg_ll_pop(void) {
     return m;
 }
 
+/* ========================================================================= */
+
 pg_ll_item_t pg_ll_get_last(void) {
     if (!pg_ll_first_item) return NULL;
     pg_ll_item_t current = pg_ll_first_item;
@@ -79,6 +89,8 @@ pg_ll_item_t pg_ll_get_last(void) {
     }
     return current;
 }
+
+/* ========================================================================= */
 
 long pg_ll_get_size(void) {
     long result = 0;

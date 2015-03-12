@@ -18,6 +18,8 @@ PG_PUBLIC_API pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
     return measurement;
 }
 
+/* ========================================================================= */
+
 PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
     if (!measurement)
         return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
@@ -30,6 +32,8 @@ PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
 
     return result;
 }
+
+/* ========================================================================= */
 
 PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
     if (!measurement)
@@ -52,6 +56,8 @@ PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
 
     return result;
 }
+
+/* ========================================================================= */
 
 PG_PUBLIC_API pg_err_t pg_increase_hit(pg_m_item_t measurement) {
     if (!measurement)

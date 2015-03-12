@@ -76,6 +76,7 @@ extern "C" {
     struct pg_measurement_sequence {
         long timestamp; /**< Time when it was measured */
         double value; /**< Value that was measured */
+        struct pg_measurement_sequence* next;
     };
 
     /** @brief The Queue */
@@ -187,6 +188,29 @@ extern "C" {
      * @returns 0 = ok
      */
     int pg_destroy_measurement_sequence(struct pg_measurement_sequence *measurement_sequence);
+
+
+    /** @brief Adds new sequence item to the measurement
+     * 
+     * @param measurement
+     * @return 
+     */
+    int pg_add_measurement_sequence(struct pg_measurement_item *measurement, struct pg_measurement_sequence *seq);
+
+    /** @brief Count measurement sequences in this measurement item
+     * 
+     * @param measurement
+     * @param seq
+     * @return 
+     */
+    long pg_count_measurement_sequences(struct pg_measurement_item *measurement);
+
+    /** @brief Clears all measurements sequences.
+     * 
+     * @param measurement
+     * @return The number of sequences destroyed
+     */
+    long pg_clear_all_measurement_sequences(struct pg_measurement_item *measurement);
 
 
 #ifdef	__cplusplus

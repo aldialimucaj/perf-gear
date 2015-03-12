@@ -144,6 +144,42 @@ void test_pg_enqueue_with_content() {
     CU_ASSERT_PTR_NULL(pg_queue);
 }
 
+void test_pg_add_measurement_seq() {
+    pg_init_queue();
+    /* queue is ready */
+
+    pg_m_item_t measurement = pg_create_measurement_item();
+    CU_ASSERT_PTR_NOT_NULL(measurement);
+
+    pg_mseq_t seq = pg_create_measurement_sequence();
+    seq->timestamp = 1;
+    seq->value = 2;
+    int result = pg_add_measurement_sequence(measurement, seq);
+    CU_ASSERT_EQUAL(result, 0);
+
+    pg_mseq_t seq2 = pg_create_measurement_sequence();
+    seq2->timestamp = 11;
+    seq2->value = 22;
+    result = pg_add_measurement_sequence(measurement, seq2);
+    CU_ASSERT_EQUAL(result, 0);
+
+    long size = pg_count_measurement_sequences(measurement);
+    CU_ASSERT_EQUAL(size, 2);
+
+    size = pg_clear_all_measurement_sequences(measurement);
+    CU_ASSERT_EQUAL(size, 2);
+
+    result = pg_destroy_measurement_item(measurement);
+    CU_ASSERT_EQUAL(result, 0);
+
+    /* destroy queue */
+    result = pg_clear_queue();
+    CU_ASSERT_EQUAL(result, 0);
+    result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_PTR_NULL(pg_queue);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -164,6 +200,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_enqueue_many", test_pg_enqueue_many);
     CU_add_test(pSuite, "test_pg_enqueue_with_content", test_pg_enqueue_with_content);
     CU_add_test(pSuite, "test_pg_destroy_queue", test_pg_destroy_queue);
+    CU_add_test(pSuite, "test_pg_add_measurement_seq", test_pg_add_measurement_seq);
 
 
     /* Run all tests using the CUnit Basic interface */
