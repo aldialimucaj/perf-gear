@@ -34,16 +34,105 @@ void test_pg_ll_add() {
     CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
     long size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 0);
+
     pg_m_item_t item = pg_create_measurement_item();
     result = pg_ll_add(item);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
     size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 1);
+
+    pg_m_item_t item2 = pg_create_measurement_item();
+    result = pg_ll_add(item2);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 2);
+
+    pg_m_item_t same_item2 = pg_ll_pop();
+    CU_ASSERT_PTR_EQUAL(item2, same_item2);
+
     pg_m_item_t same_item = pg_ll_pop();
     CU_ASSERT_PTR_EQUAL(item, same_item);
+
     size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 0);
     result = pg_destroy_measurement_item(item);
+    result = pg_destroy_measurement_item(item2);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+}
+
+void test_pg_ll_get() {
+    pg_err_t result = pg_ll_add(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+    long size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 0);
+
+    pg_m_item_t item = pg_create_measurement_item();
+    item->path = strdup("test/item/one");
+    result = pg_ll_add(item);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 1);
+
+    pg_m_item_t item2 = pg_create_measurement_item();
+    item2->path = strdup("test/item/two");
+    result = pg_ll_add(item2);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 2);
+
+    pg_m_item_t get_item1 = pg_ll_get("test/item/one");
+    CU_ASSERT_PTR_EQUAL(item, get_item1);
+
+    pg_m_item_t get_item2 = pg_ll_get("test/item/two");
+    CU_ASSERT_PTR_EQUAL(item2, get_item2);
+
+
+    pg_m_item_t same_item2 = pg_ll_pop();
+    CU_ASSERT_PTR_EQUAL(item2, same_item2);
+
+    pg_m_item_t same_item = pg_ll_pop();
+    CU_ASSERT_PTR_EQUAL(item, same_item);
+
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 0);
+    result = pg_destroy_measurement_item(item);
+    result = pg_destroy_measurement_item(item2);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+}
+
+void test_pg_ll_pull() {
+    pg_err_t result = pg_ll_add(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+    long size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 0);
+
+    pg_m_item_t item = pg_create_measurement_item();
+    item->path = strdup("test/item/one");
+    result = pg_ll_add(item);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 1);
+
+    pg_m_item_t item2 = pg_create_measurement_item();
+    item2->path = strdup("test/item/two");
+    result = pg_ll_add(item2);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 2);
+
+
+
+
+    pg_m_item_t same_item = pg_ll_pull("test/item/one");
+    CU_ASSERT_PTR_EQUAL(item, same_item);
+
+    pg_m_item_t same_item2 = pg_ll_pull("test/item/two");
+    CU_ASSERT_PTR_EQUAL(item2, same_item2);
+
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 0);
+    result = pg_destroy_measurement_item(item);
+    result = pg_destroy_measurement_item(item2);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
 
@@ -64,6 +153,8 @@ int main() {
     /* Add the tests to the suite */
     CU_add_test(pSuite, "test_pg_ll_create", test_pg_ll_create);
     CU_add_test(pSuite, "test_pg_ll_add", test_pg_ll_add);
+    CU_add_test(pSuite, "test_pg_ll_get", test_pg_ll_get);
+    CU_add_test(pSuite, "test_pg_ll_pull", test_pg_ll_pull);
 
 
     /* Run all tests using the CUnit Basic interface */

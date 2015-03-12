@@ -61,27 +61,33 @@ extern "C" {
      */
     pg_err_t pg_ll_add_to(pg_m_item_t item, pg_ll_item_t list);
 
-    /** @brief Get new item and remove from the list.
+    /** @brief Get item from the list.
      * 
-     * If the specified object has a next, it will be inserted in between.
+     * Does not remove the item from the list.
      * 
      * @param path
      * @return 
      */
     pg_m_item_t pg_ll_get(char *path);
 
-    /** @brief Get the last item and remove from the list.
-     * 
-     * @param path
-     * @return 
-     */
-    pg_m_item_t pg_ll_pop(void);
-
     /** @brief Returns the last element of the list.
      * 
      * @return 
      */
     pg_ll_item_t pg_ll_get_last(void);
+
+    /** @brief Get the last item and remove it from the list.
+     * 
+     * @return 
+     */
+    pg_m_item_t pg_ll_pop(void);
+
+    /** @brief Get item matching path and remove it from the list.
+     * 
+     * @param path 
+     * @return 
+     */
+    pg_m_item_t pg_ll_pull(char *path);
 
     /** @brief Returns the size of the chain.
      * 

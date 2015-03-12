@@ -44,12 +44,12 @@ pg_m_item_t pg_ll_get(char *path) {
     pg_ll_item_t current = pg_ll_first_item;
 
     do {
-        if (current->m && strcmp(path, current->m->path)) {
+        if (current->m && strcmp(path, current->m->path) == 0) {
             return current->m;
         }
 
         current = current->next;
-    } while (current->next != NULL);
+    } while (current != NULL);
 
     return NULL;
 }
@@ -77,6 +77,43 @@ pg_m_item_t pg_ll_pop(void) {
     }
 
     return m;
+}
+
+pg_m_item_t pg_ll_pull(char *path) {
+    if (!pg_ll_first_item) return NULL; // no pg_ll_first_item;
+    if (!path) return NULL; // no path;
+
+
+    pg_ll_item_t pre = pg_ll_first_item;
+    pg_ll_item_t current = pg_ll_first_item;
+
+    do {
+        if (current->m && strcmp(path, current->m->path) == 0) {
+            pg_m_item_t m = current->m;
+            if (current == pg_ll_first_item) {
+                /* item hast next*/
+                if (pg_ll_first_item->next) {
+                    pg_ll_first_item = pg_ll_first_item->next;
+                    pg_ll_destroy(current);
+                } else {
+                    /* item has no next and can be freed */
+                    free(pg_ll_first_item);
+                    pg_ll_first_item = NULL;
+                }
+            } else {
+                /* item hast next*/
+                if (current->next) {
+                    pre->next = current->next;
+                }
+                pg_ll_destroy(current);
+            }
+            return m;
+        }
+        pre = current;
+        current = current->next;
+    } while (current != NULL);
+
+    return NULL;
 }
 
 /* ========================================================================= */

@@ -1,9 +1,9 @@
-/** 
+/** @brief Header file for Performance Gear dispatch queue
+ * 
  * @file   queue.h
  * @author Aldi Alimucaj
  *
  * @date March 3, 2015, 10:33 AM
- * @brief Header file for Performance Gear dispatch queue
  * 
  * The queue acts as a dispatcher for finished measurement events.
  * Once an event is ready to be persisted it is sent to the queue for
