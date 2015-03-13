@@ -9,6 +9,21 @@
 
 ## Running tests ##
 
+Runing tests in default mode
+```
+make && make test
+```
+
+Runing tests for coverage
+```
+make CONF=Cov && make CONF=Cov test
+```
+
+Checking coveralls upload 
+```
+coveralls -b. --dryrun
+```
+
 ### Installting test environment ###
 **CUnit** is needed to run the tests and develop new ones
 ```
