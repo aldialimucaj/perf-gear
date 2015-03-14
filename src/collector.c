@@ -21,8 +21,7 @@ PG_PUBLIC_API pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
 /* ========================================================================= */
 
 PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
-    if (!measurement)
-        return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
 
     /* publish the results */
     int result = pg_publish_measurement(measurement);
@@ -36,8 +35,7 @@ PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
 /* ========================================================================= */
 
 PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
-    if (!measurement)
-        return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
 
     /* create an item for the queue */
     pg_q_item_t item = pg_create_queue_item();

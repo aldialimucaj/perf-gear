@@ -79,6 +79,8 @@ pg_m_item_t pg_ll_pop(void) {
     return m;
 }
 
+/* ========================================================================= */
+
 pg_m_item_t pg_ll_pull(char *path) {
     if (!pg_ll_first_item) return NULL; // no pg_ll_first_item;
     if (!path) return NULL; // no path;
@@ -91,7 +93,7 @@ pg_m_item_t pg_ll_pull(char *path) {
         if (current->m && strcmp(path, current->m->path) == 0) {
             pg_m_item_t m = current->m;
             if (current == pg_ll_first_item) {
-                /* item hast next*/
+                /* item has next*/
                 if (pg_ll_first_item->next) {
                     pg_ll_first_item = pg_ll_first_item->next;
                     pg_ll_destroy(current);
@@ -101,7 +103,7 @@ pg_m_item_t pg_ll_pull(char *path) {
                     pg_ll_first_item = NULL;
                 }
             } else {
-                /* item hast next*/
+                /* item has next*/
                 if (current->next) {
                     pre->next = current->next;
                 }

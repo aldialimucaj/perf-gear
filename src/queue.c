@@ -87,12 +87,12 @@ struct pg_queue_item* pg_dequeue(void) {
 
 /* ========================================================================= */
 
-int pg_clear_queue(void) {
-    if (!pg_queue) return 0; // queue is not ready 
+long pg_clear_queue(void) {
+    if (!pg_queue) return -1; // queue is not ready 
     if (pg_queue->size == 0) return 0; // queue is empty
 
     /* element to be dequeued */
-    struct pg_queue_item *current;
+    struct pg_queue_item *current = NULL;
 
     long index = 0;
     while ((current = pg_dequeue()) != NULL) {
@@ -128,6 +128,7 @@ int pg_destroy_queue_item(struct pg_queue_item *item) {
         /* does it contain a measurement? */
         if (item->measurement != NULL) {
             pg_destroy_measurement_item(item->measurement);
+            item->measurement = NULL;
         }
         free(item);
         item = NULL;
@@ -159,7 +160,7 @@ int pg_destroy_measurement_item(struct pg_measurement_item *item) {
         }
         /* does it contain a sequence? */
         if (item->sequence) {
-            pg_destroy_measurement_sequence(item->sequence);
+            pg_clear_all_measurement_sequences(item);
         }
         free(item);
         item = NULL;
@@ -175,6 +176,9 @@ int pg_copy_measurement_item(struct pg_measurement_item *src, struct pg_measurem
     if (!src) return 1; // nothing to copy 
     if (!dst) return 2; // nowhere to copy 
     memcpy(dst, src, sizeof (struct pg_measurement_item));
+    /* sequences need to be copied, dump old reference */
+    dst->sequence = NULL;
+    dst->path = NULL;
 
     /* copy the path */
     if (src->path) {
@@ -186,10 +190,7 @@ int pg_copy_measurement_item(struct pg_measurement_item *src, struct pg_measurem
 
     /* copy the sequence */
     if (src->sequence) {
-        dst->sequence = malloc(sizeof (struct pg_measurement_sequence));
-        if (dst->sequence != NULL) {
-            memcpy(dst->sequence, src->sequence, sizeof (struct pg_measurement_sequence));
-        }
+        pg_copy_measurement_sequences(src, dst);
     }
 
     return 0;
@@ -199,6 +200,8 @@ int pg_copy_measurement_item(struct pg_measurement_item *src, struct pg_measurem
 
 struct pg_measurement_sequence* pg_create_measurement_sequence(void) {
     struct pg_measurement_sequence *new_item = malloc(sizeof (struct pg_measurement_sequence));
+    new_item->timestamp = 0;
+    new_item->value = 0;
     new_item->next = NULL;
     return new_item;
 }
@@ -235,6 +238,29 @@ int pg_add_measurement_sequence(struct pg_measurement_item *measurement, struct 
 
     /* we reached the last seq */
     prev_seq->next = seq;
+
+    return 0;
+}
+
+/* ========================================================================= */
+
+int pg_copy_measurement_sequences(struct pg_measurement_item *src, struct pg_measurement_item *dst) {
+    if (!src) return -1; // No source measurement
+    if (!src->sequence) return -2; // No seq
+    if (!dst) return -3; // No destination measurement
+
+    pg_mseq_t src_current_seq = src->sequence;
+
+
+    /* we are sure that at this point one seq item exists */
+    do {
+        pg_mseq_t dest_seq = pg_create_measurement_sequence();
+        memcpy(dest_seq, src_current_seq, sizeof (struct pg_measurement_sequence));
+        /* remove the source's next */
+        dest_seq->next = NULL;
+        int result = pg_add_measurement_sequence(dst, dest_seq);
+        // TODO: check result
+    } while ((src_current_seq = src_current_seq->next) != NULL);
 
     return 0;
 }

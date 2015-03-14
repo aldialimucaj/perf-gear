@@ -120,21 +120,32 @@ void test_pg_ll_pull() {
     size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 2);
 
+    pg_m_item_t item3 = pg_create_measurement_item();
+    item3->path = strdup("test/item/three");
+    result = pg_ll_add(item3);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    size = pg_ll_get_size();
+    CU_ASSERT_EQUAL(size, 3);
 
 
+
+    pg_m_item_t same_item2 = pg_ll_pull("test/item/two");
+    CU_ASSERT_PTR_EQUAL(item2, same_item2);
 
     pg_m_item_t same_item = pg_ll_pull("test/item/one");
     CU_ASSERT_PTR_EQUAL(item, same_item);
 
-    pg_m_item_t same_item2 = pg_ll_pull("test/item/two");
-    CU_ASSERT_PTR_EQUAL(item2, same_item2);
+    pg_m_item_t same_item3 = pg_ll_pull("test/item/three");
+    CU_ASSERT_PTR_EQUAL(item3, same_item3);
 
     size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 0);
     result = pg_destroy_measurement_item(item);
     result = pg_destroy_measurement_item(item2);
+    result = pg_destroy_measurement_item(item3);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
+
 
 int main() {
     CU_pSuite pSuite = NULL;

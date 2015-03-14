@@ -126,7 +126,7 @@ extern "C" {
      * 
      * @return Returns the number of elements that were dequeued
      */
-    int pg_clear_queue(void);
+    long pg_clear_queue(void);
 
 
     /** @brief Returns the size of the queue
@@ -197,6 +197,15 @@ extern "C" {
      */
     int pg_add_measurement_sequence(struct pg_measurement_item *measurement, struct pg_measurement_sequence *seq);
 
+    /** @brief Copy measurement sequences
+     * 
+     * Copies the linked list of measurement sequences
+     * 
+     * @param measurement
+     * @return 
+     */
+    int pg_copy_measurement_sequences(struct pg_measurement_item *src, struct pg_measurement_item *dst);
+    
     /** @brief Count measurement sequences in this measurement item
      * 
      * @param measurement
