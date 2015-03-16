@@ -25,18 +25,14 @@
 extern "C" {
 #endif
 
-    typedef struct pg_measurement_item* pg_m_item_t;
-    typedef struct pg_measurement_sequence* pg_mseq_t;
-    typedef struct pg_queue_item* pg_q_item_t;
-
     /** @brief Shared memory queue for dispatching finished measurements.
      * 
      * The queue where all results from test measurements will be stored
      * and retrieved for storage and persistence.
      */
     struct pg_queue {
-        struct pg_queue_item *head; /**< Head of the queue */
-        struct pg_queue_item *tail; /**< Tail of the queue */
+        struct pg_queue_item *head; /*!< Head of the queue */
+        struct pg_queue_item *tail; /*!< Tail of the queue */
         long size; /**< Show the current number of elements */
     };
 
@@ -44,10 +40,10 @@ extern "C" {
      * 
      * It contains a measurement structure and the next element if any.     
      */
-    struct pg_queue_item {
-        struct pg_measurement_item *measurement; /**< Measurement contect */
-        struct pg_queue_item *next; /**< Next in line */
-    };
+    typedef struct pg_queue_item {
+        struct pg_measurement_item *measurement; /*!< Measurement content */
+        struct pg_queue_item *next; /*!< Next in line */
+    } *pg_q_item_t;
 
     /** @brief Measurement Types
      * 
@@ -60,24 +56,24 @@ extern "C" {
 
     /** @brief Measurement result to be stored in a queue 
      */
-    struct pg_measurement_item {
-        char *path; /**< path describing the measurement eg. 'calc/math/fibonaci/hits' */
-        pg_mtype_t type; /**< Type of measurement HIT|TIME|MEMORY */
-        long hitValue; /**< Value for hits */
-        long timeSpentValue; /**< Value for time */
+    typedef struct pg_measurement_item {
+        char *path; /*!< path describing the measurement eg. 'calc/math/fibonaci/hits' */
+        pg_mtype_t type; /*!< Type of measurement HIT|TIME|MEMORY */
+        long hitValue; /*!< Value for hits */
+        long timeSpentValue; /*!< Value for time */
         struct pg_measurement_sequence *sequence; /**< a sequence of events */
-    };
+    } *pg_m_item_t;
 
     /** @brief A sequence of measurement events
      *
      * The sequence measures a value over time and stores all the results
      * in a sequence array.
      */
-    struct pg_measurement_sequence {
-        long timestamp; /**< Time when it was measured */
-        double value; /**< Value that was measured */
-        struct pg_measurement_sequence* next;
-    };
+    typedef struct pg_measurement_sequence {
+        long timestamp; /*!< Time when it was measured */
+        double value; /*!< Value that was measured */
+        struct pg_measurement_sequence* next; /*!< Next sequence */
+    } *pg_mseq_t;
 
     /** @brief The Queue */
     struct pg_queue *pg_queue;
@@ -108,7 +104,7 @@ extern "C" {
      * 
      * @return 0 = ok
      */
-    int pg_enqueue(struct pg_queue_item *item);
+    int pg_enqueue(pg_q_item_t item);
 
 
     /** @brief Pops the first element out of the queue
@@ -119,7 +115,7 @@ extern "C" {
      * @return Returns the first element from the queue. If no element exists or
      * the queue is not ready then it returns null. 
      */
-    struct pg_queue_item* pg_dequeue(void);
+    pg_q_item_t pg_dequeue(void);
 
 
     /** @brief Removes all elements from the queue
@@ -143,83 +139,93 @@ extern "C" {
      * 
      * @return Pointer to element
      */
-    struct pg_queue_item* pg_create_queue_item(void);
+    pg_q_item_t pg_create_queue_item(void);
 
     /** @brief Releases the item.
      * 
      * This also takes care of the sub elements.
      * 
+     * @param item
+     * 
      * @returns 0 = ok
      */
-    int pg_destroy_queue_item(struct pg_queue_item *item);
+    int pg_destroy_queue_item(pg_q_item_t item);
 
     /** @brief Creates a new measurement element
      * 
      */
-    struct pg_measurement_item* pg_create_measurement_item(void);
+    pg_m_item_t pg_create_measurement_item(void);
 
     /** @brief Releases the measurement item.
      * 
      * This also takes care of the sub elements.
      * 
+     * @param item to be destroyed
+     * 
      * @returns 0 = ok
      */
-    int pg_destroy_measurement_item(struct pg_measurement_item *measurement_item);
+    int pg_destroy_measurement_item(pg_m_item_t item);
 
     /** @brief Copy memory from source to destination
      * 
      * Measurement items are often copied around. This is a helper function for
      * copying the measurement form heap to shared memory.
      * 
+     * @param src source item to copy from
+     * @param dst destination to copy to. pre allocated.
+     * 
      * @return 0 = ok.
      */
-    int pg_copy_measurement_item(struct pg_measurement_item *src, struct pg_measurement_item *dst);
+    int pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst);
 
     /** @brief Creates a new measurement sequence
      * 
      * @return pointer to sequence
      */
-    struct pg_measurement_sequence* pg_create_measurement_sequence(void);
+    pg_mseq_t pg_create_measurement_sequence(void);
 
     /** @brief Releases the item.
      * 
      * This also takes care of the sub elements.
      * 
+     * @param item sequence to destroy
+     * 
      * @returns 0 = ok
      */
-    int pg_destroy_measurement_sequence(struct pg_measurement_sequence *measurement_sequence);
+    int pg_destroy_measurement_sequence(pg_mseq_t item);
 
 
     /** @brief Adds new sequence item to the measurement
      * 
      * @param measurement
+     * @param seq
      * @return 
      */
-    int pg_add_measurement_sequence(struct pg_measurement_item *measurement, struct pg_measurement_sequence *seq);
+    int pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq);
 
     /** @brief Copy measurement sequences
      * 
      * Copies the linked list of measurement sequences
      * 
-     * @param measurement
+     * @param src
+     * @param dst
      * @return 
      */
-    int pg_copy_measurement_sequences(struct pg_measurement_item *src, struct pg_measurement_item *dst);
+    int pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst);
     
     /** @brief Count measurement sequences in this measurement item
      * 
      * @param measurement
-     * @param seq
-     * @return 
+     * @return Sequences counted
      */
-    long pg_count_measurement_sequences(struct pg_measurement_item *measurement);
+    long pg_count_measurement_sequences(pg_m_item_t measurement);
 
     /** @brief Clears all measurements sequences.
      * 
      * @param measurement
      * @return The number of sequences destroyed
      */
-    long pg_clear_all_measurement_sequences(struct pg_measurement_item *measurement);
+    long pg_clear_all_measurement_sequences(pg_m_item_t measurement);
 
 
 #ifdef	__cplusplus

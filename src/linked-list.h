@@ -47,7 +47,7 @@ extern "C" {
 
     /** @brief Add new item to the pg_ll_first_item List
      * 
-     * @param item item to add
+     * @param item Item to add
      * @return 
      */
     pg_err_t pg_ll_add(pg_m_item_t item);
@@ -55,8 +55,8 @@ extern "C" {
 
     /** @brief Add new item to the specified List
      * 
-     * @param item item to add
-     * @param list list to add it to
+     * @param item Item to add
+     * @param list List to add it to
      * @return 
      */
     pg_err_t pg_ll_add_to(pg_m_item_t item, pg_ll_item_t list);

@@ -20,8 +20,6 @@
 extern "C" {
 #endif
 
-
-
     /** @brief Create a new measurement.
      * 
      * The new event should have as initial values a unique path to
