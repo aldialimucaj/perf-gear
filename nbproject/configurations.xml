@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>src/collector.h</itemPath>
       <itemPath>src/linked-list.h</itemPath>
+      <itemPath>src/measurement2json.h</itemPath>
       <itemPath>src/pg_utils.h</itemPath>
       <itemPath>src/queue.h</itemPath>
     </logicalFolder>
@@ -18,6 +19,7 @@
                    projectFiles="true">
       <itemPath>src/collector.c</itemPath>
       <itemPath>src/linked-list.c</itemPath>
+      <itemPath>src/measurement2json.c</itemPath>
       <itemPath>src/queue.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -35,6 +37,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/linked-list-test.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="Measurement2JSON Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/measurement2json-test.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1"
                      displayName="Queue Test"
@@ -89,6 +97,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -96,6 +112,10 @@
       <item path="src/linked-list.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/linked-list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/measurement2json.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/measurement2json.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/pg_utils.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -106,6 +126,8 @@
       <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/measurement2json-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -158,6 +180,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -165,6 +195,10 @@
       <item path="src/linked-list.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/linked-list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/measurement2json.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/measurement2json.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/pg_utils.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -175,6 +209,8 @@
       <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/measurement2json-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -218,6 +254,14 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/collector.c" ex="false" tool="0" flavor2="9">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -225,6 +269,10 @@
       <item path="src/linked-list.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/linked-list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/measurement2json.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/measurement2json.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/pg_utils.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -235,6 +283,8 @@
       <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/measurement2json-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
       </item>

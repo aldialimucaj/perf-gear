@@ -70,7 +70,7 @@ extern "C" {
      * in a sequence array.
      */
     typedef struct pg_measurement_sequence {
-        long timestamp; /*!< Time when it was measured */
+        size_t timestamp; /*!< Time when it was measured */
         double value; /*!< Value that was measured */
         struct pg_measurement_sequence* next; /*!< Next sequence */
     } *pg_mseq_t;
