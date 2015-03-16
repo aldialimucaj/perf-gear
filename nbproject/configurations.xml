@@ -51,6 +51,7 @@
     </logicalFolder>
     <itemPath>.coveralls.yml</itemPath>
     <itemPath>.travis.yml</itemPath>
+    <itemPath>valgrind-tests.sh</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -107,6 +108,8 @@
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="valgrind-tests.sh" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="2">
@@ -175,6 +178,8 @@
       </item>
       <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="valgrind-tests.sh" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
     <conf name="Cov" type="2">
       <toolsSet>
@@ -232,6 +237,8 @@
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/queue-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="valgrind-tests.sh" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
