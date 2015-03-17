@@ -59,8 +59,7 @@ extern "C" {
     typedef struct pg_measurement_item {
         char *path; /*!< path describing the measurement eg. 'calc/math/fibonaci/hits' */
         pg_mtype_t type; /*!< Type of measurement HIT|TIME|MEMORY */
-        long hitValue; /*!< Value for hits */
-        long timeSpentValue; /*!< Value for time */
+        size_t hitValue; /*!< Value for hits */
         struct pg_measurement_sequence *sequence; /**< a sequence of events */
     } *pg_m_item_t;
 

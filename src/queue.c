@@ -145,7 +145,6 @@ pg_m_item_t pg_create_measurement_item(void) {
     new_item->path = NULL;
     new_item->sequence = NULL;
     new_item->hitValue = 0;
-    new_item->timeSpentValue = 0;
     new_item->type = PG_MEASUREMENT_TYPE_UNKNOWN;
     return new_item;
 }
