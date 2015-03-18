@@ -7,13 +7,14 @@ char* pg_m2j_transform(const pg_m_item_t measurement) {
     
     char *seq_json = pg_m2j_seq2json_array(measurement);
     
+    /* we don't yet know how much space the buffer needs, so we count.*/
     int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
             measurement->type,
             measurement->hitValue,
             seq_json
             ) + 1;
-    //char *result = strdup("{path:\"test/func/one\",type:1,hitValue:1,sequence:[]}");
+    /* after learning the the exact size of the json string, we can create the buffer */
     char *result = malloc(sizeof (char)*ch_written);
     ch_written = snprintf(result, ch_written, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
@@ -71,12 +72,11 @@ char* pg_m2j_seq2json_array(const pg_m_item_t m) {
     }
     /* at this point we add the square brackets + termination */
     int arr_size = strlen(result) + 3;
-    char *json_array = malloc(arr_size);
-    int written_chars = snprintf(json_array, arr_size, "[%s]", result);
-    if (!written_chars) {
-        perror("pg_m2j_seq2json_array: Could not finish JSON transformation.");
-        json_array = NULL;
-    }
+    char *json_array = malloc(sizeof(char)*arr_size);
+    strcpy(json_array,"[");
+    strcat(json_array,result);
+    strcat(json_array,"]");
+    
     free(result);
     result = json_array;
 
