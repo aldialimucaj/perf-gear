@@ -18,8 +18,8 @@
 #include <string.h>
 #include "queue.h"
 
-#define PG_TEMPLATE_JSON_SEQ "{timestamp:%zd,value:%.2f}"
-#define PG_TEMPLATE_JSON_MESRNT "{path:\x22%s\x22,type:%d,hitValue:%zd,sequence:%s}"
+#define PG_TEMPLATE_JSON_SEQ "{\"timestamp\":%zd,\"value\":%.2f}"
+#define PG_TEMPLATE_JSON_MESRNT "{\"path\":\x22%s\x22,\"type\":%d,\"hitValue\":%zd,\"sequence\":%s}"
 
 #ifdef	__cplusplus
 extern "C" {

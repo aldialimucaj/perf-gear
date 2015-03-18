@@ -65,6 +65,9 @@ void test_pg_ll_get() {
     CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
     long size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 0);
+    
+    pg_m_item_t get_item0 = pg_ll_get("#randomstring#");
+    CU_ASSERT_PTR_NULL(get_item0);
 
     pg_m_item_t item = pg_create_measurement_item();
     item->path = strdup("test/item/one");
@@ -85,6 +88,9 @@ void test_pg_ll_get() {
 
     pg_m_item_t get_item2 = pg_ll_get("test/item/two");
     CU_ASSERT_PTR_EQUAL(item2, get_item2);
+    
+    get_item0 = pg_ll_get("#randomstring#");
+    CU_ASSERT_PTR_NULL(get_item0);
 
 
     pg_m_item_t same_item2 = pg_ll_pop();
@@ -105,6 +111,10 @@ void test_pg_ll_pull() {
     CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
     long size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 0);
+    
+    pg_m_item_t get_item0 = pg_ll_get("#randomstring#");
+    CU_ASSERT_PTR_NULL(get_item0);
+
 
     pg_m_item_t item = pg_create_measurement_item();
     item->path = strdup("test/item/one");
@@ -126,8 +136,9 @@ void test_pg_ll_pull() {
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
     size = pg_ll_get_size();
     CU_ASSERT_EQUAL(size, 3);
-
-
+    
+    get_item0 = pg_ll_get("#randomstring#");
+    CU_ASSERT_PTR_NULL(get_item0);
 
     pg_m_item_t same_item2 = pg_ll_pull("test/item/two");
     CU_ASSERT_PTR_EQUAL(item2, same_item2);

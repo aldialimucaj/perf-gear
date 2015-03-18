@@ -33,7 +33,7 @@ extern "C" {
     struct pg_queue {
         struct pg_queue_item *head; /*!< Head of the queue */
         struct pg_queue_item *tail; /*!< Tail of the queue */
-        long size; /**< Show the current number of elements */
+        size_t size; /**< Show the current number of elements */
     };
 
     /** @brief Representation of a queue item .
@@ -94,7 +94,7 @@ extern "C" {
      * 
      * @return 0 = ok, error if the queue is not empty
      */
-    PG_PUBLIC_API int pg_destroy_queue(void);
+    PG_PUBLIC_API pg_err_t pg_destroy_queue(void);
 
     /** @brief Enqueue item into pg_queue 
      * 
@@ -103,7 +103,7 @@ extern "C" {
      * 
      * @return 0 = ok
      */
-    int pg_enqueue(pg_q_item_t item);
+    pg_err_t pg_enqueue(pg_q_item_t item);
 
 
     /** @brief Pops the first element out of the queue
@@ -121,7 +121,7 @@ extern "C" {
      * 
      * @return Returns the number of elements that were dequeued
      */
-    long pg_clear_queue(void);
+    size_t pg_clear_queue(void);
 
 
     /** @brief Returns the size of the queue
@@ -130,7 +130,7 @@ extern "C" {
      * 
      * @return number of elements
      */
-    long pg_get_queue_size(void);
+    size_t pg_get_queue_size(void);
 
     /** @brief Creates a new queue element
      * 
@@ -148,7 +148,7 @@ extern "C" {
      * 
      * @returns 0 = ok
      */
-    int pg_destroy_queue_item(pg_q_item_t item);
+    pg_err_t pg_destroy_queue_item(pg_q_item_t item);
 
     /** @brief Creates a new measurement element
      * 
@@ -163,7 +163,7 @@ extern "C" {
      * 
      * @returns 0 = ok
      */
-    int pg_destroy_measurement_item(pg_m_item_t item);
+    pg_err_t pg_destroy_measurement_item(pg_m_item_t item);
 
     /** @brief Copy memory from source to destination
      * 
@@ -175,7 +175,7 @@ extern "C" {
      * 
      * @return 0 = ok.
      */
-    int pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst);
+    pg_err_t pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst);
 
     /** @brief Creates a new measurement sequence
      * 
@@ -191,7 +191,7 @@ extern "C" {
      * 
      * @returns 0 = ok
      */
-    int pg_destroy_measurement_sequence(pg_mseq_t item);
+    pg_err_t pg_destroy_measurement_sequence(pg_mseq_t item);
 
 
     /** @brief Adds new sequence item to the measurement
@@ -200,7 +200,7 @@ extern "C" {
      * @param seq
      * @return 
      */
-    int pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq);
+    pg_err_t pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq);
 
     /** @brief Copy measurement sequences
      * 
@@ -210,21 +210,21 @@ extern "C" {
      * @param dst
      * @return 
      */
-    int pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst);
+    pg_err_t pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst);
     
     /** @brief Count measurement sequences in this measurement item
      * 
      * @param measurement
      * @return Sequences counted
      */
-    long pg_count_measurement_sequences(pg_m_item_t measurement);
+    size_t pg_count_measurement_sequences(pg_m_item_t measurement);
 
     /** @brief Clears all measurements sequences.
      * 
      * @param measurement
      * @return The number of sequences destroyed
      */
-    long pg_clear_all_measurement_sequences(pg_m_item_t measurement);
+    size_t pg_clear_all_measurement_sequences(pg_m_item_t measurement);
 
 
 #ifdef	__cplusplus

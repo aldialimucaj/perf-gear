@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/collector.o \
+	${OBJECTDIR}/src/dispatcher.o \
 	${OBJECTDIR}/src/linked-list.o \
 	${OBJECTDIR}/src/measurement2json.o \
 	${OBJECTDIR}/src/queue.o
@@ -46,6 +47,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 # Test Files
 TESTFILES= \
 	${TESTDIR}/TestFiles/f2 \
+	${TESTDIR}/TestFiles/f5 \
 	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f1
@@ -77,22 +79,27 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT}: ${OBJEC
 ${OBJECTDIR}/src/collector.o: src/collector.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector.o src/collector.c
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector.o src/collector.c
+
+${OBJECTDIR}/src/dispatcher.o: src/dispatcher.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher.o src/dispatcher.c
 
 ${OBJECTDIR}/src/linked-list.o: src/linked-list.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list.o src/linked-list.c
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list.o src/linked-list.c
 
 ${OBJECTDIR}/src/measurement2json.o: src/measurement2json.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json.o src/measurement2json.c
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json.o src/measurement2json.c
 
 ${OBJECTDIR}/src/queue.o: src/queue.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue.o src/queue.c
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue.o src/queue.c
 
 # Subprojects
 .build-subprojects:
@@ -102,6 +109,10 @@ ${OBJECTDIR}/src/queue.o: src/queue.c
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/collector-test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} -lcunit 
+
+${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/dispatcher-test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS} -lcunit 
 
 ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/linked-list-test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
@@ -119,25 +130,31 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/queue-test.o ${OBJECTFILES:%.o=%_nomai
 ${TESTDIR}/tests/collector-test.o: tests/collector-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/collector-test.o tests/collector-test.c
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/collector-test.o tests/collector-test.c
+
+
+${TESTDIR}/tests/dispatcher-test.o: tests/dispatcher-test.c 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dispatcher-test.o tests/dispatcher-test.c
 
 
 ${TESTDIR}/tests/linked-list-test.o: tests/linked-list-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/linked-list-test.o tests/linked-list-test.c
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/linked-list-test.o tests/linked-list-test.c
 
 
 ${TESTDIR}/tests/measurement2json-test.o: tests/measurement2json-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/measurement2json-test.o tests/measurement2json-test.c
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/measurement2json-test.o tests/measurement2json-test.c
 
 
 ${TESTDIR}/tests/queue-test.o: tests/queue-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/queue-test.o tests/queue-test.c
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/queue-test.o tests/queue-test.c
 
 
 ${OBJECTDIR}/src/collector_nomain.o: ${OBJECTDIR}/src/collector.o src/collector.c 
@@ -148,9 +165,22 @@ ${OBJECTDIR}/src/collector_nomain.o: ${OBJECTDIR}/src/collector.o src/collector.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -O2 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector_nomain.o src/collector.c;\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector_nomain.o src/collector.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/collector.o ${OBJECTDIR}/src/collector_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/dispatcher_nomain.o: ${OBJECTDIR}/src/dispatcher.o src/dispatcher.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/dispatcher.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher_nomain.o src/dispatcher.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/dispatcher.o ${OBJECTDIR}/src/dispatcher_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/linked-list_nomain.o: ${OBJECTDIR}/src/linked-list.o src/linked-list.c 
@@ -161,7 +191,7 @@ ${OBJECTDIR}/src/linked-list_nomain.o: ${OBJECTDIR}/src/linked-list.o src/linked
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -O2 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list_nomain.o src/linked-list.c;\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list_nomain.o src/linked-list.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/linked-list.o ${OBJECTDIR}/src/linked-list_nomain.o;\
 	fi
@@ -174,7 +204,7 @@ ${OBJECTDIR}/src/measurement2json_nomain.o: ${OBJECTDIR}/src/measurement2json.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -O2 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json_nomain.o src/measurement2json.c;\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json_nomain.o src/measurement2json.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/measurement2json.o ${OBJECTDIR}/src/measurement2json_nomain.o;\
 	fi
@@ -187,7 +217,7 @@ ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -O2 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue_nomain.o src/queue.c;\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue_nomain.o src/queue.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/queue.o ${OBJECTDIR}/src/queue_nomain.o;\
 	fi
@@ -197,6 +227,7 @@ ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c
 	@if [ "${TEST}" = "" ]; \
 	then  \
 	    ${TESTDIR}/TestFiles/f2 || true; \
+	    ${TESTDIR}/TestFiles/f5 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \

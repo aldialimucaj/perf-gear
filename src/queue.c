@@ -15,23 +15,25 @@ struct pg_queue* pg_init_queue(void) {
 
 /* ========================================================================= */
 
-int pg_destroy_queue(void) {
+pg_err_t pg_destroy_queue(void) {
     if (pg_queue != NULL) {
         if (pg_queue->size == 0) {
             free(pg_queue);
             pg_queue = NULL;
-            return 0;
+            return PG_NO_ERROR;
+        } else {
+            return PG_ERR_QUEUE_NOT_EMPTY;
         }
     }
-    return 1;
+    return PG_ERR_QUEUE_NOT_READY;
 }
 
 /* ========================================================================= */
 
-int pg_enqueue(pg_q_item_t item) {
+pg_err_t pg_enqueue(pg_q_item_t item) {
     /* checking */
-    if (pg_queue == NULL) return 1; // queue not ready 
-    if (item == NULL) return 2; // item is null, nothing to store
+    if (pg_queue == NULL) return PG_ERR_QUEUE_NOT_READY; // queue not ready 
+    if (item == NULL) return PG_ERR_NO_Q_ITEM; // item is null, nothing to store
 
     /* creating new element */
     struct pg_queue_item *new_item = pg_create_queue_item();
@@ -57,9 +59,9 @@ int pg_enqueue(pg_q_item_t item) {
         pg_queue->size++;
 
     } else {
-        return 3; /* could not create new item */
+        return PG_ERR_COULD_NOT_CREATE; /* could not create new item */
     }
-    return 0;
+    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */
@@ -87,14 +89,14 @@ pg_q_item_t pg_dequeue(void) {
 
 /* ========================================================================= */
 
-long pg_clear_queue(void) {
+size_t pg_clear_queue(void) {
     if (!pg_queue) return -1; // queue is not ready 
     if (pg_queue->size == 0) return 0; // queue is empty
 
     /* element to be dequeued */
     struct pg_queue_item *current = NULL;
 
-    long index = 0;
+    size_t index = 0;
     while ((current = pg_dequeue()) != NULL) {
         pg_destroy_queue_item(current);
         index++;
@@ -104,7 +106,7 @@ long pg_clear_queue(void) {
 
 /* ========================================================================= */
 
-long pg_get_queue_size(void) {
+size_t pg_get_queue_size(void) {
     if (pg_queue != NULL) {
         return pg_queue->size;
     } else {
@@ -123,7 +125,7 @@ pg_q_item_t pg_create_queue_item(void) {
 
 /* ========================================================================= */
 
-int pg_destroy_queue_item(pg_q_item_t item) {
+pg_err_t pg_destroy_queue_item(pg_q_item_t item) {
     if (item) {
         /* does it contain a measurement? */
         if (item->measurement != NULL) {
@@ -132,10 +134,10 @@ int pg_destroy_queue_item(pg_q_item_t item) {
         }
         free(item);
         item = NULL;
-        return 0;
+        return PG_NO_ERROR;
     }
 
-    return 1; // cant destroy null
+    return PG_ERR_NO_Q_ITEM; // cant destroy null
 }
 
 /* ========================================================================= */
@@ -151,7 +153,7 @@ pg_m_item_t pg_create_measurement_item(void) {
 
 /* ========================================================================= */
 
-int pg_destroy_measurement_item(pg_m_item_t item) {
+pg_err_t pg_destroy_measurement_item(pg_m_item_t item) {
     if (item) {
         /* does it contain a path? */
         if (item->path) {
@@ -163,17 +165,17 @@ int pg_destroy_measurement_item(pg_m_item_t item) {
         }
         free(item);
         item = NULL;
-        return 0;
+        return PG_NO_ERROR;
     }
     /* item was null */
-    return 1;
+    return PG_ERR_NO_MEASUREMENT;
 }
 
 /* ========================================================================= */
 
-int pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst) {
-    if (!src) return 1; // nothing to copy 
-    if (!dst) return 2; // nowhere to copy 
+pg_err_t pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst) {
+    if (!src) return PG_ERR_NO_SOURCE; // nothing to copy 
+    if (!dst) return PG_ERR_NO_DESTINATION; // nowhere to copy 
     memcpy(dst, src, sizeof (struct pg_measurement_item));
     /* sequences need to be copied, dump old reference */
     dst->sequence = NULL;
@@ -192,7 +194,7 @@ int pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst) {
         pg_copy_measurement_sequences(src, dst);
     }
 
-    return 0;
+    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */
@@ -207,21 +209,21 @@ pg_mseq_t pg_create_measurement_sequence(void) {
 
 /* ========================================================================= */
 
-int pg_destroy_measurement_sequence(pg_mseq_t item) {
+pg_err_t pg_destroy_measurement_sequence(pg_mseq_t item) {
     if (item) {
         free(item);
         item = NULL;
         return 0;
     }
 
-    return 1; // item was null 
+    return PG_ERR_NO_MEASUREMENT_SEQ; // item was null 
 }
 
 /* ========================================================================= */
 
-int pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq) {
-    if (!measurement) return -1; // No measurement
-    if (!seq) return -2; // No seq
+pg_err_t pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // No measurement
+    if (!seq) return PG_ERR_NO_MEASUREMENT_SEQ; // No seq
 
     if (!measurement->sequence) {
         measurement->sequence = seq;
@@ -238,15 +240,15 @@ int pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq) {
     /* we reached the last seq */
     prev_seq->next = seq;
 
-    return 0;
+    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */
 
-int pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst) {
-    if (!src) return -1; // No source measurement
-    if (!src->sequence) return -2; // No seq
-    if (!dst) return -3; // No destination measurement
+pg_err_t pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst) {
+    if (!src) return PG_ERR_NO_MEASUREMENT; // No source measurement
+    if (!src->sequence) return PG_ERR_NO_MEASUREMENT_SEQ; // No seq
+    if (!dst) return PG_ERR_NO_DESTINATION; // No destination measurement
 
     pg_mseq_t src_current_seq = src->sequence;
 
@@ -261,18 +263,18 @@ int pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst) {
         // TODO: check result
     } while ((src_current_seq = src_current_seq->next) != NULL);
 
-    return 0;
+    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */
 
-long pg_count_measurement_sequences(pg_m_item_t measurement) {
+size_t pg_count_measurement_sequences(pg_m_item_t measurement) {
     if (!measurement) return -1; // No measurement
     if (!measurement->sequence) return 0; // No sequences to destroy
 
     pg_mseq_t current_seq = measurement->sequence;
     /* we are sure that at this point one seq item exists */
-    long index = 1;
+    size_t index = 1;
     while ((current_seq = current_seq->next) != NULL) {
         index++;
     }
@@ -282,14 +284,14 @@ long pg_count_measurement_sequences(pg_m_item_t measurement) {
 
 /* ========================================================================= */
 
-long pg_clear_all_measurement_sequences(pg_m_item_t measurement) {
+size_t pg_clear_all_measurement_sequences(pg_m_item_t measurement) {
     if (!measurement) return -1; // No measurement
     if (!measurement->sequence) return 0; // No sequences to destroy
 
     pg_mseq_t prev_seq = measurement->sequence;
     pg_mseq_t current_seq = measurement->sequence;
     /* we are sure that at this point one seq item exists */
-    long index = 1;
+    size_t index = 1;
     while ((current_seq = current_seq->next) != NULL) {
         pg_destroy_measurement_sequence(prev_seq);
         prev_seq = current_seq;

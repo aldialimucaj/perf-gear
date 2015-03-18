@@ -1,6 +1,6 @@
 /*
- * File:   queue_test.c
- * Author: garmin
+ * File:   queue-test.c
+ * Author: Aldi Alimucaj
  *
  * Created on Mar 4, 2015, 8:09:40 AM
  */
@@ -40,16 +40,36 @@ void test_pg_init_queue() {
 void test_pg_destroy_queue() {
     pg_init_queue();
     int result = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
     CU_ASSERT_PTR_NULL(pg_queue);
 
     /* destroy twice */
     pg_init_queue();
     int result2 = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result2, 0);
+    CU_ASSERT_EQUAL(result2, PG_NO_ERROR);
     CU_ASSERT_PTR_NULL(pg_queue);
-    int result3 = pg_destroy_queue();
+    result2 = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result2, PG_ERR_QUEUE_NOT_READY);
+    CU_ASSERT_PTR_NULL(pg_queue);
+    
+    /* try to destroy with element */
+    pg_init_queue();
+    struct pg_queue_item* new_item = pg_create_queue_item();
+    CU_ASSERT_PTR_NOT_NULL(new_item);
+    int result3 = pg_enqueue(new_item);
+    CU_ASSERT_EQUAL(result3, PG_NO_ERROR);
+    /* destroy item after enqueue */
+    result3 = pg_destroy_queue_item(new_item);
+    CU_ASSERT_EQUAL(result3, PG_NO_ERROR);
+    result3 = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result3, PG_ERR_QUEUE_NOT_EMPTY);
+    CU_ASSERT_PTR_NOT_NULL(pg_queue);
+    /* clear queue */
+    result3 = pg_clear_queue();
     CU_ASSERT_EQUAL(result3, 1);
+    /* try again */
+    result3 = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result3, PG_NO_ERROR);
     CU_ASSERT_PTR_NULL(pg_queue);
 }
 
@@ -271,7 +291,7 @@ void test_pg_create_measurement_item() {
 
 void test_pg_destroy_measurement_item() {
     int result = pg_destroy_measurement_item(NULL);
-    CU_ASSERT_EQUAL(result, 1);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
 
     pg_m_item_t measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
@@ -287,7 +307,7 @@ void test_pg_destroy_measurement_item() {
 
 void test_pg_copy_measurement_item() {
     int result = pg_copy_measurement_item(NULL, NULL);
-    CU_ASSERT_EQUAL(result, 1);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_SOURCE);
     pg_m_item_t measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
     measurement->path = strdup("test/func/one");
@@ -297,7 +317,7 @@ void test_pg_copy_measurement_item() {
     CU_ASSERT_EQUAL(result, 0);
 
     result = pg_copy_measurement_item(measurement, NULL);
-    CU_ASSERT_EQUAL(result, 2);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_DESTINATION);
 
     pg_m_item_t dst_m = pg_create_measurement_item();
     result = pg_copy_measurement_item(measurement, dst_m);
@@ -324,12 +344,12 @@ void test_pg_destroy_measurement_sequence() {
     int result = pg_destroy_measurement_sequence(seq);
     CU_ASSERT_EQUAL(result, 0);
     result = pg_destroy_measurement_sequence(NULL);
-    CU_ASSERT_EQUAL(result, 1);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT_SEQ);
 }
 
 void test_pg_add_measurement_sequence() {
     int result = pg_copy_measurement_item(NULL, NULL);
-    CU_ASSERT_EQUAL(result, 1);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_SOURCE);
     pg_m_item_t measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
@@ -383,7 +403,7 @@ void test_pg_copy_measurement_sequences() {
 
 void test_pg_count_measurement_sequences() {
     int result = pg_copy_measurement_item(NULL, NULL);
-    CU_ASSERT_EQUAL(result, 1);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_SOURCE);
     pg_m_item_t measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
@@ -404,13 +424,12 @@ void test_pg_count_measurement_sequences() {
 }
 
 void test_pg_clear_all_measurement_sequences() {
-    int result = pg_copy_measurement_item(NULL, NULL);
-    CU_ASSERT_EQUAL(result, 1);
     pg_m_item_t measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
     const int REPEAT = 1854;
     int index = 0;
+    int result = 0;
     while (index++ < REPEAT) {
         pg_mseq_t seq = pg_create_measurement_sequence();
         CU_ASSERT_PTR_NOT_NULL(seq);
