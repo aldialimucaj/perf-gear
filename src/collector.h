@@ -13,12 +13,15 @@
 #ifndef COLLECTOR_H
 #define	COLLECTOR_H
 
+#include <stdbool.h>
 #include "pg_utils.h"
 #include "queue.h"
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
+    
+    static bool pg_harvest = false;
 
     /** @brief Create a new measurement.
      * 
@@ -52,6 +55,17 @@ extern "C" {
      * @return 
      */
     PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement);
+    
+    
+    /** @brief Collect finished measurements from the queue.
+     * 
+     * Published measurements land in the queue. From there
+     * they can be collected through this function and sent
+     * for dispatch.
+     * 
+     * @return finished emptying queue with error message
+     */
+    PG_PUBLIC_API pg_err_t pg_harvest_measurements();
 
 
     /** @brief Increases the hit counter for a hit measurement.

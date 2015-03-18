@@ -11,13 +11,13 @@ os:
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq libcunit1 libcunit1-doc libcunit1-dev valgrind
- - sudo apt-get install -qq python-pip
+ - sudo apt-get install -qq python-pip python-yaml
  - sudo pip install cpp-coveralls PyYAML
 
 env:
   matrix:
   - CONFIG=Cov
-  - CONFIG=Release
+#  - CONFIG=Release # turn release off -> travis using Ubuntu 12.04, valgrind 3.7
 
 
 script: make CONF=$CONFIG && make CONF=$CONFIG test && ./valgrind-tests.sh

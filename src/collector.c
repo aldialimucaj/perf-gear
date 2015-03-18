@@ -42,17 +42,30 @@ PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
     item->measurement = pg_create_measurement_item();
 
     /* copy the passed measurement */
-    int result = pg_copy_measurement_item(measurement, item->measurement);
+    pg_err_t result = pg_copy_measurement_item(measurement, item->measurement);
 
     /* enqueue the item */
     result = pg_enqueue(item);
 
     /* after enqueue we can delete the measurement */
-    if (result == 0) {
+    if (result == PG_NO_ERROR) {
         result = pg_destroy_queue_item(item);
     }
 
     return result;
+}
+
+/* ========================================================================= */
+
+PG_PUBLIC_API pg_err_t pg_harvest_measurements() {
+    
+    pg_harvest = true;
+    
+    while(pg_harvest) {
+        pg_harvest = false; // TODO: finish this
+    }
+        
+    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */
