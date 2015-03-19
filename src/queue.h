@@ -84,7 +84,7 @@ extern "C" {
      * 
      * @return pointer to the queue element.
      */
-    PG_PUBLIC_API struct pg_queue* pg_init_queue(void);
+    struct pg_queue* pg_init_queue(void);
 
     /** @brief Destroys the queue.
      * 
@@ -94,7 +94,7 @@ extern "C" {
      * 
      * @return 0 = ok, error if the queue is not empty
      */
-    PG_PUBLIC_API pg_err_t pg_destroy_queue(void);
+    pg_err_t pg_destroy_queue(void);
 
     /** @brief Enqueue item into pg_queue 
      * 

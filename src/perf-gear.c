@@ -1,5 +1,13 @@
 // file: perf-gear.h
+
 #include "perf-gear.h"
+
+pg_err_t pg_start(pg_config_t config) {
+
+    return PG_NO_ERROR;
+}
+
+/* ========================================================================= */
 
 pg_err_t pg_harvest_measurements(pg_config_t config) {
 
@@ -8,6 +16,12 @@ pg_err_t pg_harvest_measurements(pg_config_t config) {
     bool infinite_rep = repeat == 0 ? true : false;
 
     while (pg_harvest && (infinite_rep || repeat-- > 0)) {
+
+        /* sleep some time */
+        nanosleep((struct timespec[]) {
+            {0, HARVEST_WAIT_100MS}
+        }, NULL);
+
         pg_q_item_t qitem = pg_dequeue();
         if (!qitem) continue;
         pg_m_item_t m = qitem->measurement;
@@ -25,11 +39,8 @@ pg_err_t pg_harvest_measurements(pg_config_t config) {
         if (file_name) free(file_name);
         pg_destroy_queue_item(qitem);
 
-        /* sleep some time */
-        nanosleep((struct timespec[]) {
-            {0, HARVEST_WAIT_100MS}
-        }, NULL);
-        pg_harvest = false; // TODO: finish this
+
+        //pg_harvest = false; // TODO: finish this
     }
 
     return PG_NO_ERROR;

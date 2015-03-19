@@ -15,13 +15,17 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <time.h>
+#include <pthread.h>
 
 #include "pg-utils.h"
 #include "queue.h"
 #include "measurement2json.h"
 #include "dispatcher.h"
 
+#define PG_PUBLIC_API __attribute__((__visibility__("default")))
+
 #define MILLISECOND  1000000L
+#define HARVEST_WAIT_10MS 10L * MILLISECOND
 #define HARVEST_WAIT_100MS 100L * MILLISECOND
 
 #ifdef	__cplusplus
@@ -32,6 +36,12 @@ extern "C" {
      */
     static bool pg_harvest = false;
     
+    /** @brief Starts the writting and collecting mechanisms.
+     * 
+     * @param config
+     * @return 
+     */
+    pg_err_t pg_start(pg_config_t config);
     
 
     /** @brief Collect finished measurements from the queue.

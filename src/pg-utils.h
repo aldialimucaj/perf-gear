@@ -18,8 +18,6 @@
 extern "C" {
 #endif
 
-#define PG_PUBLIC_API __attribute__((__visibility__("default")))
-
 #define PG_STRLEN(x) sizeof(char) * strlen(x) + 1
 #define PG_STRDUP strdup
 
