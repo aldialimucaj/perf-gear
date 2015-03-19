@@ -1,7 +1,7 @@
 #include "collector.h"
 #include "pg-utils.h"
 
-PG_PUBLIC_API pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
+pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
     if (!path) return NULL; /* no path */
     if (type <= PG_MEASUREMENT_TYPE_UNKNOWN) return NULL; /* no type */
 
@@ -20,7 +20,7 @@ PG_PUBLIC_API pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
 
 /* ========================================================================= */
 
-PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
+pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
     if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
 
     /* publish the results */
@@ -34,7 +34,7 @@ PG_PUBLIC_API pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
 
 /* ========================================================================= */
 
-PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
+pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
     if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
 
     /* create an item for the queue */
@@ -57,7 +57,7 @@ PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
 
 /* ========================================================================= */
 
-PG_PUBLIC_API pg_err_t pg_increase_hit(pg_m_item_t measurement) {
+pg_err_t pg_increase_hit(pg_m_item_t measurement) {
     if (!measurement)
         return PG_ERR_NO_MEASUREMENT; // no measurement to update
     if (measurement->type != PG_MEASUREMENT_TYPE_HIT)
