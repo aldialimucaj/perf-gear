@@ -81,34 +81,7 @@ void test_pg_publish_measurement() {
     CU_ASSERT_EQUAL(result, 0);
 }
 
-void test_pg_harvest_measurements(void) {
-    pg_init_queue();
-    
-    pg_m_item_t m = pg_create_measurement_item();
-    m->type = PG_MEASUREMENT_TYPE_HIT;
-    pg_err_t result = pg_publish_measurement(m);
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
-    
-    result = pg_destroy_measurement_item(m);
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
-    size_t queue_size = pg_get_queue_size();
-    CU_ASSERT_EQUAL(queue_size, 1);
-    
-    // ---
-    
-    result = pg_harvest_measurements();
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
-    
-    // ---
-    
-    /* destroy queue */
-    result = pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 1);
-    result = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result, 0);
-    
-}
 
 void test_pg_increase_hit(void) {
     pg_err_t result = pg_increase_hit(NULL);
@@ -145,7 +118,6 @@ int main() {
     CU_add_test(pSuite, "test_pg_start_collecting", test_pg_start_collecting);
     CU_add_test(pSuite, "test_pg_stop_collecting", test_pg_stop_collecting);
     CU_add_test(pSuite, "test_pg_publish_measurement", test_pg_publish_measurement);
-    CU_add_test(pSuite, "test_pg_harvest_measurements", test_pg_harvest_measurements);
     CU_add_test(pSuite, "test_pg_increase_hit", test_pg_increase_hit);
 
     /* Run all tests using the CUnit Basic interface */

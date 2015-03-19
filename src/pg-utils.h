@@ -9,6 +9,10 @@
 #define	PG_UTILS_H
 
 #include <string.h>
+#include <stdbool.h>
+
+#define PG_FN_REPACE_CHR_FROM '/'
+#define PG_FN_REPACE_CHR_TO "_"
 
 #ifdef	__cplusplus
 extern "C" {
@@ -40,6 +44,46 @@ extern "C" {
         PG_ERR_UNKNOWN_ERROR /*!< Uncategorized error occured */
     } pg_err_t;
 
+    /** @brief Configuration for measurement storage and formatting
+     * 
+     */
+    typedef struct pg_config{
+        char* folder; /*!< Where to store the reuslts */
+        char* result_name_prefix; /*!< Prefix like PRE_#path#.json */
+        char* result_name_suffix; /*!< Suffix like #path#_SUF.json */
+        int repeat; /*!< how many times to fetch before stopping. 0=Infinite */
+    } *pg_config_t;
+    
+    /** @brief Creates a file name compatible with fs.
+     * 
+     * @param filename
+     * @param config
+     * @return 
+     */
+    char* pg_build_filename(char* filename, pg_config_t config);
+    
+    
+    /** @brief Checks if the string matches in the end
+     * 
+     * Courtesy of plinth[at]stackoverflow
+     * 
+     * @param str
+     * @param suffix
+     * @return 
+     */
+    bool pg_str_ends_with(const char *str, const char *suffix);
+    
+    /** @brief Replace char ch in source with repl and return new string.
+     * 
+     * Courtesy of nneonneo[at]stackoverflow
+     * 
+     * @param src
+     * @param ch
+     * @param repl
+     * @return 
+     */
+    char *pg_str_replace(const char *src, char ch, const char *repl);
+    
 
 #ifdef	__cplusplus
 }

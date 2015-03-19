@@ -13,7 +13,7 @@
 #define	DISPATCHER_H
 
 #include <stdio.h>
-#include "pg_utils.h"
+#include "pg-utils.h"
 #include "queue.h"
 
 #ifdef	__cplusplus

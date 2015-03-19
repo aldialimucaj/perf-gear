@@ -39,6 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/dispatcher.o \
 	${OBJECTDIR}/src/linked-list.o \
 	${OBJECTDIR}/src/measurement2json.o \
+	${OBJECTDIR}/src/perf-gear.o \
+	${OBJECTDIR}/src/pg-utils.o \
 	${OBJECTDIR}/src/queue.o
 
 # Test Directory
@@ -50,6 +52,8 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f5 \
 	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f4 \
+	${TESTDIR}/TestFiles/f6 \
+	${TESTDIR}/TestFiles/f7 \
 	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
@@ -96,6 +100,16 @@ ${OBJECTDIR}/src/measurement2json.o: src/measurement2json.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json.o src/measurement2json.c
 
+${OBJECTDIR}/src/perf-gear.o: src/perf-gear.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/perf-gear.o src/perf-gear.c
+
+${OBJECTDIR}/src/pg-utils.o: src/pg-utils.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/pg-utils.o src/pg-utils.c
+
 ${OBJECTDIR}/src/queue.o: src/queue.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -121,6 +135,14 @@ ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/linked-list-test.o ${OBJECTFILES:%.o=%
 ${TESTDIR}/TestFiles/f4: ${TESTDIR}/tests/measurement2json-test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f4 $^ ${LDLIBSOPTIONS} -lcunit 
+
+${TESTDIR}/TestFiles/f6: ${TESTDIR}/tests/perf-gear-test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f6 $^ ${LDLIBSOPTIONS} -lcunit 
+
+${TESTDIR}/TestFiles/f7: ${TESTDIR}/tests/pg-utils-test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f7 $^ ${LDLIBSOPTIONS} -lcunit 
 
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/queue-test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
@@ -149,6 +171,18 @@ ${TESTDIR}/tests/measurement2json-test.o: tests/measurement2json-test.c
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/measurement2json-test.o tests/measurement2json-test.c
+
+
+${TESTDIR}/tests/perf-gear-test.o: tests/perf-gear-test.c 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/perf-gear-test.o tests/perf-gear-test.c
+
+
+${TESTDIR}/tests/pg-utils-test.o: tests/pg-utils-test.c 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/pg-utils-test.o tests/pg-utils-test.c
 
 
 ${TESTDIR}/tests/queue-test.o: tests/queue-test.c 
@@ -209,6 +243,32 @@ ${OBJECTDIR}/src/measurement2json_nomain.o: ${OBJECTDIR}/src/measurement2json.o 
 	    ${CP} ${OBJECTDIR}/src/measurement2json.o ${OBJECTDIR}/src/measurement2json_nomain.o;\
 	fi
 
+${OBJECTDIR}/src/perf-gear_nomain.o: ${OBJECTDIR}/src/perf-gear.o src/perf-gear.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/perf-gear.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/perf-gear_nomain.o src/perf-gear.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/perf-gear.o ${OBJECTDIR}/src/perf-gear_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/pg-utils_nomain.o: ${OBJECTDIR}/src/pg-utils.o src/pg-utils.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/pg-utils.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/pg-utils_nomain.o src/pg-utils.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/pg-utils.o ${OBJECTDIR}/src/pg-utils_nomain.o;\
+	fi
+
 ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/queue.o`; \
@@ -230,6 +290,8 @@ ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c
 	    ${TESTDIR}/TestFiles/f5 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f4 || true; \
+	    ${TESTDIR}/TestFiles/f6 || true; \
+	    ${TESTDIR}/TestFiles/f7 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \
 	    ./${TEST} || true; \

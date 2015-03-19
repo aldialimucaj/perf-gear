@@ -1,5 +1,5 @@
 #include "collector.h"
-#include "pg_utils.h"
+#include "pg-utils.h"
 
 PG_PUBLIC_API pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
     if (!path) return NULL; /* no path */
@@ -53,19 +53,6 @@ PG_PUBLIC_API pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
     }
 
     return result;
-}
-
-/* ========================================================================= */
-
-PG_PUBLIC_API pg_err_t pg_harvest_measurements() {
-    
-    pg_harvest = true;
-    
-    while(pg_harvest) {
-        pg_harvest = false; // TODO: finish this
-    }
-        
-    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */
