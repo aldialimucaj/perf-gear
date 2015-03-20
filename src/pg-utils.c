@@ -13,6 +13,7 @@ char* pg_build_filename(char* filename, pg_config_t config) {
 
     if (config && config->folder) {
         add_folder = true;
+        pg_mkdir(config->folder);
         folder_len = strlen(config->folder) + 1;
         if (!pg_str_ends_with(config->folder, "/")) {
             folder_len++;
@@ -67,4 +68,26 @@ char *pg_str_replace(const char *s, char ch, const char *repl) {
     }
     *ptr = 0;
     return res;
+}
+
+/* ========================================================================= */
+
+void pg_mkdir(const char *dir) {
+    char tmp[256];
+    char *p = NULL;
+    size_t len;
+
+    snprintf(tmp, sizeof (tmp), "%s", dir);
+    len = strlen(tmp);
+    if (tmp[len - 1] == '/') {
+        tmp[len - 1] = 0;
+    }
+    for (p = tmp + 1; *p; p++) {
+        if (*p == '/') {
+            *p = 0;
+            mkdir(tmp, S_IRWXU);
+            *p = '/';
+        }
+    }
+    mkdir(tmp, S_IRWXU);
 }

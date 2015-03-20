@@ -8,6 +8,8 @@
 #ifndef PG_UTILS_H
 #define	PG_UTILS_H
 
+#include <stdio.h>
+#include <sys/stat.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -82,6 +84,14 @@ extern "C" {
      * @return 
      */
     char *pg_str_replace(const char *src, char ch, const char *repl);
+    
+    /** @brief Create directory recursively
+     * 
+     * courtesy of http://nion.modprobe.de/blog/archives/357-Recursive-directory-creation.html
+     * 
+     * @param dir
+     */
+    void pg_mkdir(const char *dir);
     
 
 #ifdef	__cplusplus

@@ -85,13 +85,20 @@ void test_pg_str_replace() {
     char *path_exp = "func1_test_hit";
     char *repl_path = pg_str_replace(path, '/', "_");
     CU_ASSERT_STRING_EQUAL(repl_path, path_exp);
-    if(repl_path) free(repl_path);
-    
+    if (repl_path) free(repl_path);
+
     char *path1 = "func1/test/hit";
     char *path1_exp = "func1__test__hit";
     char *repl_path1 = pg_str_replace(path, '/', "__");
     CU_ASSERT_STRING_EQUAL(repl_path1, path1_exp);
-    if(repl_path) free(repl_path1);
+    if (repl_path) free(repl_path1);
+}
+
+void test_pg_mkdir() {
+    char *path = "/tmp/pg_tests";
+    char *path2 = "/tmp/pg_tests2/";
+    pg_mkdir(path);
+    pg_mkdir(path2);
 }
 
 int main() {
@@ -112,6 +119,7 @@ int main() {
     CU_add_test(pSuite, "test_str_ends_with", test_str_ends_with);
     CU_add_test(pSuite, "test_pg_build_filename", test_pg_build_filename);
     CU_add_test(pSuite, "test_pg_str_replace", test_pg_str_replace);
+    CU_add_test(pSuite, "test_pg_mkdir", test_pg_mkdir);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
