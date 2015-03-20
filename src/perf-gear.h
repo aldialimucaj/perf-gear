@@ -34,15 +34,25 @@ extern "C" {
 
     /** @brief Flag to stop harvesting measurements form the queue
      */
-    static bool pg_harvest = false;
-    
-    /** @brief Starts the writting and collecting mechanisms.
+    extern bool pg_harvest;
+
+    /** @brief Harvester thread
+     */
+    extern pthread_t harvester_th;
+
+    /** @brief Starts the writing and collecting mechanisms.
      * 
      * @param config
      * @return 
      */
     pg_err_t pg_start(pg_config_t config);
-    
+
+    /** @brief Stop the measurement
+     * 
+     * @return 
+     */
+    pg_err_t pg_stop();
+
 
     /** @brief Collect finished measurements from the queue.
      * 
@@ -52,7 +62,7 @@ extern "C" {
      * 
      * @return finished emptying queue with error message
      */
-    pg_err_t pg_harvest_measurements(pg_config_t config);
+    void* pg_harvest_measurements(void *cfg);
 
 
 

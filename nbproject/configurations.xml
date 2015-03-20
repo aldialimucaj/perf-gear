@@ -93,6 +93,11 @@
         <cTool>
           <warningLevel>3</warningLevel>
         </cTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>pthread</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
       </item>
@@ -217,6 +222,11 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>pthread</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
       </item>
@@ -332,6 +342,11 @@
           <commandLine>-fprofile-arcs -ftest-coverage</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>pthread</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
       </item>

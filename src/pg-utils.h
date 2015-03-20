@@ -38,6 +38,7 @@ extern "C" {
         PG_ERR_NO_DES_PATH, /*!< No destination file path to write to */
         PG_ERR_COULD_NOT_OPEN_PATH, /*!< Could not open file path with write permissions */
         PG_ERR_NO_CONTENT, /*!< No content to write about */
+        PG_ERR_HARVESTER_HAS_NOT_STARTED, /*!< */
         PG_ERR_, /*!< */
         PG_ERR_UNKNOWN_ERROR /*!< Uncategorized error occured */
     } pg_err_t;
