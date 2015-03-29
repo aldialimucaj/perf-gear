@@ -1,12 +1,12 @@
 #include "collector.h"
 #include "pg-utils.h"
 
-pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
+pg_m_item_t* pg_start_collecting(char *path, pg_mtype_t type) {
     if (!path) return NULL; /* no path */
     if (type <= PG_MEASUREMENT_TYPE_UNKNOWN) return NULL; /* no type */
 
     /* this is the new measurement object that will collect all data */
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     /* if no path allocate the new one */
     if (!measurement->path) {
         measurement->path = PG_STRDUP(path);
@@ -20,7 +20,7 @@ pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type) {
 
 /* ========================================================================= */
 
-pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
+pg_err_t pg_stop_collecting(pg_m_item_t *measurement) {
     if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
 
     /* publish the results */
@@ -34,11 +34,11 @@ pg_err_t pg_stop_collecting(pg_m_item_t measurement) {
 
 /* ========================================================================= */
 
-pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
+pg_err_t pg_publish_measurement(pg_m_item_t *measurement) {
     if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
 
     /* create an item for the queue */
-    pg_q_item_t item = pg_create_queue_item();
+    pg_q_item_t *item = pg_create_queue_item();
     item->measurement = pg_create_measurement_item();
 
     /* copy the passed measurement */
@@ -57,7 +57,7 @@ pg_err_t pg_publish_measurement(pg_m_item_t measurement) {
 
 /* ========================================================================= */
 
-pg_err_t pg_increase_hit(pg_m_item_t measurement) {
+pg_err_t pg_increase_hit(pg_m_item_t *measurement) {
     if (!measurement)
         return PG_ERR_NO_MEASUREMENT; // no measurement to update
     if (measurement->type != PG_MEASUREMENT_TYPE_HIT)

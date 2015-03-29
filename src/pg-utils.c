@@ -3,7 +3,7 @@
 #include "pg-utils.h"
 #include "collector.h"
 
-char* pg_build_filename(char* filename, pg_config_t config) {
+char* pg_build_filename(char* filename, pg_config_t *config) {
     if (!filename) return NULL;
     char *result = NULL;
     size_t fn_len = strlen(filename);

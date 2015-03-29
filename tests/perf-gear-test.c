@@ -25,7 +25,7 @@ int clean_suite(void) {
 void test_pg_start() {
     pg_init_queue();
 
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_start/test/hit");
     pg_err_t result = pg_publish_measurement(m);
@@ -65,7 +65,7 @@ void test_pg_start() {
 void test_pg_stop() {
     pg_init_queue();
 
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_stop/test/hit");
     pg_err_t result = pg_publish_measurement(m);
@@ -100,7 +100,7 @@ void test_pg_stop() {
 void test_pg_harvest_measurements(void) {
     pg_init_queue();
 
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("func1/test/hit");
     pg_err_t result = pg_publish_measurement(m);

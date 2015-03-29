@@ -23,7 +23,7 @@ int clean_suite(void) {
 }
 
 void test_pg_m2j_transform() {
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     m->path = strdup("test/func/one");
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->hitValue = 11;
@@ -35,7 +35,7 @@ void test_pg_m2j_transform() {
         free(json_result);
     }
     
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = 3425;
     seq->value = 624352;
     m->sequence = seq;
@@ -47,7 +47,7 @@ void test_pg_m2j_transform() {
         free(json_result);
     }
     
-    pg_mseq_t seq2 = pg_create_measurement_sequence();
+    pg_mseq_t *seq2 = pg_create_measurement_sequence();
     seq2->timestamp = 8563;
     seq2->value = 4254;
     seq->next = seq2;
@@ -64,7 +64,7 @@ void test_pg_m2j_transform() {
 }
 
 void test_pg_transform_seq_json() {
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = 1;
     seq->value = 2;
 
@@ -82,12 +82,12 @@ void test_pg_m2j_seq2json_array() {
     char *null_array = pg_m2j_seq2json_array(NULL);
     CU_ASSERT_PTR_NULL(null_array);
 
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     char *empty_array = pg_m2j_seq2json_array(m);
     CU_ASSERT_STRING_EQUAL(empty_array, "[]");
     if (empty_array) free(empty_array);
 
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = 1;
     seq->value = 2;
     m->sequence = seq;
@@ -96,7 +96,7 @@ void test_pg_m2j_seq2json_array() {
     CU_ASSERT_STRING_EQUAL(seq_array, "[{\"timestamp\":1,\"value\":2.00}]");
     if (seq_array) free(seq_array);
 
-    pg_mseq_t seq2 = pg_create_measurement_sequence();
+    pg_mseq_t *seq2 = pg_create_measurement_sequence();
     seq2->timestamp = 2;
     seq2->value = 3;
     seq->next = seq2;

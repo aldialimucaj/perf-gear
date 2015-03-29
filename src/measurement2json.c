@@ -2,7 +2,7 @@
 
 #include "measurement2json.h"
 
-char* pg_m2j_transform(const pg_m_item_t measurement) {
+char* pg_m2j_transform(const pg_m_item_t *measurement) {
     if (!measurement) return NULL;
     
     char *seq_json = pg_m2j_seq2json_array(measurement);
@@ -31,7 +31,7 @@ char* pg_m2j_transform(const pg_m_item_t measurement) {
 
 /* ========================================================================= */
 
-char* pg_transform_seq_json(const pg_mseq_t seq) {
+char* pg_transform_seq_json(const pg_mseq_t *seq) {
     if (!seq) return NULL;
     int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value) + 1;
     char *result = malloc(sizeof (char)*ch_written);
@@ -42,12 +42,12 @@ char* pg_transform_seq_json(const pg_mseq_t seq) {
 
 /* ========================================================================= */
 
-char* pg_m2j_seq2json_array(const pg_m_item_t m) {
+char* pg_m2j_seq2json_array(const pg_m_item_t *m) {
     if (!m) return NULL;
     if (!m->sequence) return strdup("[]");
 
     char *result = NULL;
-    pg_mseq_t seq = m->sequence;
+    pg_mseq_t *seq = m->sequence;
 
     while (seq) {
         char *current_seq_json = pg_transform_seq_json(seq);

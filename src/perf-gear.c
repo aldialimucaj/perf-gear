@@ -5,7 +5,7 @@
 bool pg_harvest = false;
 pthread_t harvester_th = 0;
 
-pg_err_t pg_start(pg_config_t config) {
+pg_err_t pg_start(pg_config_t *config) {
     pg_harvest = true;
     int rc = pthread_create(&harvester_th, NULL, &pg_harvest_measurements, config);
     if (rc != 0) perror("Could not start harvester thread.");
@@ -28,7 +28,7 @@ pg_err_t pg_stop() {
 /* ========================================================================= */
 
 void* pg_harvest_measurements(void *cfg) {
-    pg_config_t config = (pg_config_t) cfg;
+    pg_config_t *config = cfg;
     pg_harvest = true;
     int repeat = config->repeat;
     bool infinite_rep = repeat == 0 ? true : false;
@@ -40,9 +40,9 @@ void* pg_harvest_measurements(void *cfg) {
             {0, HARVEST_WAIT_100MS}
         }, NULL);
 
-        pg_q_item_t qitem = pg_dequeue();
+        pg_q_item_t *qitem = pg_dequeue();
         if (!qitem) continue;
-        pg_m_item_t m = qitem->measurement;
+        pg_m_item_t *m = qitem->measurement;
         if (!m) continue;
 
         char *json_result = pg_m2j_transform(m);

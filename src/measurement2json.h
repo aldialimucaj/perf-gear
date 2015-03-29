@@ -30,14 +30,14 @@ extern "C" {
      * @param measurement
      * @return Pointer to JSON String
      */
-    char* pg_m2j_transform(const pg_m_item_t measurement);
+    char* pg_m2j_transform(const pg_m_item_t *measurement);
 
     /** @brief Generates a sequence JSON string
      * 
      * @param seq
      * @return 
      */
-    char* pg_transform_seq_json(const pg_mseq_t seq);
+    char* pg_transform_seq_json(const pg_mseq_t *seq);
     
     /** @brief Generates a sequence of all JSON string and returns them as json array
      * 
@@ -51,7 +51,7 @@ extern "C" {
      * @param m
      * @return 
      */
-    char* pg_m2j_seq2json_array(const pg_m_item_t m);
+    char* pg_m2j_seq2json_array(const pg_m_item_t *m);
 
 
 #ifdef	__cplusplus

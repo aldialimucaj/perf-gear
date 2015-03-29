@@ -19,21 +19,21 @@
 extern "C" {
 #endif
 
-    typedef struct pg_linked_list_item* pg_ll_item_t;
+    /** @brief Linked list element.
+     */
+    typedef struct pg_linked_list_item {
+        pg_m_item_t *m;
+        struct pg_linked_list_item *next;
+    } pg_ll_item_t;
 
-    struct pg_linked_list_item {
-        pg_m_item_t m;
-        pg_ll_item_t next;
-    };
-
-    static pg_ll_item_t pg_ll_first_item = NULL;
+    static pg_ll_item_t* pg_ll_first_item = NULL;
 
 
     /** @brief Create a new Linked List Item
      * 
      * @return new allocated linked list
      */
-    pg_ll_item_t pg_ll_create(void);
+    pg_ll_item_t* pg_ll_create(void);
 
     /** @brief destroy Linked List Item.
      * 
@@ -43,14 +43,14 @@ extern "C" {
      * @param item
      * @return 
      */
-    pg_err_t pg_ll_destroy(pg_ll_item_t item);
+    pg_err_t pg_ll_destroy(pg_ll_item_t* item);
 
     /** @brief Add new item to the pg_ll_first_item List
      * 
      * @param item Item to add
      * @return 
      */
-    pg_err_t pg_ll_add(pg_m_item_t item);
+    pg_err_t pg_ll_add(pg_m_item_t *item);
 
 
     /** @brief Add new item to the specified List
@@ -59,7 +59,7 @@ extern "C" {
      * @param list List to add it to
      * @return 
      */
-    pg_err_t pg_ll_add_to(pg_m_item_t item, pg_ll_item_t list);
+    pg_err_t pg_ll_add_to(pg_m_item_t *item, pg_ll_item_t* list);
 
     /** @brief Get item from the list.
      * 
@@ -68,26 +68,26 @@ extern "C" {
      * @param path
      * @return 
      */
-    pg_m_item_t pg_ll_get(char *path);
+    pg_m_item_t* pg_ll_get(char *path);
 
     /** @brief Returns the last element of the list.
      * 
      * @return 
      */
-    pg_ll_item_t pg_ll_get_last(void);
+    pg_ll_item_t* pg_ll_get_last(void);
 
     /** @brief Get the last item and remove it from the list.
      * 
      * @return 
      */
-    pg_m_item_t pg_ll_pop(void);
+    pg_m_item_t* pg_ll_pop(void);
 
     /** @brief Get item matching path and remove it from the list.
      * 
      * @param path 
      * @return 
      */
-    pg_m_item_t pg_ll_pull(char *path);
+    pg_m_item_t* pg_ll_pull(char *path);
 
     /** @brief Returns the size of the chain.
      * 

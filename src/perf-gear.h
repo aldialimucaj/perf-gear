@@ -45,7 +45,7 @@ extern "C" {
      * @param config
      * @return 
      */
-    pg_err_t pg_start(pg_config_t config);
+    pg_err_t pg_start(pg_config_t *config);
 
     /** @brief Stop the measurement
      * 

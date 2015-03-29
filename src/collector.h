@@ -36,7 +36,7 @@ extern "C" {
      * @sa pg_mtype_t
      * @return measurement_item or NULL
      */
-    pg_m_item_t pg_start_collecting(char *path, pg_mtype_t type);
+    pg_m_item_t* pg_start_collecting(char *path, pg_mtype_t type);
 
 
     /** @brief Stop collecting and publish the measurement.
@@ -46,7 +46,7 @@ extern "C" {
      * @param measurement
      * @return 0 = OK
      */
-    pg_err_t pg_stop_collecting(pg_m_item_t measurement);
+    pg_err_t pg_stop_collecting(pg_m_item_t *measurement);
 
 
     /** @brief Publish measurement for consumption
@@ -54,7 +54,7 @@ extern "C" {
      * @param measurement
      * @return 
      */
-    pg_err_t pg_publish_measurement(pg_m_item_t measurement);
+    pg_err_t pg_publish_measurement(pg_m_item_t *measurement);
 
 
 
@@ -65,7 +65,7 @@ extern "C" {
      * @param measurement
      * @return 0 = OK
      */
-    pg_err_t pg_increase_hit(pg_m_item_t measurement);
+    pg_err_t pg_increase_hit(pg_m_item_t *measurement);
 
 
 #ifdef	__cplusplus

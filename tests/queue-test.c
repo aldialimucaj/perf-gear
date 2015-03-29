@@ -168,10 +168,10 @@ void test_pg_dequeue() {
     pg_init_queue();
     /* queue is ready */
 
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
-    pg_q_item_t q_item = pg_create_queue_item();
+    pg_q_item_t *q_item = pg_create_queue_item();
     CU_ASSERT_PTR_NOT_NULL(q_item);
 
     q_item->measurement = measurement;
@@ -201,10 +201,10 @@ void test_pg_clear_queue() {
     const int REPEAT = 1000;
     int index = 0;
     while (index++ < REPEAT) {
-        pg_q_item_t q_item = pg_create_queue_item();
+        pg_q_item_t *q_item = pg_create_queue_item();
         CU_ASSERT_PTR_NOT_NULL(q_item);
 
-        pg_m_item_t measurement = pg_create_measurement_item();
+        pg_m_item_t *measurement = pg_create_measurement_item();
         CU_ASSERT_PTR_NOT_NULL(measurement);
         q_item->measurement = measurement;
 
@@ -230,10 +230,10 @@ void test_pg_get_queue_size() {
     const int REPEAT = 1234;
     int index = 0;
     while (index++ < REPEAT) {
-        pg_q_item_t q_item = pg_create_queue_item();
+        pg_q_item_t *q_item = pg_create_queue_item();
         CU_ASSERT_PTR_NOT_NULL(q_item);
 
-        pg_m_item_t measurement = pg_create_measurement_item();
+        pg_m_item_t *measurement = pg_create_measurement_item();
         CU_ASSERT_PTR_NOT_NULL(measurement);
         q_item->measurement = measurement;
 
@@ -255,21 +255,21 @@ void test_pg_get_queue_size() {
 }
 
 void test_pg_create_queue_item() {
-    pg_q_item_t q_item = pg_create_queue_item();
+    pg_q_item_t *q_item = pg_create_queue_item();
     CU_ASSERT_PTR_NOT_NULL(q_item);
     int result = pg_destroy_queue_item(q_item);
 }
 
 void test_pg_destroy_queue_item() {
-    pg_q_item_t q_item = pg_create_queue_item();
+    pg_q_item_t *q_item = pg_create_queue_item();
     CU_ASSERT_PTR_NOT_NULL(q_item);
 
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
     q_item->measurement = measurement;
     measurement->path = strdup("test/func/one");
 
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     int result = pg_add_measurement_sequence(measurement, seq);
     CU_ASSERT_EQUAL(result, 0);
 
@@ -277,11 +277,11 @@ void test_pg_destroy_queue_item() {
 }
 
 void test_pg_create_measurement_item() {
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
     measurement->path = strdup("test/func/one");
 
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     int result = pg_add_measurement_sequence(measurement, seq);
     CU_ASSERT_EQUAL(result, 0);
 
@@ -293,11 +293,11 @@ void test_pg_destroy_measurement_item() {
     int result = pg_destroy_measurement_item(NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
 
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
     measurement->path = strdup("test/func/one");
 
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     result = pg_add_measurement_sequence(measurement, seq);
     CU_ASSERT_EQUAL(result, 0);
 
@@ -308,18 +308,18 @@ void test_pg_destroy_measurement_item() {
 void test_pg_copy_measurement_item() {
     int result = pg_copy_measurement_item(NULL, NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_SOURCE);
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
     measurement->path = strdup("test/func/one");
 
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     result = pg_add_measurement_sequence(measurement, seq);
     CU_ASSERT_EQUAL(result, 0);
 
     result = pg_copy_measurement_item(measurement, NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_DESTINATION);
 
-    pg_m_item_t dst_m = pg_create_measurement_item();
+    pg_m_item_t *dst_m = pg_create_measurement_item();
     result = pg_copy_measurement_item(measurement, dst_m);
 
 
@@ -332,14 +332,14 @@ void test_pg_copy_measurement_item() {
 }
 
 void test_pg_create_measurement_sequence() {
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     CU_ASSERT_PTR_NOT_NULL(seq);
     int result = pg_destroy_measurement_sequence(seq);
     CU_ASSERT_EQUAL(result, 0);
 }
 
 void test_pg_destroy_measurement_sequence() {
-    pg_mseq_t seq = pg_create_measurement_sequence();
+    pg_mseq_t *seq = pg_create_measurement_sequence();
     CU_ASSERT_PTR_NOT_NULL(seq);
     int result = pg_destroy_measurement_sequence(seq);
     CU_ASSERT_EQUAL(result, 0);
@@ -350,13 +350,13 @@ void test_pg_destroy_measurement_sequence() {
 void test_pg_add_measurement_sequence() {
     int result = pg_copy_measurement_item(NULL, NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_SOURCE);
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
     const int REPEAT = 1000;
     int index = 0;
     while (index++ < REPEAT) {
-        pg_mseq_t seq = pg_create_measurement_sequence();
+        pg_mseq_t *seq = pg_create_measurement_sequence();
         CU_ASSERT_PTR_NOT_NULL(seq);
         result = pg_add_measurement_sequence(measurement, seq);
         CU_ASSERT_EQUAL(result, 0);
@@ -370,10 +370,10 @@ void test_pg_add_measurement_sequence() {
 }
 
 void test_pg_copy_measurement_sequences() {
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
-    pg_m_item_t dst_m = pg_create_measurement_item();
+    pg_m_item_t *dst_m = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(dst_m);
 
     int result = 0;
@@ -381,7 +381,7 @@ void test_pg_copy_measurement_sequences() {
     const int REPEAT = 1000;
     int index = 0;
     while (index++ < REPEAT) {
-        pg_mseq_t seq = pg_create_measurement_sequence();
+        pg_mseq_t *seq = pg_create_measurement_sequence();
         CU_ASSERT_PTR_NOT_NULL(seq);
         result = pg_add_measurement_sequence(measurement, seq);
         CU_ASSERT_EQUAL(result, 0);
@@ -404,13 +404,13 @@ void test_pg_copy_measurement_sequences() {
 void test_pg_count_measurement_sequences() {
     int result = pg_copy_measurement_item(NULL, NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_SOURCE);
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
     const int REPEAT = 1854;
     int index = 0;
     while (index++ < REPEAT) {
-        pg_mseq_t seq = pg_create_measurement_sequence();
+        pg_mseq_t *seq = pg_create_measurement_sequence();
         CU_ASSERT_PTR_NOT_NULL(seq);
         result = pg_add_measurement_sequence(measurement, seq);
         CU_ASSERT_EQUAL(result, 0);
@@ -424,14 +424,14 @@ void test_pg_count_measurement_sequences() {
 }
 
 void test_pg_clear_all_measurement_sequences() {
-    pg_m_item_t measurement = pg_create_measurement_item();
+    pg_m_item_t *measurement = pg_create_measurement_item();
     CU_ASSERT_PTR_NOT_NULL(measurement);
 
     const int REPEAT = 1854;
     int index = 0;
     int result = 0;
     while (index++ < REPEAT) {
-        pg_mseq_t seq = pg_create_measurement_sequence();
+        pg_mseq_t *seq = pg_create_measurement_sequence();
         CU_ASSERT_PTR_NOT_NULL(seq);
         result = pg_add_measurement_sequence(measurement, seq);
         CU_ASSERT_EQUAL(result, 0);

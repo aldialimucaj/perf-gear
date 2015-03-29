@@ -43,7 +43,7 @@ extern "C" {
     typedef struct pg_queue_item {
         struct pg_measurement_item *measurement; /*!< Measurement content */
         struct pg_queue_item *next; /*!< Next in line */
-    } *pg_q_item_t;
+    } pg_q_item_t;
 
     /** @brief Measurement Types
      * 
@@ -61,7 +61,7 @@ extern "C" {
         pg_mtype_t type; /*!< Type of measurement HIT|TIME|MEMORY */
         size_t hitValue; /*!< Value for hits */
         struct pg_measurement_sequence *sequence; /**< a sequence of events */
-    } *pg_m_item_t;
+    } pg_m_item_t;
 
     /** @brief A sequence of measurement events
      *
@@ -72,7 +72,7 @@ extern "C" {
         size_t timestamp; /*!< Time when it was measured */
         double value; /*!< Value that was measured */
         struct pg_measurement_sequence* next; /*!< Next sequence */
-    } *pg_mseq_t;
+    } pg_mseq_t;
 
     /** @brief The Queue */
     struct pg_queue *pg_queue;
@@ -103,7 +103,7 @@ extern "C" {
      * 
      * @return 0 = ok
      */
-    pg_err_t pg_enqueue(pg_q_item_t item);
+    pg_err_t pg_enqueue(pg_q_item_t *item);
 
 
     /** @brief Pops the first element out of the queue
@@ -114,7 +114,7 @@ extern "C" {
      * @return Returns the first element from the queue. If no element exists or
      * the queue is not ready then it returns null. 
      */
-    pg_q_item_t pg_dequeue(void);
+    pg_q_item_t* pg_dequeue(void);
 
 
     /** @brief Removes all elements from the queue
@@ -138,7 +138,7 @@ extern "C" {
      * 
      * @return Pointer to element
      */
-    pg_q_item_t pg_create_queue_item(void);
+    pg_q_item_t* pg_create_queue_item(void);
 
     /** @brief Releases the item.
      * 
@@ -148,12 +148,12 @@ extern "C" {
      * 
      * @returns 0 = ok
      */
-    pg_err_t pg_destroy_queue_item(pg_q_item_t item);
+    pg_err_t pg_destroy_queue_item(pg_q_item_t *item);
 
     /** @brief Creates a new measurement element
      * 
      */
-    pg_m_item_t pg_create_measurement_item(void);
+    pg_m_item_t* pg_create_measurement_item(void);
 
     /** @brief Releases the measurement item.
      * 
@@ -163,7 +163,7 @@ extern "C" {
      * 
      * @returns 0 = ok
      */
-    pg_err_t pg_destroy_measurement_item(pg_m_item_t item);
+    pg_err_t pg_destroy_measurement_item(pg_m_item_t *item);
 
     /** @brief Copy memory from source to destination
      * 
@@ -175,13 +175,13 @@ extern "C" {
      * 
      * @return 0 = ok.
      */
-    pg_err_t pg_copy_measurement_item(pg_m_item_t src, pg_m_item_t dst);
+    pg_err_t pg_copy_measurement_item(pg_m_item_t *src, pg_m_item_t *dst);
 
     /** @brief Creates a new measurement sequence
      * 
      * @return pointer to sequence
      */
-    pg_mseq_t pg_create_measurement_sequence(void);
+    pg_mseq_t* pg_create_measurement_sequence(void);
 
     /** @brief Releases the item.
      * 
@@ -191,7 +191,7 @@ extern "C" {
      * 
      * @returns 0 = ok
      */
-    pg_err_t pg_destroy_measurement_sequence(pg_mseq_t item);
+    pg_err_t pg_destroy_measurement_sequence(pg_mseq_t *item);
 
 
     /** @brief Adds new sequence item to the measurement
@@ -200,7 +200,7 @@ extern "C" {
      * @param seq
      * @return 
      */
-    pg_err_t pg_add_measurement_sequence(pg_m_item_t measurement, pg_mseq_t seq);
+    pg_err_t pg_add_measurement_sequence(pg_m_item_t *measurement, pg_mseq_t *seq);
 
     /** @brief Copy measurement sequences
      * 
@@ -210,21 +210,21 @@ extern "C" {
      * @param dst
      * @return 
      */
-    pg_err_t pg_copy_measurement_sequences(pg_m_item_t src, pg_m_item_t dst);
+    pg_err_t pg_copy_measurement_sequences(pg_m_item_t *src, pg_m_item_t *dst);
     
     /** @brief Count measurement sequences in this measurement item
      * 
      * @param measurement
      * @return Sequences counted
      */
-    size_t pg_count_measurement_sequences(pg_m_item_t measurement);
+    size_t pg_count_measurement_sequences(pg_m_item_t *measurement);
 
     /** @brief Clears all measurements sequences.
      * 
      * @param measurement
      * @return The number of sequences destroyed
      */
-    size_t pg_clear_all_measurement_sequences(pg_m_item_t measurement);
+    size_t pg_clear_all_measurement_sequences(pg_m_item_t *measurement);
 
 
 #ifdef	__cplusplus

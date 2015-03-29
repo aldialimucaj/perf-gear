@@ -53,7 +53,7 @@ extern "C" {
         char* result_name_prefix; /*!< Prefix like PRE_#path#.json */
         char* result_name_suffix; /*!< Suffix like #path#_SUF.json */
         int repeat; /*!< how many times to fetch before stopping. 0=Infinite */
-    } *pg_config_t;
+    } pg_config_t;
     
     /** @brief Creates a file name compatible with fs.
      * 
@@ -61,7 +61,7 @@ extern "C" {
      * @param config
      * @return 
      */
-    char* pg_build_filename(char* filename, pg_config_t config);
+    char* pg_build_filename(char* filename, pg_config_t *config);
     
     
     /** @brief Checks if the string matches in the end

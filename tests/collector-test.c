@@ -27,7 +27,7 @@ void test_pg_start_collecting(void) {
     pg_init_queue();
 
     char *path = "pg/collector/start_collecting";
-    pg_m_item_t m = pg_start_collecting(path, PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t *m = pg_start_collecting(path, PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT_PTR_NOT_NULL(m);
 
     int result = pg_destroy_measurement_item(m);
@@ -41,7 +41,7 @@ void test_pg_stop_collecting(void) {
     pg_init_queue();
 
     char *path = "pg/collector/start_collecting";
-    pg_m_item_t m = pg_start_collecting(path, PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t *m = pg_start_collecting(path, PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT_PTR_NOT_NULL(m);
 
     int result = pg_stop_collecting(m);
@@ -63,7 +63,7 @@ void test_pg_publish_measurement() {
     pg_err_t result = pg_publish_measurement(NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
 
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     result = pg_publish_measurement(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
@@ -87,7 +87,7 @@ void test_pg_increase_hit(void) {
     pg_err_t result = pg_increase_hit(NULL);
     CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
 
-    pg_m_item_t m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_UNKNOWN;
     result = pg_increase_hit(m);
     CU_ASSERT_EQUAL(result, PG_ERR_WRONG_MEASUREMENT_TYPE);
