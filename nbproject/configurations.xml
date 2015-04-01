@@ -6,11 +6,17 @@
                    projectFiles="true">
       <itemPath>src/collector.h</itemPath>
       <itemPath>src/dispatcher.h</itemPath>
+      <itemPath>src/dukbridge.h</itemPath>
+      <itemPath>src/duktape-bridge.h</itemPath>
       <itemPath>src/linked-list.h</itemPath>
       <itemPath>src/measurement2json.h</itemPath>
       <itemPath>src/perf-gear.h</itemPath>
       <itemPath>src/pg-utils.h</itemPath>
       <itemPath>src/queue.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="lib" displayName="Libraries" projectFiles="true">
+      <itemPath>lib/duktape.c</itemPath>
+      <itemPath>lib/duktape.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -21,6 +27,8 @@
                    projectFiles="true">
       <itemPath>src/collector.c</itemPath>
       <itemPath>src/dispatcher.c</itemPath>
+      <itemPath>src/dukbridge.c</itemPath>
+      <itemPath>src/duktape-bridge.c</itemPath>
       <itemPath>src/linked-list.c</itemPath>
       <itemPath>src/measurement2json.c</itemPath>
       <itemPath>src/perf-gear.c</itemPath>
@@ -42,6 +50,12 @@
                      projectFiles="true"
                      kind="TEST">
         <itemPath>tests/dispatcher-test.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f8"
+                     displayName="Dukbridge Test"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/dukbridge-test.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f3"
                      displayName="LinkedList Test"
@@ -96,6 +110,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
+            <linkerLibLibItem>m</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -157,6 +172,18 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f8">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f8</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="lib/duktape.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="lib/duktape.h" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -164,6 +191,10 @@
       <item path="src/dispatcher.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/dispatcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/dukbridge.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/dukbridge.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/linked-list.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -188,6 +219,8 @@
       <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/dispatcher-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/dukbridge-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -286,6 +319,18 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f8">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f8</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="lib/duktape.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="lib/duktape.h" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -293,6 +338,10 @@
       <item path="src/dispatcher.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/dispatcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/dukbridge.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/dukbridge.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/linked-list.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -317,6 +366,8 @@
       <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/dispatcher-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/dukbridge-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -406,6 +457,18 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f8">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f8</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="lib/duktape.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="lib/duktape.h" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="src/collector.c" ex="false" tool="0" flavor2="9">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -413,6 +476,10 @@
       <item path="src/dispatcher.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/dispatcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/dukbridge.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/dukbridge.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/linked-list.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -437,6 +504,8 @@
       <item path="tests/collector-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/dispatcher-test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/dukbridge-test.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="tests/linked-list-test.c" ex="false" tool="0" flavor2="0">
       </item>

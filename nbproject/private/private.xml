@@ -7,12 +7,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/a/projects/perf-gear/src/perf-gear.h</file>
-            <file>file:/home/a/projects/perf-gear/src/perf-gear.c</file>
-            <file>file:/home/a/projects/perf-gear/src/collector.c</file>
-            <file>file:/home/a/projects/perf-gear/tests/perf-gear-test.c</file>
+            <file>file:/home/a/projects/perf-gear/tests/dukbridge-test.c</file>
             <file>file:/home/a/projects/perf-gear/src/queue.h</file>
-            <file>file:/home/a/projects/perf-gear/src/collector.h</file>
+            <file>file:/home/a/projects/perf-gear/src/dukbridge.c</file>
+            <file>file:/home/a/projects/perf-gear/tests/collector-test.c</file>
+            <file>file:/home/a/projects/perf-gear/nbproject/configurations.xml</file>
+            <file>file:/home/a/projects/perf-gear/src/dukbridge.h</file>
         </group>
     </open-files>
 </project-private>

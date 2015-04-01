@@ -35,8 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/lib/duktape.o \
 	${OBJECTDIR}/src/collector.o \
 	${OBJECTDIR}/src/dispatcher.o \
+	${OBJECTDIR}/src/dukbridge.o \
 	${OBJECTDIR}/src/linked-list.o \
 	${OBJECTDIR}/src/measurement2json.o \
 	${OBJECTDIR}/src/perf-gear.o \
@@ -50,6 +52,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 TESTFILES= \
 	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f5 \
+	${TESTDIR}/TestFiles/f8 \
 	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f6 \
@@ -70,7 +73,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lpthread
+LDLIBSOPTIONS=-lpthread -lm
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -79,6 +82,16 @@ LDLIBSOPTIONS=-lpthread
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT}: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT} ${OBJECTFILES} ${LDLIBSOPTIONS} -shared -fPIC
+
+${OBJECTDIR}/lib/duktape.o: lib/duktape.c 
+	${MKDIR} -p ${OBJECTDIR}/lib
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib/duktape.o lib/duktape.c
+
+${OBJECTDIR}/lib/duktape.h.gch: lib/duktape.h 
+	${MKDIR} -p ${OBJECTDIR}/lib
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o "$@" lib/duktape.h
 
 ${OBJECTDIR}/src/collector.o: src/collector.c 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -89,6 +102,11 @@ ${OBJECTDIR}/src/dispatcher.o: src/dispatcher.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher.o src/dispatcher.c
+
+${OBJECTDIR}/src/dukbridge.o: src/dukbridge.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dukbridge.o src/dukbridge.c
 
 ${OBJECTDIR}/src/linked-list.o: src/linked-list.c 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -128,6 +146,10 @@ ${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/dispatcher-test.o ${OBJECTFILES:%.o=%_
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS} -lcunit 
 
+${TESTDIR}/TestFiles/f8: ${TESTDIR}/tests/dukbridge-test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f8 $^ ${LDLIBSOPTIONS} -lcunit 
+
 ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/linked-list-test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} -lcunit 
@@ -161,6 +183,12 @@ ${TESTDIR}/tests/dispatcher-test.o: tests/dispatcher-test.c
 	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dispatcher-test.o tests/dispatcher-test.c
 
 
+${TESTDIR}/tests/dukbridge-test.o: tests/dukbridge-test.c 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dukbridge-test.o tests/dukbridge-test.c
+
+
 ${TESTDIR}/tests/linked-list-test.o: tests/linked-list-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
@@ -191,6 +219,32 @@ ${TESTDIR}/tests/queue-test.o: tests/queue-test.c
 	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/queue-test.o tests/queue-test.c
 
 
+${OBJECTDIR}/lib/duktape_nomain.o: ${OBJECTDIR}/lib/duktape.o lib/duktape.c 
+	${MKDIR} -p ${OBJECTDIR}/lib
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/lib/duktape.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib/duktape_nomain.o lib/duktape.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/lib/duktape.o ${OBJECTDIR}/lib/duktape_nomain.o;\
+	fi
+
+${OBJECTDIR}/lib/duktape_nomain.h.gch: ${OBJECTDIR}/lib/duktape.h.gch lib/duktape.h 
+	${MKDIR} -p ${OBJECTDIR}/lib
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/lib/duktape.h.gch`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o "$@" lib/duktape.h;\
+	else  \
+	    ${CP} ${OBJECTDIR}/lib/duktape.h.gch ${OBJECTDIR}/lib/duktape_nomain.h.gch;\
+	fi
+
 ${OBJECTDIR}/src/collector_nomain.o: ${OBJECTDIR}/src/collector.o src/collector.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/collector.o`; \
@@ -215,6 +269,19 @@ ${OBJECTDIR}/src/dispatcher_nomain.o: ${OBJECTDIR}/src/dispatcher.o src/dispatch
 	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher_nomain.o src/dispatcher.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/dispatcher.o ${OBJECTDIR}/src/dispatcher_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/dukbridge_nomain.o: ${OBJECTDIR}/src/dukbridge.o src/dukbridge.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/dukbridge.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dukbridge_nomain.o src/dukbridge.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/dukbridge.o ${OBJECTDIR}/src/dukbridge_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/linked-list_nomain.o: ${OBJECTDIR}/src/linked-list.o src/linked-list.c 
@@ -288,6 +355,7 @@ ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c
 	then  \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f5 || true; \
+	    ${TESTDIR}/TestFiles/f8 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f6 || true; \
