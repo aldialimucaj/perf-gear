@@ -18,6 +18,8 @@ extern "C" {
 #endif
 
     void pg_say_hello(void);
+    
+    int adder(duk_context *ctx);
 
 
 #ifdef	__cplusplus

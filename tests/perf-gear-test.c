@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <CUnit/Basic.h>
 #include "../src/perf-gear.h"
+#include "../src/collector.h"
 
 /*
  * CUnit Test Suite

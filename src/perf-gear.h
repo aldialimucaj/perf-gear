@@ -12,12 +12,13 @@
 #ifndef PERF_GEAR_H
 #define	PERF_GEAR_H
 
+#include "pg-utils.h"
+
 #include <stdbool.h>
 #include <unistd.h>
 #include <time.h>
 #include <pthread.h>
 
-#include "pg-utils.h"
 #include "queue.h"
 #include "measurement2json.h"
 #include "dispatcher.h"

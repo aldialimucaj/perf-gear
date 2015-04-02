@@ -60,7 +60,7 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-fomit-frame-pointer
 
 # CC Compiler Flags
 CCFLAGS=
@@ -86,52 +86,52 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT}: ${OBJEC
 ${OBJECTDIR}/lib/duktape.o: lib/duktape.c 
 	${MKDIR} -p ${OBJECTDIR}/lib
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib/duktape.o lib/duktape.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib/duktape.o lib/duktape.c
 
 ${OBJECTDIR}/lib/duktape.h.gch: lib/duktape.h 
 	${MKDIR} -p ${OBJECTDIR}/lib
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o "$@" lib/duktape.h
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o "$@" lib/duktape.h
 
 ${OBJECTDIR}/src/collector.o: src/collector.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector.o src/collector.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector.o src/collector.c
 
 ${OBJECTDIR}/src/dispatcher.o: src/dispatcher.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher.o src/dispatcher.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher.o src/dispatcher.c
 
 ${OBJECTDIR}/src/dukbridge.o: src/dukbridge.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dukbridge.o src/dukbridge.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dukbridge.o src/dukbridge.c
 
 ${OBJECTDIR}/src/linked-list.o: src/linked-list.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list.o src/linked-list.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list.o src/linked-list.c
 
 ${OBJECTDIR}/src/measurement2json.o: src/measurement2json.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json.o src/measurement2json.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json.o src/measurement2json.c
 
 ${OBJECTDIR}/src/perf-gear.o: src/perf-gear.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/perf-gear.o src/perf-gear.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/perf-gear.o src/perf-gear.c
 
 ${OBJECTDIR}/src/pg-utils.o: src/pg-utils.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/pg-utils.o src/pg-utils.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/pg-utils.o src/pg-utils.c
 
 ${OBJECTDIR}/src/queue.o: src/queue.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue.o src/queue.c
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue.o src/queue.c
 
 # Subprojects
 .build-subprojects:
@@ -174,49 +174,49 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/queue-test.o ${OBJECTFILES:%.o=%_nomai
 ${TESTDIR}/tests/collector-test.o: tests/collector-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/collector-test.o tests/collector-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/collector-test.o tests/collector-test.c
 
 
 ${TESTDIR}/tests/dispatcher-test.o: tests/dispatcher-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dispatcher-test.o tests/dispatcher-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dispatcher-test.o tests/dispatcher-test.c
 
 
 ${TESTDIR}/tests/dukbridge-test.o: tests/dukbridge-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dukbridge-test.o tests/dukbridge-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dukbridge-test.o tests/dukbridge-test.c
 
 
 ${TESTDIR}/tests/linked-list-test.o: tests/linked-list-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/linked-list-test.o tests/linked-list-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/linked-list-test.o tests/linked-list-test.c
 
 
 ${TESTDIR}/tests/measurement2json-test.o: tests/measurement2json-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/measurement2json-test.o tests/measurement2json-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/measurement2json-test.o tests/measurement2json-test.c
 
 
 ${TESTDIR}/tests/perf-gear-test.o: tests/perf-gear-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/perf-gear-test.o tests/perf-gear-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/perf-gear-test.o tests/perf-gear-test.c
 
 
 ${TESTDIR}/tests/pg-utils-test.o: tests/pg-utils-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/pg-utils-test.o tests/pg-utils-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/pg-utils-test.o tests/pg-utils-test.c
 
 
 ${TESTDIR}/tests/queue-test.o: tests/queue-test.c 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/queue-test.o tests/queue-test.c
+	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/queue-test.o tests/queue-test.c
 
 
 ${OBJECTDIR}/lib/duktape_nomain.o: ${OBJECTDIR}/lib/duktape.o lib/duktape.c 
@@ -227,7 +227,7 @@ ${OBJECTDIR}/lib/duktape_nomain.o: ${OBJECTDIR}/lib/duktape.o lib/duktape.c
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib/duktape_nomain.o lib/duktape.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib/duktape_nomain.o lib/duktape.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/lib/duktape.o ${OBJECTDIR}/lib/duktape_nomain.o;\
 	fi
@@ -240,7 +240,7 @@ ${OBJECTDIR}/lib/duktape_nomain.h.gch: ${OBJECTDIR}/lib/duktape.h.gch lib/duktap
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o "$@" lib/duktape.h;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o "$@" lib/duktape.h;\
 	else  \
 	    ${CP} ${OBJECTDIR}/lib/duktape.h.gch ${OBJECTDIR}/lib/duktape_nomain.h.gch;\
 	fi
@@ -253,7 +253,7 @@ ${OBJECTDIR}/src/collector_nomain.o: ${OBJECTDIR}/src/collector.o src/collector.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector_nomain.o src/collector.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector_nomain.o src/collector.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/collector.o ${OBJECTDIR}/src/collector_nomain.o;\
 	fi
@@ -266,7 +266,7 @@ ${OBJECTDIR}/src/dispatcher_nomain.o: ${OBJECTDIR}/src/dispatcher.o src/dispatch
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher_nomain.o src/dispatcher.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dispatcher_nomain.o src/dispatcher.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/dispatcher.o ${OBJECTDIR}/src/dispatcher_nomain.o;\
 	fi
@@ -279,7 +279,7 @@ ${OBJECTDIR}/src/dukbridge_nomain.o: ${OBJECTDIR}/src/dukbridge.o src/dukbridge.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dukbridge_nomain.o src/dukbridge.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/dukbridge_nomain.o src/dukbridge.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/dukbridge.o ${OBJECTDIR}/src/dukbridge_nomain.o;\
 	fi
@@ -292,7 +292,7 @@ ${OBJECTDIR}/src/linked-list_nomain.o: ${OBJECTDIR}/src/linked-list.o src/linked
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list_nomain.o src/linked-list.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/linked-list_nomain.o src/linked-list.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/linked-list.o ${OBJECTDIR}/src/linked-list_nomain.o;\
 	fi
@@ -305,7 +305,7 @@ ${OBJECTDIR}/src/measurement2json_nomain.o: ${OBJECTDIR}/src/measurement2json.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json_nomain.o src/measurement2json.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/measurement2json_nomain.o src/measurement2json.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/measurement2json.o ${OBJECTDIR}/src/measurement2json_nomain.o;\
 	fi
@@ -318,7 +318,7 @@ ${OBJECTDIR}/src/perf-gear_nomain.o: ${OBJECTDIR}/src/perf-gear.o src/perf-gear.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/perf-gear_nomain.o src/perf-gear.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/perf-gear_nomain.o src/perf-gear.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/perf-gear.o ${OBJECTDIR}/src/perf-gear_nomain.o;\
 	fi
@@ -331,7 +331,7 @@ ${OBJECTDIR}/src/pg-utils_nomain.o: ${OBJECTDIR}/src/pg-utils.o src/pg-utils.c
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/pg-utils_nomain.o src/pg-utils.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/pg-utils_nomain.o src/pg-utils.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/pg-utils.o ${OBJECTDIR}/src/pg-utils_nomain.o;\
 	fi
@@ -344,7 +344,7 @@ ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue_nomain.o src/queue.c;\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/queue_nomain.o src/queue.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/queue.o ${OBJECTDIR}/src/queue_nomain.o;\
 	fi

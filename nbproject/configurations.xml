@@ -105,6 +105,8 @@
       </toolsSet>
       <compileType>
         <cTool>
+          <standard>3</standard>
+          <commandLine>-fomit-frame-pointer</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
         <linkerTool>
@@ -244,6 +246,7 @@
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
+          <standard>3</standard>
           <warningLevel>3</warningLevel>
         </cTool>
         <ccTool>
@@ -391,7 +394,8 @@
       </toolsSet>
       <compileType>
         <cTool>
-          <commandLine>-fprofile-arcs -ftest-coverage</commandLine>
+          <standard>3</standard>
+          <commandLine>-Os -fprofile-arcs -ftest-coverage -fomit-frame-pointer</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
         <linkerTool>

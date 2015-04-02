@@ -8,10 +8,15 @@
 #ifndef PG_UTILS_H
 #define	PG_UTILS_H
 
+#ifndef _POSIX_C_SOURCE
+    #define _POSIX_C_SOURCE	199309L
+#endif
+
 #include <stdio.h>
 #include <sys/stat.h>
 #include <string.h>
 #include <stdbool.h>
+
 
 #define PG_FN_REPACE_CHR_FROM '/'
 #define PG_FN_REPACE_CHR_TO "_"
@@ -19,7 +24,7 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
+    
 #define PG_STRLEN(x) sizeof(char) * strlen(x) + 1
 #define PG_STRDUP strdup
 
@@ -92,6 +97,15 @@ extern "C" {
      * @param dir
      */
     void pg_mkdir(const char *dir);
+    
+    
+    /* ========================================================================= */
+    /* EXTERNALS */
+    /* ========================================================================= */
+    
+    extern char *strdup(const char *s);
+    
+    
     
 
 #ifdef	__cplusplus

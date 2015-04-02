@@ -24,6 +24,7 @@ int clean_suite(void) {
 }
 
 void test_say_hello() {
+    CU_ASSERT_EQUAL(1,1); 
     pg_say_hello();
     CU_ASSERT_EQUAL(1,1); 
 }
