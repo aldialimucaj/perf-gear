@@ -258,6 +258,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
+            <linkerLibLibItem>m</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -396,6 +397,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
+            <linkerLibLibItem>m</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
