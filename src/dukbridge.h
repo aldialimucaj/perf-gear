@@ -17,9 +17,11 @@
 extern "C" {
 #endif
 
-    void pg_say_hello(void);
+    void pg_say_hello(duk_context *ctx);
     
     int adder(duk_context *ctx);
+    
+    int pg_br_register_functions(duk_context *ctx);
 
 
 #ifdef	__cplusplus

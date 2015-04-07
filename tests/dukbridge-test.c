@@ -24,9 +24,14 @@ int clean_suite(void) {
 }
 
 void test_say_hello() {
+    duk_context *ctx = duk_create_heap_default();
+    pg_br_register_functions(ctx);
+    
     CU_ASSERT_EQUAL(1,1); 
-    pg_say_hello();
+    pg_say_hello(ctx);
     CU_ASSERT_EQUAL(1,1); 
+    
+    duk_destroy_heap(ctx);
 }
 
 int main() {
