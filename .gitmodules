@@ -1,3 +1,0 @@
-[submodule "duktape"]
-	path = duktape
-	url = git@github.com:aldialimucaj/duktape.git
