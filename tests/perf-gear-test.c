@@ -115,12 +115,11 @@ void test_pg_harvest_measurements(void) {
 
     // ---
 
-    struct pg_config c = {
-        .folder = "/tmp/",
-        .repeat = 10
-    };
+    pg_config_t *c = pg_create_config();
+    c->folder = strdup("/tmp/");
+    c->repeat = 10;
 
-    pg_harvest_measurements(&c);
+    pg_harvest_measurements(c);
 
     // ---
 

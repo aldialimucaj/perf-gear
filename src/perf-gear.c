@@ -7,7 +7,8 @@ pthread_t harvester_th = 0;
 
 pg_err_t pg_start(pg_config_t *config) {
     pg_harvest = true;
-    int rc = pthread_create(&harvester_th, NULL, &pg_harvest_measurements, config);
+    pg_config_t *cfg = pg_copy_config(config);
+    int rc = pthread_create(&harvester_th, NULL, &pg_harvest_measurements, cfg);
     if (rc != 0) perror("Could not start harvester thread.");
 
     return PG_NO_ERROR;
@@ -60,4 +61,5 @@ void* pg_harvest_measurements(void *cfg) {
 
         //pg_harvest = false; // TODO: finish this
     }
+    pg_destroy_config(config);
 }

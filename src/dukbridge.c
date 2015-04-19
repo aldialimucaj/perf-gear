@@ -29,6 +29,35 @@ int adder(duk_context *ctx) {
     return 1; /* one return value */
 }
 
-int pg_br_register_functions(duk_context *ctx) {
-    duk_push_c_function(ctx, adder, DUK_VARARGS);
+duk_ret_t pg_br_startPerfGear(duk_context *ctx) {
+    duk_json_decode(ctx, -1);
+    duk_get_prop_string(ctx, -1, "folder");
+    const char* folder = duk_to_string(ctx, -1);
+
+    pg_config_t* c = pg_create_config();
+
+    c->folder = strdup(folder);
+    c->repeat = 10;
+
+    pg_err_t e = pg_start(c);
+    duk_push_number(ctx, e);
+
+    pg_destroy_config(c);
+
+    return 1;
+}
+
+pg_err_t pg_br_register_functions(duk_context *ctx) {
+    duk_idx_t r = 0;
+    duk_bool_t g = 0;
+
+    // ---
+    r = duk_push_c_function(ctx, pg_br_startPerfGear, DUK_VARARGS);
+    if (r < 0) return PG_ERR_REGISTER_FUNC;
+    g = duk_put_prop_string(ctx, -2, "startPerfGear");
+    duk_pop(ctx); /* ignore result */
+    // ---
+
+
+    return PG_NO_ERROR;
 }

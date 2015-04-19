@@ -46,7 +46,9 @@ extern "C" {
         PG_ERR_COULD_NOT_OPEN_PATH, /*!< Could not open file path with write permissions */
         PG_ERR_NO_CONTENT, /*!< No content to write about */
         PG_ERR_HARVESTER_HAS_NOT_STARTED, /*!< */
+        PG_ERR_REGISTER_FUNC, /*!< Error registering bridge functions */
         PG_ERR_, /*!< */
+        PG_ERR_BAD_ARG, /*!< Bad or NULL argument */
         PG_ERR_UNKNOWN_ERROR /*!< Uncategorized error occured */
     } pg_err_t;
 
@@ -98,6 +100,24 @@ extern "C" {
      */
     void pg_mkdir(const char *dir);
     
+    /** @brief Allocate config object
+     * 
+     * @return 
+     */
+    pg_config_t* pg_create_config(void);
+    
+    /** @brief Free config and all its content
+     * 
+     * @param config
+     * @return 
+     */
+    pg_err_t pg_destroy_config(pg_config_t *config);
+    
+    /** @brief Clone config
+     * 
+     * @return 
+     */
+    pg_config_t* pg_copy_config(pg_config_t* cfg);
     
     /* ========================================================================= */
     /* EXTERNALS */

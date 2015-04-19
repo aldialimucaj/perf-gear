@@ -91,3 +91,40 @@ void pg_mkdir(const char *dir) {
     }
     mkdir(tmp, S_IRWXU);
 }
+
+/* ========================================================================= */
+
+pg_config_t* pg_create_config(void) {
+    pg_config_t *c = malloc(sizeof (pg_config_t));
+    c->folder = NULL;
+    c->result_name_prefix = NULL;
+    c->result_name_suffix = NULL;
+    c->repeat = 0;
+
+    return c;
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_destroy_config(pg_config_t *config) {
+    if (config == NULL) return PG_ERR_BAD_ARG;
+    if (config->folder) free(config->folder);
+    if (config->result_name_prefix) free(config->result_name_prefix);
+    if (config->result_name_suffix) free(config->result_name_suffix);
+    free(config);
+
+    return PG_NO_ERROR;
+}
+
+/* ========================================================================= */
+
+pg_config_t* pg_copy_config(pg_config_t* cfg) {
+    if (cfg == NULL) return NULL;
+    pg_config_t *c = pg_create_config();
+    if (cfg->folder) c->folder = strdup(cfg->folder);
+    if (cfg->result_name_prefix) c->result_name_prefix = strdup(cfg->result_name_prefix);
+    if (cfg->result_name_suffix) c->result_name_suffix = strdup(cfg->result_name_suffix);
+    c->repeat = cfg->repeat;
+
+    return c;
+}

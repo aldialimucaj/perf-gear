@@ -95,6 +95,9 @@
     <itemPath>.travis.yml</itemPath>
     <itemPath>valgrind-tests.sh</itemPath>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>lib</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="2">

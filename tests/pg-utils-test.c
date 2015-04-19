@@ -101,6 +101,28 @@ void test_pg_mkdir() {
     pg_mkdir(path2);
 }
 
+void test_pg_create_config() {
+    pg_config_t *c = pg_create_config();
+    CU_ASSERT_PTR_NOT_NULL(c);
+    free(c);
+}
+
+void test_pg_destroy_config() {
+    pg_config_t *c = pg_create_config();
+    CU_ASSERT_PTR_NOT_NULL(c);
+    pg_err_t e = pg_destroy_config(c);
+    CU_ASSERT_EQUAL(e, PG_NO_ERROR);
+}
+
+void test_pg_copy_config() {
+    pg_config_t *c = pg_create_config();
+    CU_ASSERT_PTR_NOT_NULL(c);
+    pg_config_t *c2 = pg_copy_config(c);
+    CU_ASSERT_PTR_NOT_NULL(c2);
+    free(c);
+    free(c2);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -120,6 +142,9 @@ int main() {
     CU_add_test(pSuite, "test_pg_build_filename", test_pg_build_filename);
     CU_add_test(pSuite, "test_pg_str_replace", test_pg_str_replace);
     CU_add_test(pSuite, "test_pg_mkdir", test_pg_mkdir);
+    CU_add_test(pSuite, "test_pg_create_config", test_pg_create_config);
+    CU_add_test(pSuite, "test_pg_destroy_config", test_pg_destroy_config);
+    CU_add_test(pSuite, "test_pg_copy_config", test_pg_copy_config);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
