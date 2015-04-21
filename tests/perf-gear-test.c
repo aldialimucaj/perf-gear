@@ -24,12 +24,21 @@ int clean_suite(void) {
 }
 
 void test_pg_start() {
-    pg_init_queue();
+    
+    struct pg_config c = {
+        .folder = "/tmp/pg",
+        .repeat = 10
+    };
 
+    pg_err_t result = pg_start(&c);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+
+    // ---
+    
     pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_start/test/hit");
-    pg_err_t result = pg_publish_measurement(m);
+    result = pg_publish_measurement(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     result = pg_destroy_measurement_item(m);
@@ -40,15 +49,6 @@ void test_pg_start() {
 
     // ---
 
-    struct pg_config c = {
-        .folder = "/tmp/pg",
-        .repeat = 10
-    };
-
-    result = pg_start(&c);
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
-
-    // ---
     /* wait for thread to finish */
     int h_err;
     int thj_result = pthread_join(harvester_th, (void**) &h_err);
@@ -64,12 +64,19 @@ void test_pg_start() {
 }
 
 void test_pg_stop() {
-    pg_init_queue();
+    struct pg_config c = {
+        .folder = "/tmp/pg",
+        .repeat = 10
+    };
 
+    pg_err_t result = pg_start(&c);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+
+    // ---
     pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_stop/test/hit");
-    pg_err_t result = pg_publish_measurement(m);
+    result = pg_publish_measurement(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     result = pg_destroy_measurement_item(m);
@@ -78,24 +85,8 @@ void test_pg_stop() {
     size_t queue_size = pg_get_queue_size();
     CU_ASSERT_EQUAL(queue_size, 1);
 
-    struct pg_config c = {
-        .folder = "/tmp/pg",
-        .repeat = 10
-    };
-
-    result = pg_start(&c);
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
-
-    // ---
     /* wait for thread to finish */
     result = pg_stop();
-    // ---
-
-    /* destroy queue */
-    size_t q_size = pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 0);
-    result = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
 
 void test_pg_harvest_measurements(void) {

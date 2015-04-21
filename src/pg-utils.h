@@ -47,6 +47,8 @@ extern "C" {
         PG_ERR_NO_CONTENT, /*!< No content to write about */
         PG_ERR_HARVESTER_HAS_NOT_STARTED, /*!< */
         PG_ERR_REGISTER_FUNC, /*!< Error registering bridge functions */
+        PG_ERR_COULD_NOT_START, /*!< Could not start perf gear */
+        PG_ERR_COULD_NOT_STOP, /*!< Could not stop perf gear properly*/
         PG_ERR_, /*!< */
         PG_ERR_BAD_ARG, /*!< Bad or NULL argument */
         PG_ERR_UNKNOWN_ERROR /*!< Uncategorized error occured */

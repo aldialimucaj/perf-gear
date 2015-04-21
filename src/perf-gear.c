@@ -6,6 +6,9 @@ bool pg_harvest = false;
 pthread_t harvester_th = 0;
 
 pg_err_t pg_start(pg_config_t *config) {
+    struct pg_queue* q = pg_init_queue();
+    if (q == NULL) return PG_ERR_COULD_NOT_START;
+
     pg_harvest = true;
     pg_config_t *cfg = pg_copy_config(config);
     int rc = pthread_create(&harvester_th, NULL, &pg_harvest_measurements, cfg);
@@ -17,11 +20,16 @@ pg_err_t pg_start(pg_config_t *config) {
 /* ========================================================================= */
 
 pg_err_t pg_stop() {
-    pg_harvest = false;
+    pg_err_t r = pg_harvest = false;
     if (!harvester_th) return PG_ERR_HARVESTER_HAS_NOT_STARTED;
     int h_err;
     int thj_result = pthread_join(harvester_th, (void**) &h_err);
     if (thj_result != 0) perror("Cant wait for harvester thread.");
+
+    size_t q_size = pg_clear_queue();
+    if (q_size != 0) return PG_ERR_COULD_NOT_STOP;
+    r = pg_destroy_queue();
+    if (r != PG_NO_ERROR) return PG_ERR_COULD_NOT_STOP;
 
     return PG_NO_ERROR;
 }

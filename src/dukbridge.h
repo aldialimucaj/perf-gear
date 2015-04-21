@@ -35,6 +35,13 @@ extern "C" {
      */
     duk_ret_t pg_br_stopPerfGear(duk_context *ctx);
     
+    /** @brief Measurement object
+     * 
+     * @param ctx
+     * @return 
+     */
+    duk_ret_t pg_br_measurement(duk_context *ctx);
+    
     /** @brief Register all perf gear functions
      * 
      * Registers c functions
