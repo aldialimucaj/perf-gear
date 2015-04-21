@@ -34,7 +34,7 @@ void test_pg_br_startPerfGear() {
     obj_idx = duk_push_object(ctx);
     duk_push_string(ctx, "/tmp/pg");
     duk_put_prop_string(ctx, -2, "folder");
-    const char* json = duk_json_encode(ctx,-1);
+    const char* json = duk_json_encode(ctx, -1);
     CU_ASSERT_STRING_EQUAL(json, "{\"folder\":\"/tmp/pg\"}");
     duk_call(ctx, 1);
 
@@ -46,12 +46,33 @@ void test_pg_br_startPerfGear() {
     pg_stop();
 }
 
-void test_pg_br_register_functions() {
+void test_pg_br_stopPerfGear() {
     duk_context *ctx = duk_create_heap_default();
     duk_push_global_object(ctx);
+
+    struct pg_config c = {
+        .folder = "/tmp/pg",
+        .repeat = 10
+    };
+    pg_start(&c);
     // ---
-    pg_err_t r = pg_br_register_functions(ctx);
-    CU_ASSERT_EQUAL(r, PG_NO_ERROR);
+    duk_idx_t r = 0;
+    duk_bool_t g = 0;
+    r = duk_push_c_function(ctx, pg_br_stopPerfGear, DUK_VARARGS);
+    duk_call(ctx, 0);
+
+    // ---
+    duk_destroy_heap(ctx);
+}
+
+void test_pg_br_register_functions() {
+    duk_context *ctx = duk_create_heap_default();
+    //duk_push_global_object(ctx);
+    // ---
+    /* Module loading happens with a Duktape/C call wrapper. */
+    duk_push_c_function(ctx, dukopen_perf_gear, 0 /*nargs*/);
+    duk_call(ctx, 0);
+    duk_put_global_string(ctx, "PerfGear");
     // ---
     duk_destroy_heap(ctx);
 }
@@ -73,6 +94,7 @@ int main() {
     /* Add the tests to the suite */
     CU_add_test(pSuite, "test_pg_br_register_functions", test_pg_br_register_functions);
     CU_add_test(pSuite, "test_pg_br_startPerfGear", test_pg_br_startPerfGear);
+    CU_add_test(pSuite, "test_pg_br_stopPerfGear", test_pg_br_stopPerfGear);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

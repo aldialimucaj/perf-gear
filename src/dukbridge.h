@@ -19,12 +19,21 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
+    
 
+    /** @brief Start collecting
+     * 
+     * @param ctx
+     * @return 
+     */
     duk_ret_t pg_br_startPerfGear(duk_context *ctx);
     
-    void pg_say_hello(duk_context *ctx);
-    
-    int adder(duk_context *ctx);
+    /** @brief Stop collecting
+     * 
+     * @param ctx
+     * @return 
+     */
+    duk_ret_t pg_br_stopPerfGear(duk_context *ctx);
     
     /** @brief Register all perf gear functions
      * 
@@ -33,7 +42,7 @@ extern "C" {
      * @param ctx
      * @return 
      */
-    pg_err_t pg_br_register_functions(duk_context *ctx);
+    duk_ret_t dukopen_perf_gear(duk_context *ctx);
     
 
 
