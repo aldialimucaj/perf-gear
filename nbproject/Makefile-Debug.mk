@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/js-tests/js-runner.o \
 	${OBJECTDIR}/lib/duktape.o \
 	${OBJECTDIR}/src/collector.o \
 	${OBJECTDIR}/src/dispatcher.o \
@@ -82,6 +83,11 @@ LDLIBSOPTIONS=-lpthread -lm
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT}: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT} ${OBJECTFILES} ${LDLIBSOPTIONS} -shared -fPIC
+
+${OBJECTDIR}/js-tests/js-runner.o: js-tests/js-runner.c 
+	${MKDIR} -p ${OBJECTDIR}/js-tests
+	${RM} "$@.d"
+	$(COMPILE.c) -g -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/js-tests/js-runner.o js-tests/js-runner.c
 
 ${OBJECTDIR}/lib/duktape.o: lib/duktape.c 
 	${MKDIR} -p ${OBJECTDIR}/lib
@@ -218,6 +224,19 @@ ${TESTDIR}/tests/queue-test.o: tests/queue-test.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/queue-test.o tests/queue-test.c
 
+
+${OBJECTDIR}/js-tests/js-runner_nomain.o: ${OBJECTDIR}/js-tests/js-runner.o js-tests/js-runner.c 
+	${MKDIR} -p ${OBJECTDIR}/js-tests
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/js-tests/js-runner.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -g -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/js-tests/js-runner_nomain.o js-tests/js-runner.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/js-tests/js-runner.o ${OBJECTDIR}/js-tests/js-runner_nomain.o;\
+	fi
 
 ${OBJECTDIR}/lib/duktape_nomain.o: ${OBJECTDIR}/lib/duktape.o lib/duktape.c 
 	${MKDIR} -p ${OBJECTDIR}/lib
