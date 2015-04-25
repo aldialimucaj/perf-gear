@@ -1,0 +1,6 @@
+Import('env')
+
+js_test_1 = 'js-runner.c'
+
+e = env.Copy(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread'])
+e.Program(js_test_1)

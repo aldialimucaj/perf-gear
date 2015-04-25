@@ -1,0 +1,7 @@
+Import('env')
+
+_tests = Glob('*.c')
+
+e = env.Copy(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'cunit'])
+for test in _tests:
+    e.Program(test)

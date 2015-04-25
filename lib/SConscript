@@ -1,0 +1,5 @@
+Import('env')
+
+duk_src = Glob('duktape.c')
+
+env.Library('duktape', duk_src)
