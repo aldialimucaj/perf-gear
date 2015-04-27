@@ -1,6 +1,21 @@
-Import('env')
+project = 'js-tests'
+
+Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
+localenv = env.Copy()
+
+buildroot = '../' + build_mode
+builddir = buildroot + '/' + project
+targetpath = builddir + '/' + project
+
+if build_mode == 'debug':
+    localenv.Append(CCFLAGS=debugcflags)
+elif build_mode == 'cov':
+    localenv.Append(CCFLAGS=covcflags)
+else:
+    localenv.Append(CCFLAGS=releaseflags)
+
 
 js_test_1 = 'js-runner.c'
 
-e = env.Copy(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread'])
+e = localenv.Copy(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread'])
 e.Program(js_test_1)
