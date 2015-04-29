@@ -1,5 +1,6 @@
 // file: pg_utils.c
 
+#include <stdio.h>
 #include "pg-utils.h"
 #include "collector.h"
 

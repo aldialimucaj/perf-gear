@@ -1,11 +1,11 @@
+import os.path
 project = 'tests'
 
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
-localenv = env.Copy()
+localenv = env.Clone()
 
 buildroot = '../' + build_mode
 builddir = buildroot + '/' + project
-targetpath = builddir + '/' + project
 
 pg_src = Glob('*.c')
 
@@ -18,6 +18,8 @@ else:
 
 _tests = Glob('*.c')
 
-e = localenv.Copy(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'cunit'])
+e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'cunit'])
 for test in _tests:
-    e.Program(test)
+    targetpath = builddir + '/' + os.path.splitext(test.rstr())[0]
+    print targetpath
+    e.Program(targetpath, test)
