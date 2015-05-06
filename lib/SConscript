@@ -3,10 +3,6 @@ project = 'duktape'
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 localenv = env.Clone()
 
-buildroot = '../' + build_mode
-builddir = buildroot + '/' + project
-targetpath = builddir + '/' + project
-
 duk_src = Glob('*.c')
 
 if build_mode == 'debug':
@@ -17,4 +13,4 @@ else:
     localenv.Append(CCFLAGS=releaseflags)
 
 
-env.Library(targetpath, duk_src)
+env.Library(project, duk_src)

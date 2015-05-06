@@ -1,4 +1,3 @@
-lib_path = ['#src','#lib']
 
 build_mode = ARGUMENTS.get('mode','debug')
 
@@ -11,6 +10,7 @@ debugcflags = ['-g','-Werror','-std=c99']
 releasecflags = ['-Os','-Werror','-std=c99']
 covcflags = ['-Os','-fprofile-arcs', '-ftest-coverage', '-Werror', '-std=c99']
 
+lib_path = ['#build/' + build_mode + '/lib', '#build/' + build_mode + '/src']
 env=Environment(LIBPATH = lib_path)
 
 Export('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
@@ -18,13 +18,13 @@ Export('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 env.SConsignFile()
 
 project = 'lib'
-SConscript('lib/SConscript')
+SConscript('lib/SConscript', variant_dir='#build/' + build_mode + '/'+project, duplicate=0)
 
 project = 'perf-gear'
-SConscript('src/SConscript')
+SConscript('src/SConscript', variant_dir='#build/' + build_mode + '/src', duplicate=0)
 
 project = 'tests'
-SConscript('tests/SConscript')
+SConscript('tests/SConscript', variant_dir='#build/' + build_mode + '/'+project, duplicate=0)
 
 project = 'js-tests'
-SConscript('js-tests/SConscript')
+SConscript('js-tests/SConscript', variant_dir='#build/' + build_mode + '/'+project, duplicate=0)

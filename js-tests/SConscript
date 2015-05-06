@@ -3,9 +3,8 @@ project = 'js-tests'
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 localenv = env.Clone()
 
-buildroot = '../' + build_mode
-builddir = buildroot + '/' + project
-targetpath = builddir
+buildroot = '../build/' + build_mode
+targetpath = buildroot + '/' + project
 
 if build_mode == 'debug':
     localenv.Append(CCFLAGS=debugcflags)
@@ -15,7 +14,12 @@ else:
     localenv.Append(CCFLAGS=releaseflags)
 
 
+
 js_test_1 = 'js-runner.c'
 
 e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread'])
-e.Program(targetpath+'/js-runner', js_test_1)
+e.Program(js_test_1)
+
+_tests = Glob('*.js')
+for test in _tests:
+	Command('../'+project+'/'+test.get_path(), test.rstr(), Copy("$TARGET", "$SOURCE"))

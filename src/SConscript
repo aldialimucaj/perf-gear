@@ -3,10 +3,6 @@ project = 'perf-gear'
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 localenv = env.Clone()
 
-buildroot = '../' + build_mode
-builddir = buildroot + '/' + project
-targetpath = builddir
-
 pg_src = Glob('*.c')
 
 if build_mode == 'debug':
@@ -16,4 +12,4 @@ elif build_mode == 'cov':
 else:
     localenv.Append(CCFLAGS=releaseflags)
 
-env.Library(targetpath+'/'+project, pg_src)
+env.Library(project, pg_src)
