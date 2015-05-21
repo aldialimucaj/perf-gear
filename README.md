@@ -19,7 +19,7 @@ Runing tests for coverage
 make CONF=Cov && make CONF=Cov test
 ```
 
-Checking coveralls upload 
+Checking coveralls upload
 ```
 coveralls -b. --dryrun
 ```
@@ -32,6 +32,8 @@ sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev
 **cpp-coveralls** is needed to upload results to the code coverage framework.
 This is not necessary if you dont want to check the coverage before pushing into github.
 ```
+sudo apt-get install python-dev libxml2-dev libxslt-dev
+sudo apt-get install libyaml-dev
 sudo apt-get install -qq python-pip
 sudo pip install cpp-coveralls PyYAML
 ```
