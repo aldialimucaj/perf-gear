@@ -30,9 +30,7 @@ int main(int argc, const char *argv[]) {
         exit(1);
     }
 
-    duk_push_c_function(ctx, dukopen_perf_gear, 0 /*nargs*/);
-    duk_call(ctx, 0);
-    duk_put_global_string(ctx, "PerfGear");
+    dukopen_perf_gear(ctx);
 
     if (duk_peval_file(ctx, argv[1]) != 0) {
         printf("Error: %s\n", duk_safe_to_string(ctx, -1));

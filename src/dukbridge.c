@@ -25,38 +25,32 @@ duk_ret_t pg_br_stopPerfGear(duk_context *ctx) {
     return 1;
 }
 
-duk_ret_t pg_br_measurement(duk_context *ctx) {
+duk_ret_t pg_br_PerfGear(duk_context *ctx) {
     if (duk_is_constructor_call(ctx)) {
-        duk_push_this(ctx);
-        duk_push_int(ctx, 0);
-        duk_put_prop_string(ctx, -2, "hitValue");
     }
 
     return 1;
 }
 
 
-/*
- *  Module initialization
- */
-
-static const duk_function_list_entry perf_gear_funcs[] = {
-    { "startPerfGear", pg_br_startPerfGear, DUK_VARARGS},
-    { "stopPerfGear", pg_br_stopPerfGear, 0},
-    { "Measurement", pg_br_measurement, 0},
-    { NULL, NULL, 0}
-};
-
-static const duk_number_list_entry perf_gear_consts[] = {
-    { "PG_VERSION", (double) (1 << 0)},
-    { NULL, 0.0}
-};
-
 /* Init function name is dukopen_perf_gear. */
 duk_ret_t dukopen_perf_gear(duk_context *ctx) {
+    // adding PerfGear object
+    duk_push_global_object(ctx);
+    duk_push_c_function(ctx, pg_br_PerfGear, 0);
     duk_push_object(ctx);
-    duk_put_function_list(ctx, -1, perf_gear_funcs);
-    duk_put_number_list(ctx, -1, perf_gear_consts);
+    
+    duk_push_c_function(ctx, pg_br_startPerfGear, 0);
+    duk_put_prop_string(ctx, -2, "startPerfGear");
+
+    duk_push_c_function(ctx, pg_br_stopPerfGear, 0);
+    duk_put_prop_string(ctx, -2, "stopPerfGear");
+
+    duk_put_prop_string(ctx, -2, "prototype");
+
+    duk_put_prop_string(ctx, -2, "PerfGear");
+    duk_pop(ctx);
+        
 
     /* Return value is the module object.  It's up to the caller to decide
      * how to use the value, e.g. write to global object.
