@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/js-tests/js-runner.o \
 	${OBJECTDIR}/lib/duktape.o \
 	${OBJECTDIR}/src/collector.o \
+	${OBJECTDIR}/src/db-measurement.o \
 	${OBJECTDIR}/src/dispatcher.o \
 	${OBJECTDIR}/src/dukbridge.o \
 	${OBJECTDIR}/src/linked-list.o \
@@ -53,6 +54,7 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 TESTFILES= \
 	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f5 \
+	${TESTDIR}/TestFiles/f9 \
 	${TESTDIR}/TestFiles/f8 \
 	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f4 \
@@ -104,6 +106,11 @@ ${OBJECTDIR}/src/collector.o: src/collector.c
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector.o src/collector.c
 
+${OBJECTDIR}/src/db-measurement.o: src/db-measurement.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/db-measurement.o src/db-measurement.c
+
 ${OBJECTDIR}/src/dispatcher.o: src/dispatcher.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -152,6 +159,10 @@ ${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/dispatcher-test.o ${OBJECTFILES:%.o=%_
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS} -lcunit 
 
+${TESTDIR}/TestFiles/f9: ${TESTDIR}/tests/db-measurement-test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.c}   -o ${TESTDIR}/TestFiles/f9 $^ ${LDLIBSOPTIONS} -lcunit 
+
 ${TESTDIR}/TestFiles/f8: ${TESTDIR}/tests/dukbridge-test.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.c}   -o ${TESTDIR}/TestFiles/f8 $^ ${LDLIBSOPTIONS} -lcunit 
@@ -187,6 +198,12 @@ ${TESTDIR}/tests/dispatcher-test.o: tests/dispatcher-test.c
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/dispatcher-test.o tests/dispatcher-test.c
+
+
+${TESTDIR}/tests/db-measurement-test.o: tests/db-measurement-test.c 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -Werror -std=c99 -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/db-measurement-test.o tests/db-measurement-test.c
 
 
 ${TESTDIR}/tests/dukbridge-test.o: tests/dukbridge-test.c 
@@ -275,6 +292,19 @@ ${OBJECTDIR}/src/collector_nomain.o: ${OBJECTDIR}/src/collector.o src/collector.
 	    $(COMPILE.c) -O2 -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/collector_nomain.o src/collector.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/collector.o ${OBJECTDIR}/src/collector_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/db-measurement_nomain.o: ${OBJECTDIR}/src/db-measurement.o src/db-measurement.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/db-measurement.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.c) -O2 -Werror -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/db-measurement_nomain.o src/db-measurement.c;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/db-measurement.o ${OBJECTDIR}/src/db-measurement_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/dispatcher_nomain.o: ${OBJECTDIR}/src/dispatcher.o src/dispatcher.c 
@@ -374,6 +404,7 @@ ${OBJECTDIR}/src/queue_nomain.o: ${OBJECTDIR}/src/queue.o src/queue.c
 	then  \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f5 || true; \
+	    ${TESTDIR}/TestFiles/f9 || true; \
 	    ${TESTDIR}/TestFiles/f8 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f4 || true; \
