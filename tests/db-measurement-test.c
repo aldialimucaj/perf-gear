@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <CUnit/Basic.h>
 
+#include "../src/db-measurement.h"
+
 /*
  * CUnit Test Suite
  */
@@ -22,7 +24,14 @@ int clean_suite(void) {
 }
 
 void test_pg_br_PGMeasurement() {
-    CU_ASSERT(2 * 2 == 4);
+    duk_context *ctx = NULL;
+    ctx = duk_create_heap_default();
+
+    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    duk_push_string(ctx, "hit");
+    duk_new(ctx, 1);
+
+    duk_destroy_heap(ctx);
 }
 
 void test_pg_br_publish_measurement() {
@@ -46,7 +55,7 @@ int main() {
     /* Add the tests to the suite */
     CU_add_test(pSuite, "test_pg_br_PGMeasurement", test_pg_br_PGMeasurement);
     CU_add_test(pSuite, "test_pg_br_publish_measurement", test_pg_br_publish_measurement);
-            
+
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

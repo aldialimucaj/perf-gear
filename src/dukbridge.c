@@ -59,7 +59,7 @@ duk_ret_t dukopen_perf_gear(duk_context *ctx) {
     
     
     /* adding PGMeasurement object */
-    duk_push_c_function(ctx, pg_br_PGMeasurement, 0);
+    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
     duk_push_object(ctx);
     
     duk_push_c_function(ctx, pg_br_publish_measurement, 0);

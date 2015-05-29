@@ -12,4 +12,4 @@ elif build_mode == 'cov':
 else:
     localenv.Append(CCFLAGS=releaseflags)
 
-env.Library(project, pg_src)
+localenv.Library(project, pg_src)
