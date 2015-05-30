@@ -14,3 +14,4 @@ print('m.type = ' + m.type);
 
 var m2 = new PGMeasurement();
 print('m2.type = ' + m2.type);
+print('m2.hitValue = ' + m2.hitValue);

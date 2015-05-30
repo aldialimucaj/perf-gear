@@ -7,8 +7,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/garmin/projects/perf-gear/src/db-measurement.c</file>
-            <file>file:/home/garmin/projects/perf-gear/src/db-measurement.h</file>
+            <file>file:/home/a/projects/perf-gear/js-tests/js-runner.c</file>
+            <file>file:/home/a/projects/perf-gear/src/dukbridge.c</file>
+            <file>file:/home/a/projects/perf-gear/tests/db-measurement-test.c</file>
+            <file>file:/home/a/projects/perf-gear/src/db-measurement.c</file>
         </group>
     </open-files>
 </project-private>
