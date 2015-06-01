@@ -42,11 +42,11 @@ duk_ret_t pg_br_PerfGear(duk_context *ctx) {
 duk_ret_t dukopen_perf_gear(duk_context *ctx) {
     /* global object */
     duk_push_global_object(ctx);
-    
+
     /* adding PerfGear object */
     duk_push_c_function(ctx, pg_br_PerfGear, 0);
     duk_push_object(ctx);
-    
+
     duk_push_c_function(ctx, pg_br_startPerfGear, 0);
     duk_put_prop_string(ctx, -2, "startPerfGear");
 
@@ -55,20 +55,20 @@ duk_ret_t dukopen_perf_gear(duk_context *ctx) {
 
     duk_put_prop_string(ctx, -2, "prototype");
 
-    duk_put_prop_string(ctx, -2, "PerfGear");
-    
-    
+    duk_put_prop_string(ctx, -2, PERF_GEAR_OBJ_NAME);
+
+
     /* adding PGMeasurement object */
     duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
     duk_push_object(ctx);
-    
+
     duk_push_c_function(ctx, pg_br_publish_measurement, 0);
-    duk_put_prop_string(ctx, -2, "publish");   
-    
+    duk_put_prop_string(ctx, -2, "publish");
+
     duk_put_prop_string(ctx, -2, "prototype");
 
-    duk_put_prop_string(ctx, -2, "PGMeasurement");
-    
+    duk_put_prop_string(ctx, -2, MEASUREMNET_OBJ_NAME);
+
     /* remove global from stack */
     duk_pop(ctx);
 

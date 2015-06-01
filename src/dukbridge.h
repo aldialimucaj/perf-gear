@@ -19,7 +19,9 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-    
+
+#define PERF_GEAR_OBJ_NAME "PerfGear"
+#define MEASUREMNET_OBJ_NAME "Measurement"
 
     /** @brief Start collecting
      * 
@@ -27,21 +29,21 @@ extern "C" {
      * @return 
      */
     duk_ret_t pg_br_startPerfGear(duk_context *ctx);
-    
+
     /** @brief Stop collecting
      * 
      * @param ctx
      * @return 
      */
     duk_ret_t pg_br_stopPerfGear(duk_context *ctx);
-    
+
     /** @brief Measurement object
      * 
      * @param ctx
      * @return 
      */
     duk_ret_t pg_br_PerfGear(duk_context *ctx);
-    
+
     /** @brief Register all perf gear functions
      * 
      * Registers c functions
@@ -50,7 +52,7 @@ extern "C" {
      * @return 
      */
     duk_ret_t dukopen_perf_gear(duk_context *ctx);
-    
+
 
 
 

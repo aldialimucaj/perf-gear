@@ -32,6 +32,7 @@ extern "C" {
      * @return true if successfully published
      */
     duk_ret_t pg_br_publish_measurement(duk_context *ctx);
+    
 
 #ifdef	__cplusplus
 }
