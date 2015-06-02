@@ -26,20 +26,30 @@ int clean_suite(void) {
 void test_pg_br_PGMeasurement() {
     duk_context *ctx = NULL;
     ctx = duk_create_heap_default();
+
+    /* push the constructor */
+    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    /* constructor call without argument */
+    duk_new(ctx, 0);
+    duk_get_prop_string(ctx, -1, "name");
+    CU_ASSERT(duk_is_undefined(ctx, -1));
+    duk_pop(ctx);
+    duk_pop(ctx);
+
     /* push the constructor */
     duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
     /* constructor call with argument */
     duk_push_string(ctx, "test/api/constructor");
     duk_new(ctx, 1);
-    
+
     CU_ASSERT(duk_is_object(ctx, -1));
-    
+
     duk_get_prop_string(ctx, -1, "name");
-    CU_ASSERT_STRING_EQUAL(duk_require_string(ctx, -1),"test/api/constructor");
+    CU_ASSERT_STRING_EQUAL(duk_require_string(ctx, -1), "test/api/constructor");
     duk_pop(ctx);
-    
+
     duk_get_prop_string(ctx, -1, "type");
-    CU_ASSERT_STRING_EQUAL(duk_require_string(ctx, -1),"TYPE_UNKNOWN");
+    CU_ASSERT_STRING_EQUAL(duk_require_string(ctx, -1), "TYPE_UNKNOWN");
     duk_pop(ctx);
 
     duk_destroy_heap(ctx);

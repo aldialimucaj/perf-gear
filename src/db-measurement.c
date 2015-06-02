@@ -11,13 +11,12 @@ duk_ret_t pg_br_PGMeasurement(duk_context *ctx) {
             const char *nameStr = duk_require_string(ctx, -2);
             duk_push_string(ctx, nameStr);
             duk_put_prop_string(ctx, -2, "name");
-            duk_push_string(ctx, "TYPE_UNKNOWN");
-            duk_put_prop_string(ctx, -2, "type");
         } else {
             printf("You must specify a unique name for this measurement. Please check documentation.\n");
         }
 
-
+        duk_push_string(ctx, "TYPE_UNKNOWN");
+        duk_put_prop_string(ctx, -2, "type");
         duk_push_int(ctx, 0);
         duk_put_prop_string(ctx, -2, "hitValue");
         duk_push_array(ctx);

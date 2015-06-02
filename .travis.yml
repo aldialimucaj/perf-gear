@@ -23,7 +23,7 @@ env:
 script: make CONF=$CONFIG && make CONF=$CONFIG test && ./valgrind-tests.sh
 
 after_success:
-  - if [ "$CONFIG" = "Cov" ] && [ "$CC" = "gcc" ]; then coveralls --exclude build/Cov/GNU-Linux-x86/tests --exclude build/Cov/GNU-Linux-x86/lib -b. --gcov-options '\-lp' ; fi
+  - if [ "$CONFIG" = "Cov" ] && [ "$CC" = "gcc" ]; then coveralls -i lib --exclude build/Cov/GNU-Linux-x86/tests --exclude build/Cov/GNU-Linux-x86/js-tests --exclude build/Cov/GNU-Linux-x86/lib -b. --gcov-options '\-lp' ; fi
 
 notifications:
   email: false
