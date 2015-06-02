@@ -5,6 +5,19 @@
 bool pg_harvest = false;
 pthread_t harvester_th = 0;
 
+pg_err_t pg_init() {
+    struct pg_queue* q = pg_init_queue();
+    if (q == NULL) return PG_ERR_COULD_NOT_START;
+
+    return PG_NO_ERROR;
+}
+
+pg_err_t pg_collect(pg_config_t *config) {
+    return pg_start(config);
+}
+
+/* ========================================================================= */
+
 pg_err_t pg_start(pg_config_t *config) {
     struct pg_queue* q = pg_init_queue();
     if (q == NULL) return PG_ERR_COULD_NOT_START;
@@ -20,7 +33,8 @@ pg_err_t pg_start(pg_config_t *config) {
 /* ========================================================================= */
 
 pg_err_t pg_stop() {
-    pg_err_t r = pg_harvest = false;
+    pg_err_t r;
+    pg_harvest = false;
     if (!harvester_th) return PG_ERR_HARVESTER_HAS_NOT_STARTED;
     int h_err;
     int thj_result = pthread_join(harvester_th, (void**) &h_err);

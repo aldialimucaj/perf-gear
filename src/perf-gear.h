@@ -40,6 +40,21 @@ extern "C" {
     /** @brief Harvester thread
      */
     extern pthread_t harvester_th;
+    
+    /** @brief Initialize perf-gear internals
+     * 
+     * @return 
+     */
+    pg_err_t pg_init();
+    
+    /** @brief Starts the collecting mechanisms. 
+     * 
+     * Alias for pg_start if init was called beforehands.
+     * 
+     * @param config
+     * @return 
+     */
+    pg_err_t pg_collect(pg_config_t *config);
 
     /** @brief Starts the writing and collecting mechanisms.
      * 
