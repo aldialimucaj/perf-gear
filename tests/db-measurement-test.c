@@ -67,11 +67,11 @@ void test_pg_br_measurement_hit() {
     duk_get_prop_string(ctx, -1, "name");
     CU_ASSERT(duk_is_string(ctx, -1));
     duk_pop(ctx);
-    
+
     duk_get_prop_string(ctx, -1, "hitValue");
     CU_ASSERT_EQUAL(duk_require_int(ctx, -1), 0);
     duk_pop(ctx);
-    
+
     duk_push_c_function(ctx, pg_br_measurement_hit, 0);
     duk_dup(ctx, -2);
     duk_call_method(ctx, 0);
@@ -79,15 +79,33 @@ void test_pg_br_measurement_hit() {
     duk_get_prop_string(ctx, -1, "hitValue");
     CU_ASSERT_EQUAL(duk_require_int(ctx, -1), 1);
     duk_pop(ctx);
-    
-    
+
+
     duk_destroy_heap(ctx);
 }
 
 void test_pg_br_measurement_publish() {
-    CU_ASSERT(2 * 3 == 6);
-}
+    pg_init_queue();
 
+    duk_context *ctx = NULL;
+    ctx = duk_create_heap_default();
+
+    /* push the constructor */
+    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    /* constructor call with argument */
+    duk_push_string(ctx, "test/api/constructor2");
+    duk_new(ctx, 1);
+
+    duk_push_c_function(ctx, pg_br_measurement_publish, 0);
+    duk_dup(ctx, -2);
+    duk_call_method(ctx, 0);
+
+    CU_ASSERT(duk_require_boolean(ctx, -1));
+
+    duk_destroy_heap(ctx);
+
+    pg_destroy_queue();
+}
 
 int main() {
     CU_pSuite pSuite = NULL;
