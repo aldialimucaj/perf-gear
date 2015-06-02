@@ -31,7 +31,14 @@ extern "C" {
      * @param ctx
      * @return true if successfully published
      */
-    duk_ret_t pg_br_publish_measurement(duk_context *ctx);
+    duk_ret_t pg_br_measurement_publish(duk_context *ctx);
+    
+    /** @brief Increase hit counter for this measurement.
+     * 
+     * @param ctx
+     * @return void
+     */
+    duk_ret_t pg_br_measurement_hit(duk_context *ctx);
     
 
 #ifdef	__cplusplus

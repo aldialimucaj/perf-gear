@@ -15,3 +15,6 @@ print('m.type = ' + m.type);
 var m2 = new Measurement();
 print('m2.type = ' + m2.type);
 print('m2.hitValue = ' + m2.hitValue);
+print('m2.hit()');
+m2.hit()
+print('m2.hitValue = ' + m2.hitValue);

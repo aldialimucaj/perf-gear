@@ -28,7 +28,20 @@ duk_ret_t pg_br_PGMeasurement(duk_context *ctx) {
 
 /* ========================================================================= */
 
-duk_ret_t pg_br_publish_measurement(duk_context *ctx) {
+duk_ret_t pg_br_measurement_hit(duk_context *ctx) {
+    duk_push_this(ctx);
+    duk_get_prop_string(ctx, -1, "hitValue");
+    int v = duk_require_int(ctx, -1);
+    duk_pop(ctx);
+    duk_push_int(ctx, ++v);
+    duk_put_prop_string(ctx, -2, "hitValue");
+
+    return 0;
+}
+
+/* ========================================================================= */
+
+duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     duk_push_boolean(ctx, 1);
     return 1;
 }

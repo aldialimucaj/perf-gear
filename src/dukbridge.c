@@ -62,8 +62,11 @@ duk_ret_t dukopen_perf_gear(duk_context *ctx) {
     duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
     duk_push_object(ctx);
 
-    duk_push_c_function(ctx, pg_br_publish_measurement, 0);
+    duk_push_c_function(ctx, pg_br_measurement_publish, 0);
     duk_put_prop_string(ctx, -2, "publish");
+    
+    duk_push_c_function(ctx, pg_br_measurement_hit, 0);
+    duk_put_prop_string(ctx, -2, "hit");
 
     duk_put_prop_string(ctx, -2, "prototype");
 
