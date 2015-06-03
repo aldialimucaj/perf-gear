@@ -1,6 +1,6 @@
 
-var p = new PerfGear();
-p.config = {'folder': '/tmp/pg'};
+var config = {'folder': '/tmp/pg'};
+var p = new PerfGear(config);
 print('PerfGear.start = ' + p.start());
 
 

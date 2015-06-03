@@ -24,7 +24,7 @@ extern "C" {
      * @param ctx
      * @return object
      */
-    duk_ret_t pg_br_PGMeasurement(duk_context *ctx);
+    duk_ret_t pg_br_Measurement(duk_context *ctx);
 
     /** @brief Publish this measurement when done collecting.
      * 

@@ -28,7 +28,7 @@ void test_pg_br_Measurement() {
     ctx = duk_create_heap_default();
 
     /* push the constructor */
-    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    duk_push_c_function(ctx, pg_br_Measurement, 1);
     /* constructor call without argument */
     duk_new(ctx, 0);
     duk_get_prop_string(ctx, -1, "name");
@@ -37,7 +37,7 @@ void test_pg_br_Measurement() {
     duk_pop(ctx);
 
     /* push the constructor */
-    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    duk_push_c_function(ctx, pg_br_Measurement, 1);
     /* constructor call with argument */
     duk_push_string(ctx, "test/api/constructor");
     duk_new(ctx, 1);
@@ -60,7 +60,7 @@ void test_pg_br_measurement_hit() {
     ctx = duk_create_heap_default();
 
     /* push the constructor */
-    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    duk_push_c_function(ctx, pg_br_Measurement, 1);
     /* constructor call with argument */
     duk_push_string(ctx, "test/api/constructor2");
     duk_new(ctx, 1);
@@ -91,7 +91,7 @@ void test_pg_br_measurement_publish() {
     ctx = duk_create_heap_default();
 
     /* push the constructor */
-    duk_push_c_function(ctx, pg_br_PGMeasurement, 1);
+    duk_push_c_function(ctx, pg_br_Measurement, 1);
     /* constructor call with argument */
     duk_push_string(ctx, "test/api/constructor2");
     duk_new(ctx, 1);

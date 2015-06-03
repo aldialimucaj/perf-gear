@@ -1,7 +1,7 @@
 #include "../lib/duktape.h"
 #include "db-measurement.h"
 
-duk_ret_t pg_br_PGMeasurement(duk_context *ctx) {
+duk_ret_t pg_br_Measurement(duk_context *ctx) {
     if (duk_is_constructor_call(ctx)) {
         pg_mtype_t type = PG_MEASUREMENT_TYPE_UNKNOWN;
         /* check the arguments passed - if none then hit is default */
