@@ -104,7 +104,11 @@ void test_pg_br_measurement_publish() {
 
     duk_destroy_heap(ctx);
 
-    pg_destroy_queue();
+    /* destroy queue */
+    pg_err_t result =  pg_clear_queue();
+    CU_ASSERT_EQUAL(result, 1);
+    result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, 0);
 }
 
 int main() {

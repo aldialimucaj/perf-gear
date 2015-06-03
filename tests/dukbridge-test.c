@@ -24,7 +24,7 @@ int clean_suite(void) {
 }
 
 void test_pg_br_startPerfGear() {
-    duk_context *ctx = duk_create_heap_default();
+    /*duk_context *ctx = duk_create_heap_default();
     duk_push_global_object(ctx);
     // ---
     duk_idx_t r = 0;
@@ -42,8 +42,8 @@ void test_pg_br_startPerfGear() {
     CU_ASSERT_EQUAL(e, PG_NO_ERROR);
     duk_pop(ctx); /* ignore result */
     // ---
-    duk_destroy_heap(ctx);
-    pg_stop();
+    /*duk_destroy_heap(ctx);
+    pg_stop();*/
 }
 
 void test_pg_br_stopPerfGear() {
