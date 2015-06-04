@@ -121,6 +121,12 @@ extern "C" {
      */
     pg_config_t* pg_copy_config(pg_config_t* cfg);
     
+    /** @brief Get the Unix time in milliseconds.
+     * 
+     * @return 
+     */
+    unsigned long long pg_get_timestamp();
+    
     /* ========================================================================= */
     /* EXTERNALS */
     /* ========================================================================= */

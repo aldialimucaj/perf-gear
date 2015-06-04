@@ -13,7 +13,7 @@ duk_ret_t pg_br_startPerfGear(duk_context *ctx) {
     pg_config_t* c = pg_create_config();
 
     c->folder = strdup(folder);
-    c->repeat = 10;
+    c->repeat = 100;
 
     pg_err_t e = pg_start(c);
     if (e == PG_NO_ERROR) {
@@ -85,6 +85,9 @@ duk_ret_t dukopen_perf_gear(duk_context *ctx) {
 
     duk_push_c_function(ctx, pg_br_measurement_hit, 0);
     duk_put_prop_string(ctx, -2, "hit");
+
+    duk_push_c_function(ctx, pg_br_measurement_save_timestamp, 0);
+    duk_put_prop_string(ctx, -2, "saveTimestamp");
 
     duk_put_prop_string(ctx, -2, "prototype");
 

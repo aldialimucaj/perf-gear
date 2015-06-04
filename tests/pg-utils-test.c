@@ -123,6 +123,11 @@ void test_pg_copy_config() {
     free(c2);
 }
 
+void test_pg_get_timestamp() {
+    unsigned long long time_now = pg_get_timestamp();
+    CU_ASSERT(time_now > 0);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -145,6 +150,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_create_config", test_pg_create_config);
     CU_add_test(pSuite, "test_pg_destroy_config", test_pg_destroy_config);
     CU_add_test(pSuite, "test_pg_copy_config", test_pg_copy_config);
+    CU_add_test(pSuite, "test_pg_get_timestamp", test_pg_get_timestamp);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

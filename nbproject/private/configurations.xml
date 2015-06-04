@@ -26,10 +26,13 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>./build/debug/js-tests/js-runner build/debug/js-tests/test-print.js</runcommandpicklistitem>
+          <runcommandpicklistitem>/home/a/perf-gear/build/debug/js-tests/js-runner /home/a/perf-gear/build/debug/js-tests/test-print.js</runcommandpicklistitem>
+          <runcommandpicklistitem>/home/a/perf-gear/build/debug/js-tests/js-runner</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <runcommand>/home/a/perf-gear/build/debug/js-tests/js-runner</runcommand>
         <rundir></rundir>
-        <buildfirst>true</buildfirst>
+        <buildfirst>false</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
         <environment>

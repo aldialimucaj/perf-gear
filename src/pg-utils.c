@@ -1,6 +1,7 @@
 // file: pg_utils.c
 
 #include <stdio.h>
+#include <sys/time.h>
 #include "pg-utils.h"
 #include "collector.h"
 
@@ -128,4 +129,18 @@ pg_config_t* pg_copy_config(pg_config_t* cfg) {
     c->repeat = cfg->repeat;
 
     return c;
+}
+
+/* ========================================================================= */
+
+unsigned long long pg_get_timestamp() {
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+
+    unsigned long long millisecondsSinceEpoch =
+            (unsigned long long) (tv.tv_sec) * 1000 +
+            (unsigned long long) (tv.tv_usec) / 1000;
+
+    return millisecondsSinceEpoch;
 }

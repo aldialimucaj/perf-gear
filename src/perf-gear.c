@@ -34,6 +34,9 @@ pg_err_t pg_start(pg_config_t *config) {
 
 pg_err_t pg_stop() {
     pg_err_t r;
+    /* we cant stop without emptying the queue */
+    while(pg_get_queue_size() != 0){}
+    /* this flag turns of the harvester loop */
     pg_harvest = false;
     if (!harvester_th) return PG_ERR_HARVESTER_HAS_NOT_STARTED;
     int h_err;

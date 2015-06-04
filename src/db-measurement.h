@@ -26,20 +26,31 @@ extern "C" {
      */
     duk_ret_t pg_br_Measurement(duk_context *ctx);
 
-    /** @brief Publish this measurement when done collecting.
-     * 
-     * @param ctx
-     * @return true if successfully published
-     */
-    duk_ret_t pg_br_measurement_publish(duk_context *ctx);
-    
     /** @brief Increase hit counter for this measurement.
      * 
      * @param ctx
      * @return void
      */
     duk_ret_t pg_br_measurement_hit(duk_context *ctx);
-    
+
+    /** @brief Saves the timestamp so that it could be used for deltas.
+     * 
+     * Timestamps are saved into the sequence array in the object and depending
+     * on the measurement time it can be used for measuring the difference between
+     * A and B or for sequence display.
+     * 
+     * @param ctx
+     * @return true if saved successfully
+     */
+    duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx);
+
+    /** @brief Publish this measurement when done collecting.
+     * 
+     * @param ctx
+     * @return true if successfully published
+     */
+    duk_ret_t pg_br_measurement_publish(duk_context *ctx);
+
 
 #ifdef	__cplusplus
 }
