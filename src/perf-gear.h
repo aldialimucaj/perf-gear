@@ -58,6 +58,10 @@ extern "C" {
 
     /** @brief Starts the writing and collecting mechanisms.
      * 
+     * This way you initialize the queue and harvest all elements
+     * imediatelly. If you want to collect the elements afterwards
+     * call @see pg_init() and then @see pg_collect()
+     * 
      * @param config
      * @return 
      */

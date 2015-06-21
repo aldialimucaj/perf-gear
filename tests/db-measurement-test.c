@@ -93,7 +93,37 @@ void test_pg_br_measurement_publish() {
     /* push the constructor */
     duk_push_c_function(ctx, pg_br_Measurement, 1);
     /* constructor call with argument */
-    duk_push_string(ctx, "test/api/constructor2");
+    duk_push_string(ctx, "test/api/publish/hit");
+    duk_new(ctx, 1);
+    
+    duk_push_int(ctx, 1);
+    duk_put_prop_string(ctx, -2, "typeId");
+
+    duk_push_c_function(ctx, pg_br_measurement_publish, 0);
+    duk_dup(ctx, -2);
+    duk_call_method(ctx, 0);
+
+    CU_ASSERT(duk_require_boolean(ctx, -1));
+
+    duk_destroy_heap(ctx);
+
+    /* destroy queue */
+    pg_err_t result =  pg_clear_queue();
+    CU_ASSERT_EQUAL(result, 1);
+    result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, 0);
+}
+
+void test_pg_br_measurement_publish2() {
+    pg_init_queue();
+
+    duk_context *ctx = NULL;
+    ctx = duk_create_heap_default();
+
+    /* push the constructor */
+    duk_push_c_function(ctx, pg_br_Measurement, 1);
+    /* constructor call with argument */
+    duk_push_string(ctx, "test/api/constructor");
     duk_new(ctx, 1);
 
     duk_push_c_function(ctx, pg_br_measurement_publish, 0);
@@ -165,6 +195,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_br_Measurement", test_pg_br_Measurement);
     CU_add_test(pSuite, "test_pg_br_measurement_hit", test_pg_br_measurement_hit);
     CU_add_test(pSuite, "test_pg_br_measurement_publish", test_pg_br_measurement_publish);
+    CU_add_test(pSuite, "test_pg_br_measurement_publish2", test_pg_br_measurement_publish2);
     CU_add_test(pSuite, "test_pg_br_measurement_save_timestamp", test_pg_br_measurement_save_timestamp);
 
 

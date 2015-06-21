@@ -34,6 +34,45 @@ void test_pg_init() {
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
 
+void test_pg_collect() {
+    struct pg_config c = {
+        .folder = "/tmp/pg",
+        .repeat = 1
+    };
+
+    pg_err_t result = pg_collect(&c);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+
+    // ---
+    
+    pg_m_item_t *m = pg_create_measurement_item();
+    m->type = PG_MEASUREMENT_TYPE_HIT;
+    m->path = strdup("pg_collect/test/hit");
+    result = pg_publish_measurement(m);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+
+    result = pg_destroy_measurement_item(m);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+
+    size_t queue_size = pg_get_queue_size();
+    CU_ASSERT_EQUAL(queue_size, 1);
+
+    // ---
+
+    /* wait for thread to finish */
+    int h_err;
+    int thj_result = pthread_join(harvester_th, (void**) &h_err);
+    CU_ASSERT_EQUAL(thj_result, 0);
+    CU_ASSERT_EQUAL(h_err, 0);
+    if (thj_result != 0) perror("Cant wait for harvester thread.");
+
+    /* destroy queue */
+    size_t q_size = pg_clear_queue();
+    CU_ASSERT_EQUAL(result, 0);
+    result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+}
+
 void test_pg_harvest() {
      
     struct pg_config c = {
@@ -188,6 +227,8 @@ int main() {
     }
 
     /* Add the tests to the suite */
+    CU_add_test(pSuite, "test_pg_init", test_pg_init);
+    CU_add_test(pSuite, "test_pg_collect", test_pg_collect);
     CU_add_test(pSuite, "test_pg_harvest_measurements", test_pg_harvest_measurements);
     CU_add_test(pSuite, "test_pg_start", test_pg_start);
     CU_add_test(pSuite, "test_pg_stop", test_pg_stop);
