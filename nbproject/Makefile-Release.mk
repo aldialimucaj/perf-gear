@@ -63,7 +63,7 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
-CFLAGS=
+CFLAGS=-Wall -Wextra
 
 # CC Compiler Flags
 CCFLAGS=

@@ -87,4 +87,5 @@ void* pg_harvest_measurements(void *cfg) {
         //pg_harvest = false; // TODO: finish this
     }
     pg_destroy_config(config);
+    return NULL;
 }

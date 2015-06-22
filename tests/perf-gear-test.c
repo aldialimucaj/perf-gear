@@ -29,7 +29,7 @@ void test_pg_init() {
     
     /* destroy queue */
     size_t q_size = pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(q_size, 0);
     result = pg_destroy_queue();
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
@@ -68,7 +68,7 @@ void test_pg_collect() {
 
     /* destroy queue */
     size_t q_size = pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(q_size, 0);
     result = pg_destroy_queue();
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
@@ -108,7 +108,7 @@ void test_pg_harvest() {
 
     /* destroy queue */
     size_t q_size = pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(q_size, 0);
     result = pg_destroy_queue();
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
@@ -148,7 +148,7 @@ void test_pg_start() {
 
     /* destroy queue */
     size_t q_size = pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_EQUAL(q_size, 0);
     result = pg_destroy_queue();
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }

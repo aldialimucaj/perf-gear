@@ -63,7 +63,7 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
-CFLAGS=-Os -fprofile-arcs -ftest-coverage -fomit-frame-pointer
+CFLAGS=-fprofile-arcs -ftest-coverage -fomit-frame-pointer -Wall -Wextra
 
 # CC Compiler Flags
 CCFLAGS=

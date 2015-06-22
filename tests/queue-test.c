@@ -258,6 +258,7 @@ void test_pg_create_queue_item() {
     pg_q_item_t *q_item = pg_create_queue_item();
     CU_ASSERT_PTR_NOT_NULL(q_item);
     int result = pg_destroy_queue_item(q_item);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
 
 void test_pg_destroy_queue_item() {

@@ -3,7 +3,6 @@
 
 duk_ret_t pg_br_Measurement(duk_context *ctx) {
     if (duk_is_constructor_call(ctx)) {
-        pg_mtype_t type = PG_MEASUREMENT_TYPE_UNKNOWN;
         /* check the arguments passed - if none then hit is default */
         duk_push_this(ctx);
 

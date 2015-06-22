@@ -259,7 +259,7 @@ pg_err_t pg_copy_measurement_sequences(pg_m_item_t *src, pg_m_item_t *dst) {
         memcpy(dest_seq, src_current_seq, sizeof (struct pg_measurement_sequence));
         /* remove the source's next */
         dest_seq->next = NULL;
-        int result = pg_add_measurement_sequence(dst, dest_seq);
+        pg_add_measurement_sequence(dst, dest_seq);
         // TODO: check result
     } while ((src_current_seq = src_current_seq->next) != NULL);
 

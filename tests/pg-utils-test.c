@@ -87,7 +87,6 @@ void test_pg_str_replace() {
     CU_ASSERT_STRING_EQUAL(repl_path, path_exp);
     if (repl_path) free(repl_path);
 
-    char *path1 = "func1/test/hit";
     char *path1_exp = "func1__test__hit";
     char *repl_path1 = pg_str_replace(path, '/', "__");
     CU_ASSERT_STRING_EQUAL(repl_path1, path1_exp);

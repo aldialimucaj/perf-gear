@@ -63,7 +63,7 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f1
 
 # C Compiler Flags
-CFLAGS=-fomit-frame-pointer
+CFLAGS=-fomit-frame-pointer -Wall -Wextra
 
 # CC Compiler Flags
 CCFLAGS=

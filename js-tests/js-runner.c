@@ -41,4 +41,5 @@ int main(int argc, const char *argv[]) {
 
     duk_destroy_heap(ctx);
     if(file) fclose(file);
+    return 0;
 }

@@ -1,5 +1,7 @@
 #include "linked-list.h"
 
+extern pg_ll_item_t* pg_ll_first_item;
+
 pg_ll_item_t* pg_ll_create(void) {
     pg_ll_item_t *item = malloc(sizeof (struct pg_linked_list_item));
     if (item) {
@@ -69,7 +71,7 @@ pg_m_item_t* pg_ll_pop(void) {
     pg_m_item_t *m = current->m;
     if (pre != current) {
         /* this is not the first and only element*/
-        pg_err_t result = pg_ll_destroy(current);
+        pg_ll_destroy(current);
         pre->next = NULL;
     } else {
         free(pg_ll_first_item);

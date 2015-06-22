@@ -118,7 +118,7 @@
       <compileType>
         <cTool>
           <standard>3</standard>
-          <commandLine>-fomit-frame-pointer</commandLine>
+          <commandLine>-fomit-frame-pointer -Wall -Wextra</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
         <linkerTool>
@@ -275,6 +275,7 @@
         <cTool>
           <developmentMode>5</developmentMode>
           <standard>3</standard>
+          <commandLine>-Wall -Wextra</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
         <ccTool>
@@ -439,7 +440,7 @@
       <compileType>
         <cTool>
           <standard>3</standard>
-          <commandLine>-Os -fprofile-arcs -ftest-coverage -fomit-frame-pointer</commandLine>
+          <commandLine>-fprofile-arcs -ftest-coverage -fomit-frame-pointer -Wall -Wextra</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
         <linkerTool>

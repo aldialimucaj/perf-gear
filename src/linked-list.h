@@ -26,7 +26,7 @@ extern "C" {
         struct pg_linked_list_item *next;
     } pg_ll_item_t;
 
-    static pg_ll_item_t* pg_ll_first_item = NULL;
+    pg_ll_item_t* pg_ll_first_item;
 
 
     /** @brief Create a new Linked List Item

@@ -45,8 +45,6 @@ void test_pg_br_startPerfGear() {
     duk_context *ctx = duk_create_heap_default();
 
     // ---
-    duk_idx_t r = 0;
-    duk_bool_t g = 0;
     /* push the constructor */
     duk_push_c_function(ctx, pg_br_PerfGear, 1);
     duk_idx_t obj_idx = duk_push_object(ctx);
@@ -54,7 +52,7 @@ void test_pg_br_startPerfGear() {
     duk_put_prop_string(ctx, obj_idx, "folder");
     duk_new(ctx, 1);
 
-    r = duk_push_c_function(ctx, pg_br_startPerfGear, 0);
+    duk_push_c_function(ctx, pg_br_startPerfGear, 0);
     duk_dup(ctx, -2);
     duk_call_method(ctx, 0);
 
@@ -81,9 +79,7 @@ void test_pg_br_stopPerfGear() {
     };
     pg_start(&c);
     // ---
-    duk_idx_t r = 0;
-    duk_bool_t g = 0;
-    r = duk_push_c_function(ctx, pg_br_stopPerfGear, 0);
+    duk_push_c_function(ctx, pg_br_stopPerfGear, 0);
     duk_dup(ctx, -2);
     duk_call_method(ctx, 0);
 
