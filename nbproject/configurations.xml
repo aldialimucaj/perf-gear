@@ -42,6 +42,12 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f10"
+                     displayName="API Tests"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>api-tests/api-general.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Collector Test"
                      projectFiles="true"
@@ -130,9 +136,19 @@
       </compileType>
       <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="api-tests/api-general.c" ex="false" tool="0" flavor2="0">
+      </item>
       <folder path="TestFiles/f1">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f10">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f10</output>
           <linkerLibItems>
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
@@ -296,9 +312,19 @@
       </compileType>
       <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="api-tests/api-general.c" ex="false" tool="0" flavor2="0">
+      </item>
       <folder path="TestFiles/f1">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f10">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f10</output>
           <linkerLibItems>
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
@@ -452,9 +478,19 @@
       </compileType>
       <item path=".coveralls.yml" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="api-tests/api-general.c" ex="false" tool="0" flavor2="0">
+      </item>
       <folder path="TestFiles/f1">
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f10">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f10</output>
           <linkerLibItems>
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
