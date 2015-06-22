@@ -89,6 +89,23 @@ void test_pg_br_stopPerfGear() {
     duk_destroy_heap(ctx);
 }
 
+void test_dukopen_perf_gear() {
+    duk_context *ctx = duk_create_heap_default();
+    // ---
+    dukopen_perf_gear(ctx);
+    duk_push_global_object(ctx);
+
+    duk_get_prop_string(ctx, -1, PERF_GEAR_OBJ_NAME);
+    CU_ASSERT_TRUE(duk_is_object(ctx, -1));
+    duk_pop(ctx);
+    
+    duk_get_prop_string(ctx, -1, MEASUREMNET_OBJ_NAME);
+    CU_ASSERT_TRUE(duk_is_object(ctx, -1));
+    duk_pop(ctx);
+    // ---
+    duk_destroy_heap(ctx);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -107,6 +124,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_br_PerfGear", test_pg_br_PerfGear);
     CU_add_test(pSuite, "test_pg_br_startPerfGear", test_pg_br_startPerfGear);
     CU_add_test(pSuite, "test_pg_br_stopPerfGear", test_pg_br_stopPerfGear);
+    CU_add_test(pSuite, "test_dukopen_perf_gear", test_dukopen_perf_gear);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

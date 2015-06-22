@@ -30,6 +30,4 @@ else
     echo "*********************************************"
 fi
 
-return 0
-# Valgrind on travis is old and delivers false positives
-# return $RESULT
+return $RESULT
