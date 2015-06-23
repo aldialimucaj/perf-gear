@@ -51,7 +51,7 @@ extern "C" {
      * @param ctx
      * @return 
      */
-    duk_ret_t dukopen_perf_gear(duk_context *ctx);
+    pg_err_t dukopen_perf_gear(duk_context *ctx);
 
 
 

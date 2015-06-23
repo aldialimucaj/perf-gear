@@ -57,7 +57,7 @@ duk_ret_t pg_br_PerfGear(duk_context *ctx) {
 
 /* ========================================================================= */
 
-duk_ret_t dukopen_perf_gear(duk_context *ctx) {
+pg_err_t dukopen_perf_gear(duk_context *ctx) {
     /* global object */
     duk_push_global_object(ctx);
 
@@ -96,5 +96,5 @@ duk_ret_t dukopen_perf_gear(duk_context *ctx) {
     /* remove global from stack */
     duk_pop(ctx);
 
-    return 0;
+    return PG_NO_ERROR;
 }

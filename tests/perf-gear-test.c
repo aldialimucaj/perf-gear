@@ -26,7 +26,7 @@ int clean_suite(void) {
 void test_pg_init() {
     pg_err_t result = pg_init();
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
-    
+
     /* destroy queue */
     size_t q_size = pg_clear_queue();
     CU_ASSERT_EQUAL(q_size, 0);
@@ -44,7 +44,7 @@ void test_pg_collect() {
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     // ---
-    
+
     pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_collect/test/hit");
@@ -74,7 +74,7 @@ void test_pg_collect() {
 }
 
 void test_pg_harvest() {
-     
+
     struct pg_config c = {
         .folder = "/tmp/pg",
         .repeat = 10
@@ -84,7 +84,7 @@ void test_pg_harvest() {
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     // ---
-    
+
     pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_start/test/hit");
@@ -114,7 +114,7 @@ void test_pg_harvest() {
 }
 
 void test_pg_start() {
-    
+
     struct pg_config c = {
         .folder = "/tmp/pg",
         .repeat = 10
@@ -124,7 +124,7 @@ void test_pg_start() {
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     // ---
-    
+
     pg_m_item_t *m = pg_create_measurement_item();
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->path = strdup("pg_start/test/hit");
@@ -212,6 +212,13 @@ void test_pg_harvest_measurements(void) {
 
 }
 
+void test_pg_register_js_functions() {
+    duk_context *ctx = duk_create_heap_default();
+    pg_err_t err = pg_register_js_functions(ctx);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    duk_destroy_heap(ctx);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -232,6 +239,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_harvest_measurements", test_pg_harvest_measurements);
     CU_add_test(pSuite, "test_pg_start", test_pg_start);
     CU_add_test(pSuite, "test_pg_stop", test_pg_stop);
+    CU_add_test(pSuite, "test_pg_register_js_functions", test_pg_register_js_functions);
 
 
     /* Run all tests using the CUnit Basic interface */

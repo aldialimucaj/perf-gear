@@ -4,6 +4,7 @@
 
 bool pg_harvest = false;
 pthread_t harvester_th = 0;
+duk_context *duk_ctx = NULL;
 
 pg_err_t pg_init() {
     struct pg_queue* q = pg_init_queue();
@@ -35,7 +36,8 @@ pg_err_t pg_start(pg_config_t *config) {
 pg_err_t pg_stop() {
     pg_err_t r;
     /* we cant stop without emptying the queue */
-    while(pg_get_queue_size() != 0){}
+    while (pg_get_queue_size() != 0) {
+    }
     /* this flag turns of the harvester loop */
     pg_harvest = false;
     if (!harvester_th) return PG_ERR_HARVESTER_HAS_NOT_STARTED;
@@ -88,4 +90,11 @@ void* pg_harvest_measurements(void *cfg) {
     }
     pg_destroy_config(config);
     return NULL;
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_register_js_functions(duk_context *ctx) {
+    if(ctx == NULL) return PG_ERR_BAD_ARG;
+    return dukopen_perf_gear(ctx);
 }

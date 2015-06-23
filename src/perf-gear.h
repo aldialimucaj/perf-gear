@@ -19,10 +19,13 @@
 #include <time.h>
 #include <pthread.h>
 
+#include "../lib/duktape.h"
+
 #include "queue.h"
 #include "measurement2json.h"
 #include "dispatcher.h"
 #include "collector.h"
+#include "dukbridge.h"
 
 #define PG_PUBLIC_API __attribute__((__visibility__("default")))
 
@@ -41,6 +44,10 @@ extern "C" {
     /** @brief Harvester thread
      */
     extern pthread_t harvester_th;
+    
+    /** @brief context for duktape
+     */
+    extern duk_context *duk_ctx;
     
     /** @brief Initialize perf-gear internals
      * 
@@ -84,6 +91,18 @@ extern "C" {
      * @return finished emptying queue with error message
      */
     void* pg_harvest_measurements(void *cfg);
+    
+    /** @brief Enable JavaScript functionality for perf-gear
+     * 
+     * If you want to use JS for scripting you can register
+     * the functions that enable global objecst such as 
+     * PerfGear and Measurement to be able to instrument your
+     * code easier.
+     * 
+     * @param ctx
+     * @return 
+     */
+    pg_err_t pg_register_js_functions(duk_context *ctx);
 
 
 
