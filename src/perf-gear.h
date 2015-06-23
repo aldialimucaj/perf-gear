@@ -22,6 +22,7 @@
 #include "queue.h"
 #include "measurement2json.h"
 #include "dispatcher.h"
+#include "collector.h"
 
 #define PG_PUBLIC_API __attribute__((__visibility__("default")))
 
