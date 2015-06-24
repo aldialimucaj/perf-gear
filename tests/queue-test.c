@@ -51,7 +51,7 @@ void test_pg_destroy_queue() {
     result2 = pg_destroy_queue();
     CU_ASSERT_EQUAL(result2, PG_ERR_QUEUE_NOT_READY);
     CU_ASSERT_PTR_NULL(pg_queue);
-    
+
     /* try to destroy with element */
     pg_init_queue();
     struct pg_queue_item* new_item = pg_create_queue_item();
@@ -451,6 +451,44 @@ void test_pg_clear_all_measurement_sequences() {
     CU_ASSERT_EQUAL(result, 0);
 }
 
+void test_pg_create_measurement_param() {
+    pg_m_param_t *param = pg_create_measurement_param("test", PG_PARAM_TYPE_STR);
+    CU_ASSERT_FATAL(param != NULL);
+    CU_ASSERT_EQUAL(param->type, PG_PARAM_TYPE_STR);
+    CU_ASSERT(param->key != NULL);
+    CU_ASSERT(param->strValue == NULL);
+    CU_ASSERT(param->intValue == 0);
+    CU_ASSERT(param->doubleValue == 0.0);
+
+    pg_destroy_measurement_param(param);
+}
+
+void test_pg_destroy_measurement_param() {
+    pg_m_param_t *param = pg_create_measurement_param("test", PG_PARAM_TYPE_STR);
+    CU_ASSERT_FATAL(param != NULL);
+    param->strValue = strdup("test-value");
+    pg_err_t err = pg_destroy_measurement_param(param);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    pg_m_param_t *param1 = pg_create_measurement_param("test", PG_PARAM_TYPE_OBJ);
+    CU_ASSERT_FATAL(param1 != NULL);
+    param1->objValue = pg_create_measurement_param("sub-test", PG_PARAM_TYPE_STR);
+    err = pg_destroy_measurement_param(param1);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+}
+
+void test_pg_msrt_add_param_str() {
+    pg_m_item_t *measurement = pg_create_measurement_item();
+    CU_ASSERT_PTR_NOT_NULL_FATAL(measurement);
+
+    pg_err_t err = pg_msrt_add_param_str(measurement, "key", "value");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    
+    err = pg_msrt_add_param_str(measurement, "key2", "value2");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    pg_destroy_measurement_item(measurement);
+}
 
 int main() {
     CU_pSuite pSuite = NULL;
@@ -486,6 +524,9 @@ int main() {
     CU_add_test(pSuite, "test_pg_copy_measurement_sequences", test_pg_copy_measurement_sequences);
     CU_add_test(pSuite, "test_pg_count_measurement_sequences", test_pg_count_measurement_sequences);
     CU_add_test(pSuite, "test_pg_clear_all_measurement_sequences", test_pg_clear_all_measurement_sequences);
+    CU_add_test(pSuite, "test_pg_create_measurement_param", test_pg_create_measurement_param);
+    CU_add_test(pSuite, "test_pg_destroy_measurement_param", test_pg_destroy_measurement_param);
+    CU_add_test(pSuite, "test_pg_msrt_add_param_str", test_pg_msrt_add_param_str);
 
 
     /* Run all tests using the CUnit Basic interface */

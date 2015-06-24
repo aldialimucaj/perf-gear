@@ -148,6 +148,7 @@ pg_m_item_t* pg_create_measurement_item(void) {
     new_item->sequence = NULL;
     new_item->hitValue = 0;
     new_item->type = PG_MEASUREMENT_TYPE_UNKNOWN;
+    new_item->param = NULL;
     return new_item;
 }
 
@@ -163,6 +164,17 @@ pg_err_t pg_destroy_measurement_item(pg_m_item_t *item) {
         if (item->sequence) {
             pg_clear_all_measurement_sequences(item);
         }
+        /* does it contain dynamic parameters? */
+        if (item->param) {
+            pg_m_param_t *param = item->param;
+            pg_m_param_t *cursor_param = item->param;
+            while (cursor_param != NULL) {
+                param = cursor_param;
+                cursor_param = cursor_param->next;
+                pg_destroy_measurement_param(param);
+            }
+        }
+
         free(item);
         item = NULL;
         return PG_NO_ERROR;
@@ -302,4 +314,64 @@ size_t pg_clear_all_measurement_sequences(pg_m_item_t *measurement) {
     measurement->sequence = NULL;
 
     return index;
+}
+
+/* ========================================================================= */
+
+pg_m_param_t* pg_create_measurement_param(const char *key, pg_param_type_t type) {
+    pg_m_param_t *param = malloc(sizeof (struct pg_measurement_param));
+    if (param) {
+        param->key = strdup(key);
+        param->type = type;
+        param->intValue = 0;
+        param->doubleValue = 0;
+        param->strValue = NULL;
+        param->next = NULL;
+    }
+
+    return param;
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_destroy_measurement_param(pg_m_param_t *param) {
+    pg_err_t err = PG_NO_ERROR;
+    if (param) {
+        free(param->key);
+        switch (param->type) {
+            case PG_PARAM_TYPE_STR:
+                if (param->strValue) free(param->strValue);
+                break;
+            case PG_PARAM_TYPE_OBJ:
+                if (param->objValue) err = pg_destroy_measurement_param(param->objValue);
+                break;
+            default:
+                // error message
+                break;
+        }
+        free(param);
+    }
+
+    return err;
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_msrt_add_param_str(pg_m_item_t *measurement, const char *key, const char *val) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // No measurement
+    pg_m_param_t *param = pg_create_measurement_param(key, PG_PARAM_TYPE_STR);
+    param->strValue = strdup(val);
+
+    if (!measurement->param) {
+        measurement->param = param;
+    } else {
+        pg_m_param_t *last_param = measurement->param;
+        pg_m_param_t *cursor_param = last_param;
+        while ((cursor_param = cursor_param->next) != NULL) {
+            last_param = cursor_param;
+        }
+        last_param->next = param;
+    }
+
+    return PG_NO_ERROR;
 }

@@ -54,13 +54,47 @@ extern "C" {
         PG_MEASUREMENT_TYPE_TIME = 2 /*!< measures the time between event creation and destruction. */
     } pg_mtype_t;
 
+    typedef enum {
+        PG_MEASUREMENT_UNIT_UNKNOWN = 0, /*!< is an undefined state and indicates an error. */
+        PG_MEASUREMENT_UNIT_HIT, /*!< counts the hits. scalar type */
+        PG_MEASUREMENT_UNIT_NS, /*!< nanoseconds. */
+        PG_MEASUREMENT_UNIT_MS, /*!< milliseconds. */
+        PG_MEASUREMENT_UNIT_SC, /*!< seconds. */
+        PG_MEASUREMENT_UNIT_MB, /*!< Megabyte. */
+        PG_MEASUREMENT_UNIT_KB, /*!< Kilobyte. */
+        PG_MEASUREMENT_UNIT_BT /*!< Byte. */
+    } pg_munit_t;
+
+    typedef enum {
+        PG_PARAM_TYPE_UNKNOWN = 0, /*!< is an undefined state and indicates an error. */
+        PG_PARAM_TYPE_STR, /*!< string. */
+        PG_PARAM_TYPE_INT, /*!< integer. */
+        PG_PARAM_TYPE_DBL, /*!< double. */
+        PG_PARAM_TYPE_OBJ, /*!< object that contains sub parameters. */
+    } pg_param_type_t;
+    
+    /** @brief Measurement parameter in order to add key value elements
+     */
+    typedef struct pg_measurement_param {
+        char *key; /*!< key */
+        size_t intValue; /*!< int value */
+        double doubleValue; /*!< double value */
+        char *strValue; /*!< str value */
+        struct pg_measurement_param *objValue; /**< object value */
+        pg_param_type_t type; /**< type to be interpreted when marshalling */
+        struct pg_measurement_param *next; /**< next parameter */
+    } pg_m_param_t;
+    
+
     /** @brief Measurement result to be stored in a queue 
      */
     typedef struct pg_measurement_item {
         char *path; /*!< path describing the measurement eg. 'calc/math/fibonaci/hits' */
         pg_mtype_t type; /*!< Type of measurement HIT|TIME|MEMORY */
         size_t hitValue; /*!< Value for hits */
+        pg_munit_t unit; /*!< Unit to interpret the data */
         struct pg_measurement_sequence *sequence; /**< a sequence of events */
+        pg_m_param_t *param; /**< key value parameters */
     } pg_m_item_t;
 
     /** @brief A sequence of measurement events
@@ -211,7 +245,7 @@ extern "C" {
      * @return 
      */
     pg_err_t pg_copy_measurement_sequences(pg_m_item_t *src, pg_m_item_t *dst);
-    
+
     /** @brief Count measurement sequences in this measurement item
      * 
      * @param measurement
@@ -225,6 +259,33 @@ extern "C" {
      * @return The number of sequences destroyed
      */
     size_t pg_clear_all_measurement_sequences(pg_m_item_t *measurement);
+    
+    /** @brief Create new parameter
+     * 
+     * @param key
+     * @param type
+     * @return pg_m_param_t
+     */
+    pg_m_param_t* pg_create_measurement_param(const char *key, pg_param_type_t type);
+    
+    /** @brief Destroy parameter
+     * 
+     * @param param
+     * @return 
+     */
+    pg_err_t pg_destroy_measurement_param(pg_m_param_t *param);
+    
+    
+    /** @brief Add parameter to the measurement that will be persisted into JSON
+     * 
+     * Adding string parameters
+     * 
+     * @param measurement
+     * @param key
+     * @param val
+     * @return 
+     */
+    pg_err_t pg_msrt_add_param_str(pg_m_item_t *measurement, const char *key, const char *val);
 
 
 #ifdef	__cplusplus
