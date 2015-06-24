@@ -58,11 +58,23 @@ pg_err_t pg_publish_measurement(pg_m_item_t *measurement) {
 /* ========================================================================= */
 
 pg_err_t pg_increase_hit(pg_m_item_t *measurement) {
-    if (!measurement)
-        return PG_ERR_NO_MEASUREMENT; // no measurement to update
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // nothing to update
     if (measurement->type != PG_MEASUREMENT_TYPE_HIT)
         return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
 
     measurement->hitValue++;
     return PG_NO_ERROR;
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_save_timestamp(pg_m_item_t *measurement) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // nothing to update
+    if (measurement->type != PG_MEASUREMENT_TYPE_TIME)
+        return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
+
+    pg_mseq_t *seq = pg_create_measurement_sequence();
+    seq->timestamp = pg_get_timestamp();
+    seq->value = 0;
+    return pg_add_measurement_sequence(measurement, seq);
 }

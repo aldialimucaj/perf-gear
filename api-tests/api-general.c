@@ -97,6 +97,34 @@ void test_pseudo_main_loop() {
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 }
 
+void test_pseudo_main_loop_timestamp() {
+    struct pg_config c = {
+        .folder = "/tmp/pg_api",
+        .repeat = 0
+    };
+    pg_err_t err;
+    err = pg_init();
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    pg_m_item_t* m1 = pg_start_collecting("api/test/pseudo_main/loop/timestamp", PG_MEASUREMENT_TYPE_TIME);
+    CU_ASSERT(m1 != NULL);
+
+    for (int i = 0; i < 1000; i++) {
+        // doing some stuff here
+        err = pg_save_timestamp(m1);
+        CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    }
+
+    err = pg_stop_collecting(m1);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    err = pg_collect(&c);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    err = pg_stop();
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -115,6 +143,7 @@ int main() {
     CU_add_test(pSuite, "test_pseudo_main", test_pseudo_main);
     CU_add_test(pSuite, "test_pseudo_main_init", test_pseudo_main_init);
     CU_add_test(pSuite, "test_pseudo_main_loop", test_pseudo_main_loop);
+    CU_add_test(pSuite, "test_pseudo_main_loop_timestamp", test_pseudo_main_loop_timestamp);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

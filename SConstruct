@@ -6,9 +6,9 @@ if not ( build_mode in ['debug', 'release', 'cov']):
     Exit(1)
 
 print "*** Compiling in " + build_mode + " mode ***"
-debugcflags = ['-g','-Werror','-std=c99']
-releasecflags = ['-Os','-Werror','-std=c99']
-covcflags = ['-Os','-fprofile-arcs', '-ftest-coverage', '-Werror', '-std=c99']
+debugcflags = ['-g','-Werror', '-Wall', '-Wextra', '-std=c99']
+releasecflags = ['-Os','-Werror', '-Wall', '-Wextra', '-std=c99']
+covcflags = ['-Os','-fprofile-arcs', '-ftest-coverage', '-Werror', '-Wall', '-Wextra', '-std=c99']
 
 lib_path = ['#build/' + build_mode + '/lib', '#build/' + build_mode + '/src']
 env=Environment(LIBPATH = lib_path)

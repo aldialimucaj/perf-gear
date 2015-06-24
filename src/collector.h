@@ -57,7 +57,6 @@ extern "C" {
     pg_err_t pg_publish_measurement(pg_m_item_t *measurement);
 
 
-
     /** @brief Increases the hit counter for a hit measurement.
      * 
      * If the measurement is not a hit counter then an error is returned.
@@ -66,6 +65,18 @@ extern "C" {
      * @return 0 = OK
      */
     pg_err_t pg_increase_hit(pg_m_item_t *measurement);
+    
+    
+    /** @brief Save the timestamp into the sequence.
+     * 
+     * This enables perf-gear to track the frequency of hits
+     * for this object. Useful to build cycle graphs such as
+     * MHz, FPS etc.
+     * 
+     * @param measurement
+     * @return 
+     */
+    pg_err_t pg_save_timestamp(pg_m_item_t *measurement);
 
 
 #ifdef	__cplusplus
