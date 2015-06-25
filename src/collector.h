@@ -36,7 +36,7 @@ extern "C" {
      * @sa pg_mtype_t
      * @return measurement_item or NULL
      */
-    pg_m_item_t* pg_new_measurement(char *path, pg_mtype_t type);
+    pg_m_item_t* pg_new_measurement(const char *path, pg_mtype_t type);
 
 
     /** @brief Stop collecting and publish the measurement.

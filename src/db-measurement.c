@@ -81,15 +81,18 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     const char *path = duk_require_string(ctx, -1);
     duk_pop(ctx);
 
-    pg_m_item_t *m = pg_create_measurement_item();
+    pg_m_item_t *m = pg_new_measurement(path, type_id);
 
-    m->type = type_id;
-    m->path = strdup(path);
+    /* adding dynamic parameters */
+    if (m) {
+        pg_br_msrt_add_params(ctx, m);
+    }
+
     switch (type_id) {
-        case 1:
+        case 1: // type = HIT
             m->hitValue = v;
             break;
-        case 2:
+        case 2: // type = TIME
         {
             duk_get_prop_string(ctx, -1, "sequence");
             duk_enum(ctx, -1, DUK_ENUM_SORT_ARRAY_INDICES);
@@ -100,7 +103,7 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
                 seq->timestamp = ts_value;
                 seq->value = 0;
                 pg_add_measurement_sequence(m, seq);
-                
+
                 duk_pop_3(ctx);
             }
 
@@ -124,4 +127,29 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     result = pg_destroy_measurement_item(m);
 
     return 1;
+}
+
+/* ========================================================================= */
+pg_err_t pg_br_msrt_add_params(duk_context *ctx, pg_m_item_t *m) {
+    if(!m) return PG_ERR_BAD_ARG;
+    duk_enum(ctx, -1, DUK_ENUM_INCLUDE_INTERNAL);
+    while (duk_next(ctx, -1, 1)) {
+        const char *param_key = duk_require_string(ctx, -2);
+        if (!strcmp(param_key, "name") || !strcmp(param_key, "hitValue") ||
+                !strcmp(param_key, "typeId")) {
+            duk_pop_2(ctx); /* pop key/value */
+            continue;
+        }
+        if (duk_is_string(ctx, -1)) {
+            const char *key = duk_require_string(ctx, -2);
+            const char *value = duk_require_string(ctx, -1);
+            pg_msrt_add_param_str(m, key, value);
+            //m->hitValue = 5;
+            //if (strcmp(key, value)) m->hitValue = 1;
+        }
+        duk_pop_2(ctx); /* pop key/value */
+    }
+    duk_pop(ctx); /* pop enum object */
+
+    return PG_NO_ERROR;
 }

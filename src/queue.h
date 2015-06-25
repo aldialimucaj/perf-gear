@@ -76,12 +76,12 @@ extern "C" {
     /** @brief Measurement parameter in order to add key value elements
      */
     typedef struct pg_measurement_param {
-        char *key; /*!< key */
+        char *key; /*!< REQUIRED: key */
         size_t intValue; /*!< int value */
         double doubleValue; /*!< double value */
         char *strValue; /*!< str value */
         struct pg_measurement_param *objValue; /**< object value */
-        pg_param_type_t type; /**< type to be interpreted when marshalling */
+        pg_param_type_t type; /**< REQUIRED: type to be interpreted when marshalling */
         struct pg_measurement_param *next; /**< next parameter */
     } pg_m_param_t;
     
@@ -275,7 +275,23 @@ extern "C" {
      */
     pg_err_t pg_destroy_measurement_param(pg_m_param_t *param);
     
+    /** @brief Copy parameters recursively from source to destination
+     * 
+     * @param src
+     * @param dst
+     */
+    pg_err_t pg_param_copy_helper(pg_m_param_t *src, pg_m_param_t *dst);
     
+    /** @brief Copy measurement sequences
+     * 
+     * Copies the linked list of measurement sequences
+     * 
+     * @param src
+     * @param dst
+     * @return 
+     */
+    pg_err_t pg_copy_measurement_params(pg_m_item_t *src, pg_m_item_t *dst);
+
     /** @brief Add parameter to the measurement that will be persisted into JSON
      * 
      * Adding string parameters

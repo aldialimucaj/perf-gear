@@ -193,6 +193,7 @@ pg_err_t pg_copy_measurement_item(pg_m_item_t *src, pg_m_item_t *dst) {
     /* sequences need to be copied, dump old reference */
     dst->sequence = NULL;
     dst->path = NULL;
+    dst->param = NULL;
 
     /* copy the path */
     if (src->path) {
@@ -205,6 +206,11 @@ pg_err_t pg_copy_measurement_item(pg_m_item_t *src, pg_m_item_t *dst) {
     /* copy the sequence */
     if (src->sequence) {
         pg_copy_measurement_sequences(src, dst);
+    }
+
+    /* copy dynamic parameters */
+    if (src->param) {
+        pg_copy_measurement_params(src, dst);
     }
 
     return PG_NO_ERROR;
@@ -354,6 +360,55 @@ pg_err_t pg_destroy_measurement_param(pg_m_param_t *param) {
     }
 
     return err;
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_param_copy_helper(pg_m_param_t *src, pg_m_param_t *dst) {
+    if (!dst) return PG_ERR_BAD_ARG;
+    pg_err_t err = PG_NO_ERROR;
+    switch (src->type) {
+        case PG_PARAM_TYPE_STR:
+            dst->strValue = PG_STRDUP(src->strValue);
+            break;
+        case PG_PARAM_TYPE_INT:
+            dst->intValue = src->intValue;
+            break;
+        case PG_PARAM_TYPE_DBL:
+            dst->doubleValue = src->doubleValue;
+            break;
+        case PG_PARAM_TYPE_OBJ:
+            if (src->objValue) {
+                /* sub parameter */
+                dst->objValue = pg_create_measurement_param(src->objValue->key, src->objValue->type);
+                pg_param_copy_helper(src->objValue, dst->objValue);
+            }
+            break;
+        case PG_PARAM_TYPE_UNKNOWN:
+        default:
+            err = PG_ERR_NO_MEASUREMENT_PARAM;
+            break;
+    }
+
+    /* sibling elements */
+    if (src->next) {
+        dst->next = pg_create_measurement_param(src->next->key, src->next->type);
+        pg_param_copy_helper(src->next, dst->next);
+    }
+
+    return err;
+}
+
+pg_err_t pg_copy_measurement_params(pg_m_item_t *src, pg_m_item_t *dst) {
+    if (!src) return PG_ERR_NO_MEASUREMENT; // No source measurement
+    if (!src->param) return PG_ERR_NO_MEASUREMENT_PARAM; // No seq
+    if (!dst) return PG_ERR_NO_DESTINATION; // No destination measurement
+
+    if (!dst->param) dst->param = pg_create_measurement_param(src->param->key, src->param->type);
+    pg_param_copy_helper(src->param, dst->param);
+
+
+    return PG_NO_ERROR;
 }
 
 /* ========================================================================= */

@@ -7,10 +7,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/a/projects/perf-gear/tests/dukbridge-test.c</file>
+            <file>file:/home/a/projects/perf-gear/src/queue.h</file>
             <file>file:/home/a/projects/perf-gear/tests/measurement2json-test.c</file>
+            <file>file:/home/a/projects/perf-gear/src/collector.h</file>
+            <file>file:/home/a/projects/perf-gear/src/db-measurement.h</file>
             <file>file:/home/a/projects/perf-gear/src/measurement2json.c</file>
+            <file>file:/home/a/projects/perf-gear/src/collector.c</file>
+            <file>file:/home/a/projects/perf-gear/tests/db-measurement-test.c</file>
             <file>file:/home/a/projects/perf-gear/src/queue.c</file>
+            <file>file:/home/a/projects/perf-gear/src/db-measurement.c</file>
         </group>
     </open-files>
 </project-private>

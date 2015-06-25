@@ -483,11 +483,41 @@ void test_pg_msrt_add_param_str() {
 
     pg_err_t err = pg_msrt_add_param_str(measurement, "key", "value");
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
-    
+
     err = pg_msrt_add_param_str(measurement, "key2", "value2");
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
     pg_destroy_measurement_item(measurement);
+}
+
+void test_pg_param_copy_helper() {
+    pg_m_param_t *src = pg_create_measurement_param("key1", PG_PARAM_TYPE_STR);
+    src->strValue = PG_STRDUP("value1");
+    pg_m_param_t *dst = pg_create_measurement_param("key1", PG_PARAM_TYPE_STR);
+    pg_err_t err = pg_param_copy_helper(src, dst);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    CU_ASSERT_STRING_EQUAL(src->strValue, dst->strValue);
+
+    pg_destroy_measurement_param(src);
+    pg_destroy_measurement_param(dst);
+}
+
+void test_pg_copy_measurement_params() {
+    pg_m_item_t *m1 = pg_create_measurement_item();
+    CU_ASSERT_PTR_NOT_NULL_FATAL(m1);
+    pg_m_item_t *m2 = pg_create_measurement_item();
+    CU_ASSERT_PTR_NOT_NULL_FATAL(m2);
+
+    pg_err_t err = pg_msrt_add_param_str(m1, "key1", "value1");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    err = pg_copy_measurement_params(m1, m2);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    CU_ASSERT_STRING_EQUAL(m1->param->key, m2->param->key);
+
+
+    pg_destroy_measurement_item(m1);
+    pg_destroy_measurement_item(m2);
 }
 
 int main() {
@@ -526,6 +556,8 @@ int main() {
     CU_add_test(pSuite, "test_pg_clear_all_measurement_sequences", test_pg_clear_all_measurement_sequences);
     CU_add_test(pSuite, "test_pg_create_measurement_param", test_pg_create_measurement_param);
     CU_add_test(pSuite, "test_pg_destroy_measurement_param", test_pg_destroy_measurement_param);
+    CU_add_test(pSuite, "test_pg_param_copy_helper", test_pg_param_copy_helper);
+    CU_add_test(pSuite, "test_pg_copy_measurement_params", test_pg_copy_measurement_params);
     CU_add_test(pSuite, "test_pg_msrt_add_param_str", test_pg_msrt_add_param_str);
 
 

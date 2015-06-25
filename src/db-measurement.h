@@ -50,6 +50,16 @@ extern "C" {
      * @return true if successfully published
      */
     duk_ret_t pg_br_measurement_publish(duk_context *ctx);
+    
+    /** @brief Add dynamic parameters to measurement
+     * 
+     * Called before publishing in order to serialize all parameters.
+     * 
+     * @param ctx
+     * @param m
+     * @return 
+     */
+    pg_err_t pg_br_msrt_add_params(duk_context *ctx, pg_m_item_t * m);
 
 
 #ifdef	__cplusplus
