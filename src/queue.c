@@ -148,6 +148,7 @@ pg_m_item_t* pg_create_measurement_item(void) {
     new_item->sequence = NULL;
     new_item->hitValue = 0;
     new_item->type = PG_MEASUREMENT_TYPE_UNKNOWN;
+    new_item->unit = PG_MEASUREMENT_UNIT_UNKNOWN;
     new_item->param = NULL;
     return new_item;
 }

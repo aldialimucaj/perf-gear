@@ -1,7 +1,7 @@
 #include "collector.h"
 #include "pg-utils.h"
 
-pg_m_item_t* pg_start_collecting(char *path, pg_mtype_t type) {
+pg_m_item_t* pg_new_measurement(char *path, pg_mtype_t type) {
     if (!path) return NULL; /* no path */
     if (type <= PG_MEASUREMENT_TYPE_UNKNOWN) return NULL; /* no type */
 

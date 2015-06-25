@@ -27,7 +27,7 @@ void test_pg_start_collecting(void) {
     pg_init_queue();
 
     char *path = "pg/collector/start_collecting";
-    pg_m_item_t *m = pg_start_collecting(path, PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t *m = pg_new_measurement(path, PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT_PTR_NOT_NULL(m);
 
     int result = pg_destroy_measurement_item(m);
@@ -41,7 +41,7 @@ void test_pg_stop_collecting(void) {
     pg_init_queue();
 
     char *path = "pg/collector/start_collecting";
-    pg_m_item_t *m = pg_start_collecting(path, PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t *m = pg_new_measurement(path, PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT_PTR_NOT_NULL(m);
 
     int result = pg_stop_collecting(m);

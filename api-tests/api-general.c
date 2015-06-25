@@ -31,7 +31,7 @@ void test_pseudo_main() {
     err = pg_start(&c);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
-    pg_m_item_t* m1 = pg_start_collecting("api/test/pseudo_main", PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t* m1 = pg_new_measurement("api/test/pseudo_main", PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT(m1 != NULL);
 
     err = pg_increase_hit(m1);
@@ -53,7 +53,7 @@ void test_pseudo_main_init() {
     err = pg_init();
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
-    pg_m_item_t* m1 = pg_start_collecting("api/test/pseudo_main/init", PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t* m1 = pg_new_measurement("api/test/pseudo_main/init", PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT(m1 != NULL);
 
     err = pg_increase_hit(m1);
@@ -78,7 +78,7 @@ void test_pseudo_main_loop() {
     err = pg_init();
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
-    pg_m_item_t* m1 = pg_start_collecting("api/test/pseudo_main/loop", PG_MEASUREMENT_TYPE_HIT);
+    pg_m_item_t* m1 = pg_new_measurement("api/test/pseudo_main/loop", PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT(m1 != NULL);
 
     for (int i = 0; i < 10000; i++) {
@@ -106,7 +106,7 @@ void test_pseudo_main_loop_timestamp() {
     err = pg_init();
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
-    pg_m_item_t* m1 = pg_start_collecting("api/test/pseudo_main/loop/timestamp", PG_MEASUREMENT_TYPE_TIME);
+    pg_m_item_t* m1 = pg_new_measurement("api/test/pseudo_main/loop/timestamp", PG_MEASUREMENT_TYPE_TIME);
     CU_ASSERT(m1 != NULL);
 
     for (int i = 0; i < 1000; i++) {
