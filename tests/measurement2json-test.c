@@ -34,31 +34,31 @@ void test_pg_m2j_transform() {
     if (json_result) {
         free(json_result);
     }
-    
+
     pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = 3425;
     seq->value = 624352;
     m->sequence = seq;
-    
+
     json_result = pg_m2j_transform(m);
     const char *cmp_m_str2 = "{\"path\":\"test/func/one\",\"type\":1,\"hitValue\":11,\"sequence\":[{\"timestamp\":3425,\"value\":624352.00}]}";
     CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str2);
     if (json_result) {
         free(json_result);
     }
-    
+
     pg_mseq_t *seq2 = pg_create_measurement_sequence();
     seq2->timestamp = 8563;
     seq2->value = 4254;
     seq->next = seq2;
-    
+
     json_result = pg_m2j_transform(m);
     const char *cmp_m_str3 = "{\"path\":\"test/func/one\",\"type\":1,\"hitValue\":11,\"sequence\":[{\"timestamp\":3425,\"value\":624352.00},{\"timestamp\":8563,\"value\":4254.00}]}";
     CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str3);
     if (json_result) {
         free(json_result);
     }
-    
+
     int result = pg_destroy_measurement_item(m);
     CU_ASSERT_EQUAL(result, 0);
 }
@@ -109,6 +109,46 @@ void test_pg_m2j_seq2json_array() {
     CU_ASSERT_EQUAL(result, 0);
 }
 
+void test_pg_m2j_param2json() {
+    pg_err_t err;
+    pg_m_param_t *p = pg_create_measurement_param("key", PG_PARAM_TYPE_STR);
+    CU_ASSERT_PTR_NOT_NULL_FATAL(p);
+    p->strValue = strdup("value");
+
+    char *json_p = pg_m2j_param2json(p);
+
+    CU_ASSERT_STRING_EQUAL(json_p, "\"key\":\"value\"");
+    free(json_p);
+
+    pg_m_param_t *p2 = pg_create_measurement_param("key2", PG_PARAM_TYPE_STR);
+    p2->strValue = strdup("value2");
+    p->next = p2;
+
+    json_p = pg_m2j_param2json(p);
+
+    CU_ASSERT_STRING_EQUAL(json_p, "\"key\":\"value\",\"key2\":\"value2\"");
+    free(json_p);
+
+    pg_m_param_t *p3 = pg_create_measurement_param("key3", PG_PARAM_TYPE_OBJ);
+    pg_m_param_t *p31 = pg_create_measurement_param("key31", PG_PARAM_TYPE_STR);
+    p3->objValue = p31;
+    p31->strValue = strdup("value31");
+    p2->next = p3;
+
+    json_p = pg_m2j_param2json(p);
+
+    CU_ASSERT_STRING_EQUAL(json_p, "\"key\":\"value\",\"key2\":\"value2\",\"key3\":{\"key31\":\"value31\"}");
+    free(json_p);
+
+    // ---
+    err = pg_destroy_measurement_param(p);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    err = pg_destroy_measurement_param(p2);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    err = pg_destroy_measurement_param(p3);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -127,6 +167,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_transform_seq_json", test_pg_transform_seq_json);
     CU_add_test(pSuite, "test_pg_m2j_seq2json_array", test_pg_m2j_seq2json_array);
     CU_add_test(pSuite, "test_pg_m2j_transform", test_pg_m2j_transform);
+    CU_add_test(pSuite, "test_pg_m2j_param2json", test_pg_m2j_param2json);
 
 
     /* Run all tests using the CUnit Basic interface */

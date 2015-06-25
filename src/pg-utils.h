@@ -9,7 +9,7 @@
 #define	PG_UTILS_H
 
 #ifndef _POSIX_C_SOURCE
-    #define _POSIX_C_SOURCE	199309L
+#define _POSIX_C_SOURCE	199309L
 #endif
 
 #include <stdio.h>
@@ -24,7 +24,7 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-    
+
 #define PG_STRLEN(x) sizeof(char) * strlen(x) + 1
 #define PG_STRDUP strdup
 
@@ -57,13 +57,13 @@ extern "C" {
     /** @brief Configuration for measurement storage and formatting
      * 
      */
-    typedef struct pg_config{
+    typedef struct pg_config {
         char* folder; /*!< Where to store the reuslts */
         char* result_name_prefix; /*!< Prefix like PRE_#path#.json */
         char* result_name_suffix; /*!< Suffix like #path#_SUF.json */
         int repeat; /*!< how many times to fetch before stopping. 0=Infinite */
     } pg_config_t;
-    
+
     /** @brief Creates a file name compatible with fs.
      * 
      * @param filename
@@ -71,8 +71,8 @@ extern "C" {
      * @return 
      */
     char* pg_build_filename(char* filename, pg_config_t *config);
-    
-    
+
+
     /** @brief Checks if the string matches in the end
      * 
      * Courtesy of plinth[at]stackoverflow
@@ -82,7 +82,7 @@ extern "C" {
      * @return 
      */
     bool pg_str_ends_with(const char *str, const char *suffix);
-    
+
     /** @brief Replace char ch in source with repl and return new string.
      * 
      * Courtesy of nneonneo[at]stackoverflow
@@ -93,7 +93,7 @@ extern "C" {
      * @return 
      */
     char *pg_str_replace(const char *src, char ch, const char *repl);
-    
+
     /** @brief Create directory recursively
      * 
      * courtesy of http://nion.modprobe.de/blog/archives/357-Recursive-directory-creation.html
@@ -101,40 +101,58 @@ extern "C" {
      * @param dir
      */
     void pg_mkdir(const char *dir);
-    
+
     /** @brief Allocate config object
      * 
      * @return 
      */
     pg_config_t* pg_create_config(void);
-    
+
     /** @brief Free config and all its content
      * 
      * @param config
      * @return 
      */
     pg_err_t pg_destroy_config(pg_config_t *config);
-    
+
     /** @brief Clone config
      * 
      * @return 
      */
     pg_config_t* pg_copy_config(pg_config_t* cfg);
-    
+
     /** @brief Get the Unix time in milliseconds.
      * 
      * @return 
      */
     unsigned long long pg_get_timestamp();
+
+    /* ========================================================================= */
+    /* SYSTEM UTILS */
+    /* ========================================================================= */
+
+    /** @brief Reallocate memory and set the new offset to zero.
+     * 
+     * Credit: JaredPar @ StackOverflow
+     * 
+     * @param pBuffer
+     * @param oldSize
+     * @param newSize
+     * @return 
+     */
+    void* pg_realloc_zero(void* pBuffer, size_t oldSize, size_t newSize);
     
+
     /* ========================================================================= */
     /* EXTERNALS */
     /* ========================================================================= */
-    
+
     extern char *strdup(const char *s);
-    
-    
-    
+
+
+
+
+
 
 #ifdef	__cplusplus
 }

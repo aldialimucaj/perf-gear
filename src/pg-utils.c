@@ -133,6 +133,18 @@ pg_config_t* pg_copy_config(pg_config_t* cfg) {
 
 /* ========================================================================= */
 
+void* pg_realloc_zero(void* pBuffer, size_t oldSize, size_t newSize) {
+    void* pNew = realloc(pBuffer, newSize);
+    if (newSize > oldSize && pNew) {
+        size_t diff = newSize - oldSize;
+        void* pStart = ((char*) pNew) + oldSize;
+        memset(pStart, 0, diff);
+    }
+    return pNew;
+}
+
+/* ========================================================================= */
+
 unsigned long long pg_get_timestamp() {
     struct timeval tv;
 

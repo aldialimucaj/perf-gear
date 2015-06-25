@@ -19,7 +19,9 @@
 #include "queue.h"
 
 #define PG_TEMPLATE_JSON_SEQ "{\"timestamp\":%zd,\"value\":%.2f}"
-#define PG_TEMPLATE_JSON_MESRNT "{\"path\":\x22%s\x22,\"type\":%d,\"hitValue\":%zd,\"sequence\":%s}"
+#define PG_TEMPLATE_JSON_MESRNT "{\"path\":\x22%s\x22,\"type\":%d,\"hitValue\":%zd,%s\"sequence\":%s}"
+#define PG_TEMPLATE_JSON_PARAM_STR "\"%s\":\"%s\""
+#define PG_TEMPLATE_JSON_PARAM_OBJ "\"%s\":{%s}"
 
 #ifdef	__cplusplus
 extern "C" {
@@ -52,6 +54,18 @@ extern "C" {
      * @return 
      */
     char* pg_m2j_seq2json_array(const pg_m_item_t *m);
+    
+    
+    /** @brief Transform dynamic parameters to JSON
+     * 
+     * Parameters allocated at runtime and of dynamic format
+     * are serialized to JSON object. Keys are always strings
+     * and values are string, integers, doubles or sub-objects.
+     * 
+     * @param param 
+     * @return 
+     */
+    char* pg_m2j_param2json(pg_m_param_t *param);
 
 
 #ifdef	__cplusplus
