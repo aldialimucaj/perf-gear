@@ -136,7 +136,8 @@ char* pg_m2j_param2json(pg_m_param_t *param) {
                 }
                 break;
             default:
-                json_param = strdup("err: \"You have an unsupported parameter\"");
+                json_param = strdup("\"err\":\"Unsupported parameter\"");
+                alloc_size += strlen(json_param) + 1;
                 break;
         }
         /* if parameter list is not empty we need to add a comma */

@@ -59,7 +59,24 @@ void test_pg_m2j_transform() {
         free(json_result);
     }
 
+    pg_m_item_t *m2 = pg_create_measurement_item();
+    m2->path = strdup("test/m2j/params");
+    m2->type = PG_MEASUREMENT_TYPE_HIT;
+    m2->hitValue = 11;
+    pg_err_t err = pg_msrt_add_param_str(m2, "key", "value");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    json_result = pg_m2j_transform(m2);
+    cmp_m_str3 = "{\"path\":\"test/m2j/params\",\"type\":1,\"hitValue\":11,\"key\":\"value\",\"sequence\":[]}";
+    CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str3);
+    if (json_result) {
+        free(json_result);
+    }
+
+
     int result = pg_destroy_measurement_item(m);
+    CU_ASSERT_EQUAL(result, 0);
+    result = pg_destroy_measurement_item(m2);
     CU_ASSERT_EQUAL(result, 0);
 }
 
@@ -140,12 +157,23 @@ void test_pg_m2j_param2json() {
     CU_ASSERT_STRING_EQUAL(json_p, "\"key\":\"value\",\"key2\":\"value2\",\"key3\":{\"key31\":\"value31\"}");
     free(json_p);
 
+
+    pg_m_param_t *p4 = pg_create_measurement_param("key4", PG_PARAM_TYPE_UNKNOWN);
+    p3->next = p4;
+
+    json_p = pg_m2j_param2json(p);
+
+    CU_ASSERT_STRING_EQUAL(json_p, "\"key\":\"value\",\"key2\":\"value2\",\"key3\":{\"key31\":\"value31\"},\"err\":\"Unsupported parameter\"");
+    free(json_p);
+
     // ---
     err = pg_destroy_measurement_param(p);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
     err = pg_destroy_measurement_param(p2);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
     err = pg_destroy_measurement_param(p3);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    err = pg_destroy_measurement_param(p4);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 }
 
