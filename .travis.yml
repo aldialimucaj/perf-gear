@@ -19,8 +19,9 @@ env:
   - CONFIG=Cov
 #  - CONFIG=Release # turn release off -> travis using Ubuntu 12.04, valgrind 3.7
 
-
-script: 
+before_script:
+  - python utils/test-http-server.py &
+script:
   - make CONF=$CONFIG && make CONF=$CONFIG test && ./valgrind-tests.sh
 #  - scan-build -o /tmp/pg_lint make -j4 # duktape has warnning which affects build
 

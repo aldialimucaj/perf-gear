@@ -131,6 +131,7 @@
           <linkerLibItems>
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>m</linkerLibLibItem>
+            <linkerLibLibItem>curl</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

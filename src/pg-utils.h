@@ -16,6 +16,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <stdbool.h>
+#include <curl/curl.h>
 
 
 #define PG_FN_REPACE_CHR_FROM '/'
@@ -50,6 +51,7 @@ extern "C" {
         PG_ERR_REGISTER_FUNC, /*!< Error registering bridge functions */
         PG_ERR_COULD_NOT_START, /*!< Could not start perf gear */
         PG_ERR_COULD_NOT_STOP, /*!< Could not stop perf gear properly*/
+        PG_ERR_SENDING_JSON, /*!< Could not send json data to the server */
         PG_ERR_, /*!< */
         PG_ERR_BAD_ARG, /*!< Bad or NULL argument */
         PG_ERR_UNKNOWN_ERROR /*!< Uncategorized error occured */
@@ -129,6 +131,20 @@ extern "C" {
     unsigned long long pg_get_timestamp();
 
     /* ========================================================================= */
+    /* NET UTILS */
+    /* ========================================================================= */
+
+    /** @brief Send HTTP POST request to url with json payload.
+     * 
+     * Using libcurl http://curl.haxx.se/libcurl/c/http-post.html 
+     * 
+     * @param url
+     * @param json
+     * @return 
+     */
+    pg_err_t pg_net_post(const char* url, const char* json);
+
+    /* ========================================================================= */
     /* SYSTEM UTILS */
     /* ========================================================================= */
 
@@ -142,7 +158,7 @@ extern "C" {
      * @return 
      */
     void* pg_realloc_zero(void* pBuffer, size_t oldSize, size_t newSize);
-    
+
 
     /* ========================================================================= */
     /* EXTERNALS */

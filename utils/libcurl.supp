@@ -1,0 +1,34 @@
+ {
+   CRYPTO_malloc1
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:CRYPTO_malloc
+   fun:sk_new
+   obj:/lib/x86_64-linux-gnu/libssl.so.1.0.0
+   fun:SSL_COMP_get_compression_methods
+   fun:SSL_library_init
+   obj:/usr/lib/x86_64-linux-gnu/libcurl.so.4.3.0
+   fun:curl_global_init
+   fun:pg_net_post
+   fun:test_pg_net_post
+   obj:/usr/lib/libcunit.so.1.0.1
+   obj:/usr/lib/libcunit.so.1.0.1
+}
+{
+   CRYPTO_malloc2
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:CRYPTO_malloc
+   fun:sk_new
+   obj:/lib/x86_64-linux-gnu/libssl.so.1.0.0
+   fun:SSL_COMP_get_compression_methods
+   fun:SSL_library_init
+   obj:/usr/lib/x86_64-linux-gnu/libcurl.so.4.3.0
+   fun:curl_global_init
+   fun:pg_net_post
+   fun:test_pg_net_post
+   obj:/usr/lib/libcunit.so.1.0.1
+   obj:/usr/lib/libcunit.so.1.0.1
+}

@@ -7,14 +7,23 @@
 
 ## Architecture ##
 
+## Build Requirements ##
+
+Although design decisions were to have as little dependencies on third party libraries, some are necessary for complex tasks such as HTTP/HTTPS protocol. Therefore before building make sure following libraries are installed on your system
+
+### GNU-Linux Ubuntu ###
+
+```
+sudo apt-get install libcurl4-openssl-dev
+```
 ## Running tests ##
 
-Runing tests in default mode
+Running tests in default mode
 ```
 make && make test
 ```
 
-Runing tests for coverage
+Running tests for coverage
 ```
 make CONF=Cov && make CONF=Cov test
 ```
@@ -24,13 +33,13 @@ Checking coveralls upload
 coveralls -b. --dryrun
 ```
 
-### Installting test environment ###
+### Installing test environment ###
 **CUnit** is needed to run the tests and develop new ones
 ```
 sudo apt-get install libcunit1 libcunit1-doc libcunit1-dev
 ```
 **cpp-coveralls** is needed to upload results to the code coverage framework.
-This is not necessary if you dont want to check the coverage before pushing into github.
+This is not necessary if you don't want to check the coverage before pushing into github.
 ```
 sudo apt-get install python-dev libxml2-dev libxslt-dev
 sudo apt-get install libyaml-dev

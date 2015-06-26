@@ -127,6 +127,11 @@ void test_pg_get_timestamp() {
     CU_ASSERT(time_now > 0);
 }
 
+void test_pg_net_post() {
+    pg_err_t err = pg_net_post("http://localhost:8000", "{\"key\":\"value\"}");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -150,6 +155,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_destroy_config", test_pg_destroy_config);
     CU_add_test(pSuite, "test_pg_copy_config", test_pg_copy_config);
     CU_add_test(pSuite, "test_pg_get_timestamp", test_pg_get_timestamp);
+    CU_add_test(pSuite, "test_pg_net_post", test_pg_net_post);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
