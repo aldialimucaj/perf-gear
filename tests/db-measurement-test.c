@@ -95,7 +95,7 @@ void test_pg_br_measurement_publish() {
     /* constructor call with argument */
     duk_push_string(ctx, "test/api/publish/hit");
     duk_new(ctx, 1);
-    
+
     duk_push_int(ctx, 1);
     duk_put_prop_string(ctx, -2, "typeId");
 
@@ -108,7 +108,7 @@ void test_pg_br_measurement_publish() {
     duk_destroy_heap(ctx);
 
     /* destroy queue */
-    pg_err_t result =  pg_clear_queue();
+    pg_err_t result = pg_clear_queue();
     CU_ASSERT_EQUAL(result, 1);
     result = pg_destroy_queue();
     CU_ASSERT_EQUAL(result, 0);
@@ -130,20 +130,20 @@ void test_pg_br_measurement_publish2() {
     duk_dup(ctx, -2);
     duk_call_method(ctx, 0);
 
-    CU_ASSERT(duk_require_boolean(ctx, -1));
+    CU_ASSERT(!duk_require_boolean(ctx, -1));
 
     duk_destroy_heap(ctx);
 
     /* destroy queue */
-    pg_err_t result =  pg_clear_queue();
-    CU_ASSERT_EQUAL(result, 1);
-    result = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result, 0);
+    size_t items_cleared = pg_clear_queue();
+    CU_ASSERT_EQUAL(items_cleared, 0);
+    pg_err_t result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 }
 
 void test_pg_br_measurement_save_timestamp() {
     pg_init_queue();
-    
+
     duk_context *ctx = NULL;
     ctx = duk_create_heap_default();
 
@@ -169,9 +169,9 @@ void test_pg_br_measurement_save_timestamp() {
     duk_call_method(ctx, 0);
 
     duk_destroy_heap(ctx);
-    
+
     /* destroy queue */
-    pg_err_t result =  pg_clear_queue();
+    pg_err_t result = pg_clear_queue();
     CU_ASSERT_EQUAL(result, 1);
     result = pg_destroy_queue();
     CU_ASSERT_EQUAL(result, 0);
