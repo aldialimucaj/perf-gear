@@ -1,3 +1,5 @@
+// file: queue.c
+
 #include "queue.h"
 
 struct pg_queue* pg_init_queue(void) {
@@ -386,7 +388,7 @@ pg_err_t pg_param_copy_helper(pg_m_param_t *src, pg_m_param_t *dst) {
             break;
         case PG_PARAM_TYPE_UNKNOWN:
         default:
-            err = PG_ERR_NO_MEASUREMENT_PARAM;
+            err = PG_ERR_BAD_ARG;
             break;
     }
 
@@ -398,6 +400,8 @@ pg_err_t pg_param_copy_helper(pg_m_param_t *src, pg_m_param_t *dst) {
 
     return err;
 }
+
+/* ========================================================================= */
 
 pg_err_t pg_copy_measurement_params(pg_m_item_t *src, pg_m_item_t *dst) {
     if (!src) return PG_ERR_NO_MEASUREMENT; // No source measurement

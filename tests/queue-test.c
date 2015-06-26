@@ -486,6 +486,9 @@ void test_pg_msrt_add_param_str() {
 
     err = pg_msrt_add_param_str(measurement, "key2", "value2");
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    
+    err = pg_msrt_add_param_str(measurement, "key3", "value3");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
     pg_destroy_measurement_item(measurement);
 }
@@ -493,13 +496,40 @@ void test_pg_msrt_add_param_str() {
 void test_pg_param_copy_helper() {
     pg_m_param_t *src = pg_create_measurement_param("key1", PG_PARAM_TYPE_STR);
     src->strValue = PG_STRDUP("value1");
+    pg_m_param_t *src2 = pg_create_measurement_param("key2", PG_PARAM_TYPE_INT);
+    src2->intValue = 99;
+    src->next = src2;
+
+    pg_m_param_t *src3 = pg_create_measurement_param("key3", PG_PARAM_TYPE_OBJ);
+    pg_m_param_t *src31 = pg_create_measurement_param("key31", PG_PARAM_TYPE_STR);
+    src31->strValue = PG_STRDUP("value31");
+    src3->objValue = src31;
+    src2->next = src3;
+
+
     pg_m_param_t *dst = pg_create_measurement_param("key1", PG_PARAM_TYPE_STR);
     pg_err_t err = pg_param_copy_helper(src, dst);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
     CU_ASSERT_STRING_EQUAL(src->strValue, dst->strValue);
+    CU_ASSERT_EQUAL(src->next->intValue, dst->next->intValue);
+    CU_ASSERT_STRING_EQUAL(src->next->next->key, dst->next->next->key);
+    CU_ASSERT_STRING_EQUAL(src->next->next->objValue->strValue, dst->next->next->objValue->strValue);
+
+    pg_m_param_t *unknown = pg_create_measurement_param("unknown1", PG_PARAM_TYPE_UNKNOWN);
+    pg_m_param_t *u_dst = pg_create_measurement_param("unknown1", PG_PARAM_TYPE_UNKNOWN);
+    err = pg_param_copy_helper(unknown, u_dst);
+    CU_ASSERT_EQUAL(err, PG_ERR_BAD_ARG);
 
     pg_destroy_measurement_param(src);
+    pg_destroy_measurement_param(src2);
+    pg_destroy_measurement_param(src3);
+    // no need to destroy src31 sub objects are taken care of
     pg_destroy_measurement_param(dst);
+
+    pg_destroy_measurement_param(unknown);
+    pg_destroy_measurement_param(u_dst);
+
+
 }
 
 void test_pg_copy_measurement_params() {
