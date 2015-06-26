@@ -1,4 +1,4 @@
-// file: perf-gear.h
+// file: perf-gear.c
 
 #include "perf-gear.h"
 
@@ -12,6 +12,8 @@ pg_err_t pg_init() {
 
     return PG_NO_ERROR;
 }
+
+/* ========================================================================= */
 
 pg_err_t pg_collect(pg_config_t *config) {
     return pg_start(config);
@@ -84,11 +86,10 @@ void* pg_harvest_measurements(void *cfg) {
         if (json_result) free(json_result);
         if (file_name) free(file_name);
         pg_destroy_queue_item(qitem);
-
-
-        //pg_harvest = false; // TODO: finish this
     }
+    
     pg_destroy_config(config);
+    
     return NULL;
 }
 
@@ -96,5 +97,6 @@ void* pg_harvest_measurements(void *cfg) {
 
 pg_err_t pg_register_js_functions(duk_context *ctx) {
     if(ctx == NULL) return PG_ERR_BAD_ARG;
+    
     return dukopen_perf_gear(ctx);
 }
