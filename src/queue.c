@@ -355,7 +355,7 @@ pg_err_t pg_destroy_measurement_param(pg_m_param_t *param) {
                 if (param->objValue) err = pg_destroy_measurement_param(param->objValue);
                 break;
             default:
-                // error message
+                // nothing to do 
                 break;
         }
         free(param);

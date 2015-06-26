@@ -524,6 +524,8 @@ void test_pg_param_copy_helper() {
     pg_destroy_measurement_param(src2);
     pg_destroy_measurement_param(src3);
     // no need to destroy src31 sub objects are taken care of
+    pg_destroy_measurement_param(dst->next->next);
+    pg_destroy_measurement_param(dst->next);
     pg_destroy_measurement_param(dst);
 
     pg_destroy_measurement_param(unknown);
