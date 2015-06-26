@@ -20,7 +20,9 @@ env:
 #  - CONFIG=Release # turn release off -> travis using Ubuntu 12.04, valgrind 3.7
 
 
-script: make CONF=$CONFIG && make CONF=$CONFIG test && ./valgrind-tests.sh
+script: 
+  - make CONF=$CONFIG && make CONF=$CONFIG test && ./valgrind-tests.sh
+  - scan-build -o /tmp/pg_lint make -j4
 
 after_success:
   - if [ "$CONFIG" = "Cov" ] && [ "$CC" = "gcc" ]; then coveralls --exclude build/Cov/GNU-Linux-x86/tests --exclude build/Cov/GNU-Linux-x86/js-tests --exclude build/Cov/GNU-Linux-x86/lib -b. --gcov-options '\-lp' ; fi

@@ -27,7 +27,8 @@ pg_err_t pg_stop_collecting(pg_m_item_t *measurement) {
     int result = pg_publish_measurement(measurement);
 
     /* we destroy the measurement anyway */
-    result = pg_destroy_measurement_item(measurement);
+    if (result || true)
+        result = pg_destroy_measurement_item(measurement);
 
     return result;
 }
@@ -45,7 +46,8 @@ pg_err_t pg_publish_measurement(pg_m_item_t *measurement) {
     pg_err_t result = pg_copy_measurement_item(measurement, item->measurement);
 
     /* enqueue the item */
-    result = pg_enqueue(item);
+    if (result == PG_NO_ERROR)
+        result = pg_enqueue(item);
 
     /* after enqueue we can delete the measurement */
     if (result == PG_NO_ERROR) {

@@ -167,7 +167,7 @@ pg_err_t pg_destroy_measurement_item(pg_m_item_t *item) {
         }
         /* does it contain dynamic parameters? */
         if (item->param) {
-            pg_m_param_t *param = item->param;
+            pg_m_param_t *param = NULL;
             pg_m_param_t *cursor_param = item->param;
             while (cursor_param != NULL) {
                 param = cursor_param;

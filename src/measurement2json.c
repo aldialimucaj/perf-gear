@@ -26,7 +26,7 @@ char* pg_m2j_transform(const pg_m_item_t *measurement) {
             ) + 1;
     /* after learning the the exact size of the JSON string, we can create the buffer */
     char *result = malloc(sizeof (char)*ch_written);
-    ch_written = snprintf(result, ch_written, PG_TEMPLATE_JSON_MESRNT,
+    snprintf(result, ch_written, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
             measurement->type,
             measurement->hitValue,
@@ -47,7 +47,7 @@ char* pg_transform_seq_json(const pg_mseq_t *seq) {
     if (!seq) return NULL;
     int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value) + 1;
     char *result = malloc(sizeof (char)*ch_written);
-    ch_written = snprintf(result, ch_written, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value);
+    snprintf(result, ch_written, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value);
 
     return result;
 }

@@ -118,20 +118,22 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
 
     /* publish */
     pg_err_t result = pg_publish_measurement(m);
-    if (result == PG_NO_ERROR) {
+    /* publishing creates a copy we need to delete this one */
+    pg_err_t r_destroy = pg_destroy_measurement_item(m);
+    
+    if (result == PG_NO_ERROR && r_destroy == PG_NO_ERROR) {
         duk_push_boolean(ctx, 1); // true
     } else {
         duk_push_boolean(ctx, 0); // false
     }
 
-    result = pg_destroy_measurement_item(m);
 
     return 1;
 }
 
 /* ========================================================================= */
 pg_err_t pg_br_msrt_add_params(duk_context *ctx, pg_m_item_t *m) {
-    if(!m) return PG_ERR_BAD_ARG;
+    if (!m) return PG_ERR_BAD_ARG;
     duk_enum(ctx, -1, DUK_ENUM_INCLUDE_INTERNAL);
     while (duk_next(ctx, -1, 1)) {
         const char *param_key = duk_require_string(ctx, -2);
