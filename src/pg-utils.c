@@ -151,10 +151,33 @@ unsigned long long pg_get_timestamp() {
     gettimeofday(&tv, NULL);
 
     unsigned long long millisecondsSinceEpoch =
+            (unsigned long long) (tv.tv_sec);
+
+    return millisecondsSinceEpoch;
+}
+
+unsigned long long pg_get_timestamp_msec() {
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+
+    unsigned long long millisecondsSinceEpoch =
             (unsigned long long) (tv.tv_sec) * 1000 +
             (unsigned long long) (tv.tv_usec) / 1000;
 
     return millisecondsSinceEpoch;
+}
+
+unsigned long long pg_get_timestamp_usec() {
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+
+    unsigned long long microsecondsSinceEpoch =
+            (unsigned long long) (tv.tv_sec) * 1000000 +
+            (unsigned long long) (tv.tv_usec);
+
+    return microsecondsSinceEpoch;
 }
 
 /* ========================================================================= */

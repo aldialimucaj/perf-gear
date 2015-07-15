@@ -127,8 +127,18 @@ void test_pg_get_timestamp() {
     CU_ASSERT(time_now > 0);
 }
 
+void test_pg_get_timestamp_msec() {
+    unsigned long long time_now = pg_get_timestamp_msec();
+    CU_ASSERT(time_now > 0);
+}
+
+void test_pg_get_timestamp_usec() {
+    unsigned long long time_now = pg_get_timestamp_usec();
+    CU_ASSERT(time_now > 0);
+}
+
 void test_pg_net_post() {
-    pg_err_t err = pg_net_post("http://localhost:8000", "{\"key\":\"value\"}");
+    pg_err_t err = pg_net_post("http://localhost:3000/measurements", "{\"key\":\"value\"}");
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 }
 
@@ -155,6 +165,8 @@ int main() {
     CU_add_test(pSuite, "test_pg_destroy_config", test_pg_destroy_config);
     CU_add_test(pSuite, "test_pg_copy_config", test_pg_copy_config);
     CU_add_test(pSuite, "test_pg_get_timestamp", test_pg_get_timestamp);
+    CU_add_test(pSuite, "test_pg_get_timestamp_msec", test_pg_get_timestamp_msec);
+    CU_add_test(pSuite, "test_pg_get_timestamp_usec", test_pg_get_timestamp_usec);
     CU_add_test(pSuite, "test_pg_net_post", test_pg_net_post);
 
     /* Run all tests using the CUnit Basic interface */

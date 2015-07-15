@@ -11,6 +11,7 @@
 #ifndef _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE	199309L
 #endif
+#define _POSIX_C_SOURCE	199309L
 
 #include <stdio.h>
 #include <sys/stat.h>
@@ -124,11 +125,29 @@ extern "C" {
      */
     pg_config_t* pg_copy_config(pg_config_t* cfg);
 
-    /** @brief Get the Unix time in milliseconds.
+    /** @brief Get the Unix time in seconds.
      * 
      * @return 
      */
     unsigned long long pg_get_timestamp();
+    
+    /** @brief Get the Unix time in milliseconds.
+     * 
+     * @return 
+     */
+    unsigned long long pg_get_timestamp_msec();
+    
+    /** @brief Get the Unix time in microseconds.
+     * 
+     * @return 
+     */
+    unsigned long long pg_get_timestamp_usec();
+    
+    /** @brief Get the Unix time in nanoseconds.
+     * 
+     * @return 
+     */
+    unsigned long long pg_get_timestamp_nsec();
 
     /* ========================================================================= */
     /* NET UTILS */
