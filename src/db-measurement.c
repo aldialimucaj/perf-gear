@@ -49,14 +49,15 @@ duk_ret_t pg_br_measurement_hit(duk_context *ctx) {
 duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     duk_push_this(ctx);
     /* if string argument was passed → its the tag */
+    const char *tagStr = NULL;
     if (duk_is_string(ctx, -2)) {
-        const char *tagStr = duk_require_string(ctx, -2);
-        duk_push_string(ctx, tagStr);
-        duk_put_prop_string(ctx, -2, "tag");
+        tagStr = duk_require_string(ctx, -2);
     } 
     /* at this point the type is set to 2 = TIME */
     duk_push_int(ctx, 2);
     duk_put_prop_string(ctx, -2, "typeId");
+    duk_push_string(ctx, "TIME");
+    duk_put_prop_string(ctx, -2, "type");
 
     /* get the array */
     duk_get_prop_string(ctx, -1, "sequence");
@@ -69,6 +70,12 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     duk_push_object(ctx);
     duk_push_number(ctx, timestamp);
     duk_put_prop_string(ctx, -2, "timestamp");
+    /* add the optional tag */
+    if(tagStr){
+        duk_push_string(ctx, tagStr);
+        duk_put_prop_string(ctx, -2, "tag");
+    }
+    /* put in array*/
     duk_put_prop_index(ctx, -2, length);
 
     return 0;

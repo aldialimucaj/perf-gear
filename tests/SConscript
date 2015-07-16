@@ -15,7 +15,7 @@ else:
 
 _tests = Glob('*.c')
 
-e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'cunit'])
+e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl', 'cunit'])
 for test in _tests:
     # _targetpath = '/' + os.path.splitext(test.rstr())[0]
     # print _targetpath

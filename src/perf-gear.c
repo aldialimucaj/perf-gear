@@ -75,6 +75,8 @@ void* pg_harvest_measurements(void *cfg) {
         pg_m_item_t *m = qitem->measurement;
         if (!m) continue;
 
+        /* forward to dispatcher */
+        pg_dsp_persist(config, m);
         
         /* cleaning up */
         pg_destroy_queue_item(qitem);

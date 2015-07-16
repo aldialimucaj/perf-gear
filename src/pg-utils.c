@@ -126,6 +126,7 @@ pg_config_t* pg_copy_config(pg_config_t* cfg) {
     if (cfg == NULL) return NULL;
     pg_config_t *c = pg_create_config();
     if (cfg->folder) c->folder = strdup(cfg->folder);
+    if (cfg->url) c->url = strdup(cfg->url);
     if (cfg->result_name_prefix) c->result_name_prefix = strdup(cfg->result_name_prefix);
     if (cfg->result_name_suffix) c->result_name_suffix = strdup(cfg->result_name_suffix);
     c->repeat = cfg->repeat;

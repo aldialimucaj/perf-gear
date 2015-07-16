@@ -1,5 +1,5 @@
 
-var config = {'folder': '/tmp/pg_js'};
+var config = {'folder': '/tmp/pg_js', 'url':'http://localhost:3000/api/measurements'};
 var p = new PerfGear(config);
 print('PerfGear.start = ' + p.start());
 
@@ -11,9 +11,9 @@ print('m.hitValue = ' + m.hitValue);
 print('m.publish() = ' + m.publish());
 
 var m2 = new Measurement("test/api/save_timestamp");
-m2.saveTimestamp();
-m2.saveTimestamp();
-m2.saveTimestamp();
+m2.saveTimestamp("Start");
+m2.saveTimestamp("mid");
+m2.saveTimestamp("End");
 print('m2.typeId = ' + m2.typeId);
 
 

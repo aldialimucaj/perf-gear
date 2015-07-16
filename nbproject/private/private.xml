@@ -9,14 +9,15 @@
         <group>
             <file>file:/home/garmin/projects/perf-gear/tests/db-measurement-test.c</file>
             <file>file:/home/garmin/projects/perf-gear/src/queue.c</file>
-            <file>file:/home/garmin/projects/perf-gear/src/dispatcher.h</file>
+            <file>file:/home/garmin/projects/perf-gear/src/collector.c</file>
             <file>file:/home/garmin/projects/perf-gear/src/queue.h</file>
             <file>file:/home/garmin/projects/perf-gear/tests/dispatcher-test.c</file>
+            <file>file:/home/garmin/projects/perf-gear/src/measurement2json.h</file>
             <file>file:/home/garmin/projects/perf-gear/src/dispatcher.c</file>
             <file>file:/home/garmin/projects/perf-gear/src/dukbridge.c</file>
-            <file>file:/home/garmin/projects/perf-gear/src/perf-gear.h</file>
             <file>file:/home/garmin/projects/perf-gear/src/db-measurement.c</file>
             <file>file:/home/garmin/projects/perf-gear/src/perf-gear.c</file>
+            <file>file:/home/garmin/projects/perf-gear/src/pg-utils.c</file>
         </group>
     </open-files>
 </project-private>

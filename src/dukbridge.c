@@ -100,7 +100,7 @@ pg_err_t dukopen_perf_gear(duk_context *ctx) {
     duk_push_c_function(ctx, pg_br_measurement_hit, 0);
     duk_put_prop_string(ctx, -2, "hit");
 
-    duk_push_c_function(ctx, pg_br_measurement_save_timestamp, 0);
+    duk_push_c_function(ctx, pg_br_measurement_save_timestamp, 1);
     duk_put_prop_string(ctx, -2, "saveTimestamp");
 
     duk_put_prop_string(ctx, -2, "prototype");
