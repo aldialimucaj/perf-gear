@@ -19,6 +19,8 @@ duk_ret_t pg_br_Measurement(duk_context *ctx) {
         duk_push_string(ctx, "TYPE_UNKNOWN");
         duk_put_prop_string(ctx, -2, "type");
         duk_push_int(ctx, 0);
+        duk_put_prop_string(ctx, -2, "unitId");
+        duk_push_int(ctx, 0);
         duk_put_prop_string(ctx, -2, "hitValue");
         duk_push_array(ctx);
         duk_put_prop_string(ctx, -2, "sequence");
@@ -34,6 +36,9 @@ duk_ret_t pg_br_measurement_hit(duk_context *ctx) {
     /* at this point the type is set to 1 = HIT_COUNTER */
     duk_push_int(ctx, 1);
     duk_put_prop_string(ctx, -2, "typeId");
+    /* set the unit id 1 = HIT */
+    duk_push_int(ctx, 1);
+    duk_put_prop_string(ctx, -2, "unitId");
     /* get the value of the counter */
     duk_get_prop_string(ctx, -1, "hitValue");
     int v = duk_require_int(ctx, -1);
@@ -52,12 +57,15 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     const char *tagStr = NULL;
     if (duk_is_string(ctx, -2)) {
         tagStr = duk_require_string(ctx, -2);
-    } 
+    }
     /* at this point the type is set to 2 = TIME */
     duk_push_int(ctx, 2);
     duk_put_prop_string(ctx, -2, "typeId");
     duk_push_string(ctx, "TIME");
     duk_put_prop_string(ctx, -2, "type");
+    /* set the unit id 1 = MICROSECONDS */
+    duk_push_int(ctx, 2);
+    duk_put_prop_string(ctx, -2, "unitId");
 
     /* get the array */
     duk_get_prop_string(ctx, -1, "sequence");
@@ -71,7 +79,7 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     duk_push_number(ctx, timestamp);
     duk_put_prop_string(ctx, -2, "timestamp");
     /* add the optional tag */
-    if(tagStr){
+    if (tagStr) {
         duk_push_string(ctx, tagStr);
         duk_put_prop_string(ctx, -2, "tag");
     }
@@ -91,11 +99,19 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     duk_get_prop_string(ctx, -1, "typeId");
     int type_id = duk_require_int(ctx, -1);
     duk_pop(ctx);
+    duk_get_prop_string(ctx, -1, "unitId");
+    int unit_id = duk_require_int(ctx, -1);
+    duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "name");
     const char *path = duk_require_string(ctx, -1);
     duk_pop(ctx);
 
     pg_m_item_t *m = pg_new_measurement(path, type_id);
+
+    /* adding static parameters */
+    if (m) {
+        m->unit = unit_id;
+    }
 
     /* adding dynamic parameters */
     if (m) {
@@ -119,7 +135,7 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
                 seq->timestamp = ts_value;
                 seq->value = 0;
                 duk_get_prop_string(ctx, -1, "tag");
-                if(duk_is_string(ctx, -1)) seq->tag = PG_STRDUP(duk_get_string(ctx, -1));
+                if (duk_is_string(ctx, -1)) seq->tag = PG_STRDUP(duk_get_string(ctx, -1));
                 /* pop string:tag */
                 duk_pop(ctx);
 

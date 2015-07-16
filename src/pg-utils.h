@@ -38,6 +38,7 @@ extern "C" {
         PG_ERR_NO_Q_ITEM, /*!< No queue item passed */
         PG_ERR_NO_MEASUREMENT, /*!< No Measurement */
         PG_ERR_WRONG_MEASUREMENT_TYPE, /*!< Passed wrong measurement type for this operation */
+        PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE, /*!< Measurement unit is set and cant be changed */
         PG_ERR_NO_MEASUREMENT_SEQ, /*!< No measurement sequences were passed */
         PG_ERR_NO_MEASUREMENT_PARAM, /*!< No measurement parameters were passed */
         PG_ERR_QUEUE_NOT_READY, /*!< Queue is NULL or not ready */
