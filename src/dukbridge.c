@@ -6,13 +6,27 @@ duk_ret_t pg_br_startPerfGear(duk_context *ctx) {
     duk_get_prop_string(ctx, -1, "config");
 
     duk_get_prop_string(ctx, -1, "folder");
-    const char* folder = duk_to_string(ctx, -1);
+    const char* folder = NULL;
+    if (!duk_is_undefined(ctx, -1)) {
+        folder = duk_to_string(ctx, -1);
+    }
+    /* pop string:folder */
     duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "url");
+    const char* url = NULL;
+    if (!duk_is_undefined(ctx, -1)) {
+        url = duk_to_string(ctx, -1);
+    }
+    /* pop string:url */
+    duk_pop(ctx);
+    /* pop obj:config */
     duk_pop(ctx);
 
     pg_config_t* c = pg_create_config();
 
-    c->folder = strdup(folder);
+    if (folder) c->folder = PG_STRDUP(folder);
+    if (url) c->url = PG_STRDUP(url);
     c->repeat = 100;
 
     pg_err_t e = pg_start(c);
