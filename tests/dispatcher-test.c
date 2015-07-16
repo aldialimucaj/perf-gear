@@ -64,6 +64,11 @@ void test_pg_dsp_save_to_disk() {
 
 }
 
+void test_pg_net_post() {
+    pg_err_t err = pg_net_post("http://localhost:3000/api/measurements", "{\"key\":\"value\"}");
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -80,6 +85,7 @@ int main() {
 
     /* Add the tests to the suite */
     CU_add_test(pSuite, "test_pg_dsp_save_to_disk", test_pg_dsp_save_to_disk);
+    CU_add_test(pSuite, "test_pg_net_post", test_pg_net_post);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

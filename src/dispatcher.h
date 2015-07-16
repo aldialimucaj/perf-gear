@@ -28,6 +28,20 @@ extern "C" {
      * @return Result of saving operation
      */
     pg_err_t pg_dsp_save_to_disk(char *path, char *content);
+    
+    /* ========================================================================= */
+    /* NET UTILS */
+    /* ========================================================================= */
+
+    /** @brief Send HTTP POST request to url with json payload.
+     * 
+     * Using libcurl http://curl.haxx.se/libcurl/c/http-post.html 
+     * 
+     * @param url
+     * @param json
+     * @return 
+     */
+    pg_err_t pg_net_post(const char* url, const char* json);
 
 
 
