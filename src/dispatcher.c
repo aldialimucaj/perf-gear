@@ -1,5 +1,38 @@
 // file: dispatcher.c
 #include "dispatcher.h"
+#include "measurement2json.h"
+
+pg_err_t pg_dsp_persist(pg_config_t *config, const pg_m_item_t *measurement) {
+    if (!config) return PG_ERR_NO_DESTINATION;
+    if (!measurement) return PG_ERR_NO_MEASUREMENT;
+
+    pg_err_t err = PG_NO_ERROR;
+    char *json_result = pg_m2j_transform(measurement);
+
+    /* if config->folder is set -> save it to disk */
+    if (config->folder) {
+        char *file_name = pg_build_filename(measurement->path, config);
+        if (!file_name) perror("Could not create measurement filename! It will get lost.");
+        err = pg_dsp_save_to_disk(file_name, json_result);
+        if (err != PG_NO_ERROR) perror("Could not dispatch measurement! It will get lost.");
+
+        /* clean up */
+        if (file_name) free(file_name);
+    }
+
+    /* if config->url is set -> post it to perf-gear server */
+    if (config->url) {
+        err = pg_dsp_net_post(config->url, json_result);
+        if (err != PG_NO_ERROR) perror("Could not dispatch measurement! It will get lost.");
+    }
+
+    /* clean up */
+    if (json_result) free(json_result);
+
+    return err;
+}
+
+/* ========================================================================= */
 
 pg_err_t pg_dsp_save_to_disk(char *path, char *content) {
     if (!path) return PG_ERR_NO_DES_PATH;
@@ -16,7 +49,10 @@ pg_err_t pg_dsp_save_to_disk(char *path, char *content) {
 
 /* ========================================================================= */
 
-pg_err_t pg_net_post(const char* url, const char* json) {
+pg_err_t pg_dsp_net_post(const char* url, const char* json) {
+    if (!url) return PG_ERR_NO_DESTINATION;
+    if (!json) return PG_ERR_NO_CONTENT;
+    
     pg_err_t err = PG_NO_ERROR;
     CURL *curl;
     CURLcode res;

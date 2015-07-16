@@ -101,6 +101,7 @@ pg_config_t* pg_create_config(void) {
     c->folder = NULL;
     c->result_name_prefix = NULL;
     c->result_name_suffix = NULL;
+    c->url = NULL;
     c->repeat = 0;
 
     return c;
@@ -113,6 +114,7 @@ pg_err_t pg_destroy_config(pg_config_t *config) {
     if (config->folder) free(config->folder);
     if (config->result_name_prefix) free(config->result_name_prefix);
     if (config->result_name_suffix) free(config->result_name_suffix);
+    if (config->url) free(config->url);
     free(config);
 
     return PG_NO_ERROR;

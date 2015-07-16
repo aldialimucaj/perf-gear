@@ -20,6 +20,16 @@
 extern "C" {
 #endif
 
+    
+    /** @brief Save measurement according to configuration
+     * 
+     * @param config
+     * @param measurement
+     * 
+     * @return Result of saving operation
+     */
+    pg_err_t pg_dsp_persist(pg_config_t *config, const pg_m_item_t *measurement);
+    
     /** @brief Save measurement content to disk
      * 
      * @param path
@@ -41,7 +51,7 @@ extern "C" {
      * @param json
      * @return 
      */
-    pg_err_t pg_net_post(const char* url, const char* json);
+    pg_err_t pg_dsp_net_post(const char* url, const char* json);
 
 
 

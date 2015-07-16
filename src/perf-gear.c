@@ -75,16 +75,8 @@ void* pg_harvest_measurements(void *cfg) {
         pg_m_item_t *m = qitem->measurement;
         if (!m) continue;
 
-        char *json_result = pg_m2j_transform(m);
-        char *file_name = pg_build_filename(m->path, config);
-        if (!file_name) perror("Could not create measurement filename! It will get lost.");
-
-        pg_err_t result = pg_dsp_save_to_disk(file_name, json_result);
-        if (result != PG_NO_ERROR) perror("Could not dispatch measurement! It will get lost.");
-
+        
         /* cleaning up */
-        if (json_result) free(json_result);
-        if (file_name) free(file_name);
         pg_destroy_queue_item(qitem);
     }
     
