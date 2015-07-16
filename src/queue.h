@@ -57,12 +57,12 @@ extern "C" {
     typedef enum {
         PG_MEASUREMENT_UNIT_UNKNOWN = 0, /*!< is an undefined state and indicates an error. */
         PG_MEASUREMENT_UNIT_HIT, /*!< counts the hits. scalar type */
-        PG_MEASUREMENT_UNIT_NS, /*!< nanoseconds. */
+        PG_MEASUREMENT_UNIT_US, /*!< microseconds. */
         PG_MEASUREMENT_UNIT_MS, /*!< milliseconds. */
-        PG_MEASUREMENT_UNIT_SC, /*!< seconds. */
-        PG_MEASUREMENT_UNIT_MB, /*!< Megabyte. */
+        PG_MEASUREMENT_UNIT_S,  /*!< seconds. */
+        PG_MEASUREMENT_UNIT_BT, /*!< Byte. */
         PG_MEASUREMENT_UNIT_KB, /*!< Kilobyte. */
-        PG_MEASUREMENT_UNIT_BT /*!< Byte. */
+        PG_MEASUREMENT_UNIT_MB  /*!< Megabyte. */
     } pg_munit_t;
 
     typedef enum {

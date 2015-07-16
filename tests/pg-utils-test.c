@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <CUnit/Basic.h>
 #include "../src/pg-utils.h"
+#include "../src/queue.h"
 
 /*
  * CUnit Test Suite
@@ -137,6 +138,26 @@ void test_pg_get_timestamp_usec() {
     CU_ASSERT(time_now > 0);
 }
 
+void test_pg_get_str_unit() {
+    char *unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_HIT);
+    CU_ASSERT_STRING_EQUAL(unit_str, "HITS");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_US);
+    CU_ASSERT_STRING_EQUAL(unit_str, "MICROSECONDS");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_MS);
+    CU_ASSERT_STRING_EQUAL(unit_str, "MILLISECONDS");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_S);
+    CU_ASSERT_STRING_EQUAL(unit_str, "SECONDS");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_BT);
+    CU_ASSERT_STRING_EQUAL(unit_str, "BYTE");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_KB);
+    CU_ASSERT_STRING_EQUAL(unit_str, "KILOBYTE");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_MB);
+    CU_ASSERT_STRING_EQUAL(unit_str, "MEGABYTE");
+    unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_UNKNOWN);
+    CU_ASSERT_STRING_EQUAL(unit_str, "UNKOWN");
+    
+}
+
 
 
 int main() {
@@ -164,6 +185,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_get_timestamp", test_pg_get_timestamp);
     CU_add_test(pSuite, "test_pg_get_timestamp_msec", test_pg_get_timestamp_msec);
     CU_add_test(pSuite, "test_pg_get_timestamp_usec", test_pg_get_timestamp_usec);
+    CU_add_test(pSuite, "test_pg_get_str_unit", test_pg_get_str_unit);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

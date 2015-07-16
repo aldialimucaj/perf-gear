@@ -20,7 +20,7 @@
 
 #define PG_TEMPLATE_JSON_SEQ "{\"timestamp\":%zd,\"value\":%.2f}"
 #define PG_TEMPLATE_JSON_SEQ_W_TAG "{\"timestamp\":%zd,\"value\":%.2f,\"tag\":\"%s\"}"
-#define PG_TEMPLATE_JSON_MESRNT "{\"path\":\x22%s\x22,\"type\":%d,\"hitValue\":%zd,%s\"sequence\":%s}"
+#define PG_TEMPLATE_JSON_MESRNT "{\"path\":\"%s\",\"type\":%d,\"unit\":\"%s\",\"hitValue\":%zd,%s\"sequence\":%s}"
 #define PG_TEMPLATE_JSON_PARAM_STR "\"%s\":\"%s\""
 #define PG_TEMPLATE_JSON_PARAM_OBJ "\"%s\":{%s}"
 

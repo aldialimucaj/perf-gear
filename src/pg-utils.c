@@ -159,6 +159,8 @@ unsigned long long pg_get_timestamp() {
     return millisecondsSinceEpoch;
 }
 
+/* ========================================================================= */
+
 unsigned long long pg_get_timestamp_msec() {
     struct timeval tv;
 
@@ -171,6 +173,8 @@ unsigned long long pg_get_timestamp_msec() {
     return millisecondsSinceEpoch;
 }
 
+/* ========================================================================= */
+
 unsigned long long pg_get_timestamp_usec() {
     struct timeval tv;
 
@@ -181,4 +185,36 @@ unsigned long long pg_get_timestamp_usec() {
             (unsigned long long) (tv.tv_usec);
 
     return microsecondsSinceEpoch;
+}
+
+/* ========================================================================= */
+
+char* pg_get_str_unit(char unit) {
+    char *unit_str = NULL;
+    switch (unit) {
+        case PG_MEASUREMENT_UNIT_HIT:
+            unit_str = "HITS";
+            break;
+        case PG_MEASUREMENT_UNIT_US:
+            unit_str = "MICROSECONDS";
+            break;
+        case PG_MEASUREMENT_UNIT_MS:
+            unit_str = "MILLISECONDS";
+            break;
+        case PG_MEASUREMENT_UNIT_S:
+            unit_str = "SECONDS";
+            break;
+        case PG_MEASUREMENT_UNIT_BT:
+            unit_str = "BYTE";
+            break;
+        case PG_MEASUREMENT_UNIT_KB:
+            unit_str = "KILOBYTE";
+            break;
+        case PG_MEASUREMENT_UNIT_MB:
+            unit_str = "MEGABYTE";
+            break;
+        default:
+            unit_str = "UNKOWN";
+    }
+    return unit_str;
 }

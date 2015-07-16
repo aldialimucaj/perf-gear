@@ -143,11 +143,12 @@ extern "C" {
      */
     unsigned long long pg_get_timestamp_usec();
     
-    /** @brief Get the Unix time in nanoseconds.
+    /** @brief Match unit id to physical name.
      * 
+     * @param 
      * @return 
      */
-    unsigned long long pg_get_timestamp_nsec();
+    char* pg_get_str_unit(char unit);
 
     /* ========================================================================= */
     /* SYSTEM UTILS */

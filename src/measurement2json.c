@@ -16,10 +16,15 @@ char* pg_m2j_transform(const pg_m_item_t *measurement) {
     } else { // else just an empty string to match the printf params
         param_json = strdup("");
     }
+    
+    /* get string value from unit id */
+    char *unit_str = pg_get_str_unit(measurement->unit);
+    
     /* we don't yet know how much space the buffer needs, so we count.*/
     int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
             measurement->type,
+            unit_str,
             measurement->hitValue,
             param_json,
             seq_json
@@ -29,6 +34,7 @@ char* pg_m2j_transform(const pg_m_item_t *measurement) {
     snprintf(result, ch_written, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
             measurement->type,
+            unit_str,
             measurement->hitValue,
             param_json,
             seq_json
