@@ -48,6 +48,12 @@ duk_ret_t pg_br_measurement_hit(duk_context *ctx) {
 
 duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     duk_push_this(ctx);
+    /* if string argument was passed → its the tag */
+    if (duk_is_string(ctx, -2)) {
+        const char *tagStr = duk_require_string(ctx, -2);
+        duk_push_string(ctx, tagStr);
+        duk_put_prop_string(ctx, -2, "tag");
+    } 
     /* at this point the type is set to 2 = TIME */
     duk_push_int(ctx, 2);
     duk_put_prop_string(ctx, -2, "typeId");
@@ -58,7 +64,8 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     int length = duk_require_int(ctx, -1);
     duk_pop(ctx);
 
-    unsigned long long timestamp = pg_get_timestamp();
+    //TODO: set timestamp according to configuration. default microseconds
+    unsigned long long timestamp = pg_get_timestamp_usec();
     duk_push_object(ctx);
     duk_push_number(ctx, timestamp);
     duk_put_prop_string(ctx, -2, "timestamp");
@@ -99,12 +106,20 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
             while (duk_next(ctx, -1, 1)) {
                 duk_get_prop_string(ctx, -1, "timestamp");
                 size_t ts_value = (size_t) duk_require_number(ctx, -1);
+                /* pop number:timestamp */
+                duk_pop(ctx);
                 pg_mseq_t *seq = pg_create_measurement_sequence();
                 seq->timestamp = ts_value;
                 seq->value = 0;
+                duk_get_prop_string(ctx, -1, "tag");
+                if(duk_is_string(ctx, -1)) seq->tag = PG_STRDUP(duk_get_string(ctx, -1));
+                /* pop string:tag */
+                duk_pop(ctx);
+
                 pg_add_measurement_sequence(m, seq);
 
-                duk_pop_3(ctx);
+                /* pop duk_next (key, value) */
+                duk_pop_2(ctx);
             }
 
             duk_pop(ctx); /* pop enum object */
@@ -120,7 +135,7 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     pg_err_t result = pg_publish_measurement(m);
     /* publishing creates a copy we need to delete this one */
     pg_err_t r_destroy = pg_destroy_measurement_item(m);
-    
+
     if (result == PG_NO_ERROR && r_destroy == PG_NO_ERROR) {
         duk_push_boolean(ctx, 1); // true
     } else {

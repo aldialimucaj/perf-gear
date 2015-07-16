@@ -45,9 +45,16 @@ char* pg_m2j_transform(const pg_m_item_t *measurement) {
 
 char* pg_transform_seq_json(const pg_mseq_t *seq) {
     if (!seq) return NULL;
-    int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value) + 1;
-    char *result = malloc(sizeof (char)*ch_written);
-    snprintf(result, ch_written, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value);
+    char *result = NULL;
+    if (seq->tag) {
+        int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_SEQ_W_TAG, seq->timestamp, seq->value, seq->tag) + 1;
+        result = malloc(sizeof (char)*ch_written);
+        snprintf(result, ch_written, PG_TEMPLATE_JSON_SEQ_W_TAG, seq->timestamp, seq->value, seq->tag);
+    } else {
+        int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value) + 1;
+        result = malloc(sizeof (char)*ch_written);
+        snprintf(result, ch_written, PG_TEMPLATE_JSON_SEQ, seq->timestamp, seq->value);
+    }
 
     return result;
 }
