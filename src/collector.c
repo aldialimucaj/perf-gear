@@ -80,3 +80,17 @@ pg_err_t pg_save_timestamp(pg_m_item_t *measurement) {
     seq->value = 0;
     return pg_add_measurement_sequence(measurement, seq);
 }
+
+/* ========================================================================= */
+
+pg_err_t pg_save_timestamp_tag(pg_m_item_t *measurement, const char *tag) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // nothing to update
+    if (measurement->type != PG_MEASUREMENT_TYPE_TIME)
+        return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
+
+    pg_mseq_t *seq = pg_create_measurement_sequence();
+    seq->timestamp = pg_get_timestamp();
+    seq->value = 0;
+    seq->tag = PG_STRDUP(tag);
+    return pg_add_measurement_sequence(measurement, seq);
+}

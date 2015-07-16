@@ -77,6 +77,19 @@ extern "C" {
      * @return 
      */
     pg_err_t pg_save_timestamp(pg_m_item_t *measurement);
+    
+     /** @brief Save the timestamp into the sequence with tag.
+     * 
+     * This enables perf-gear to track the frequency of hits
+     * for this object. Useful to build cycle graphs such as
+     * MHz, FPS etc. Additionally you can add a tag to track
+     * where this call was made
+     * 
+     * @param measurement
+     * @param tag
+     * @return 
+     */
+    pg_err_t pg_save_timestamp_tag(pg_m_item_t *measurement, const char *tag);
 
 
 #ifdef	__cplusplus
