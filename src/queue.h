@@ -105,6 +105,7 @@ extern "C" {
     typedef struct pg_measurement_sequence {
         size_t timestamp; /*!< Time when it was measured */
         double value; /*!< Value that was measured */
+        char *tag; /*!< Tag the timestamp */
         struct pg_measurement_sequence* next; /*!< Next sequence */
     } pg_mseq_t;
 

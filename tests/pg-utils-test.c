@@ -138,7 +138,7 @@ void test_pg_get_timestamp_usec() {
 }
 
 void test_pg_net_post() {
-    pg_err_t err = pg_net_post("http://localhost:3000/measurements", "{\"key\":\"value\"}");
+    pg_err_t err = pg_net_post("http://localhost:3000/api/measurements", "{\"key\":\"value\"}");
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 }
 

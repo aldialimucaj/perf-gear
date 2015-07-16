@@ -224,6 +224,7 @@ pg_mseq_t* pg_create_measurement_sequence(void) {
     struct pg_measurement_sequence *new_item = malloc(sizeof (struct pg_measurement_sequence));
     new_item->timestamp = 0;
     new_item->value = 0;
+    new_item->tag = NULL;
     new_item->next = NULL;
     return new_item;
 }
@@ -232,6 +233,7 @@ pg_mseq_t* pg_create_measurement_sequence(void) {
 
 pg_err_t pg_destroy_measurement_sequence(pg_mseq_t *item) {
     if (item) {
+        if(item->tag) free(item->tag);
         free(item);
         item = NULL;
         return 0;
@@ -280,6 +282,7 @@ pg_err_t pg_copy_measurement_sequences(pg_m_item_t *src, pg_m_item_t *dst) {
         memcpy(dest_seq, src_current_seq, sizeof (struct pg_measurement_sequence));
         /* remove the source's next */
         dest_seq->next = NULL;
+        if(src_current_seq->tag) dest_seq->tag = PG_STRDUP(src_current_seq->tag);
         pg_add_measurement_sequence(dst, dest_seq);
         // TODO: check result
     } while ((src_current_seq = src_current_seq->next) != NULL);
