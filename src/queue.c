@@ -2,7 +2,7 @@
 
 #include "queue.h"
 
-pthread_mutex_t pg_mutex;
+pthread_mutex_t pg_q_mutex;
 
 struct pg_queue* pg_init_queue(void) {
     if (pg_queue == NULL) {
@@ -13,7 +13,7 @@ struct pg_queue* pg_init_queue(void) {
             pg_queue->tail = NULL;
 
             /* init mutex */
-            pthread_mutex_init(&pg_mutex, NULL);
+            pthread_mutex_init(&pg_q_mutex, NULL);
         }
     }
 
@@ -29,7 +29,7 @@ pg_err_t pg_destroy_queue(void) {
             pg_queue = NULL;
 
             /* destroy mutex */
-            pthread_mutex_destroy(&pg_mutex);
+            pthread_mutex_destroy(&pg_q_mutex);
             return PG_NO_ERROR;
         } else {
             return PG_ERR_QUEUE_NOT_EMPTY;
@@ -49,7 +49,7 @@ pg_err_t pg_enqueue(pg_q_item_t *item) {
     struct pg_queue_item *new_item = pg_create_queue_item();
     if (new_item != NULL) {
         /* protect against thread race conditions */
-        pthread_mutex_lock(&pg_mutex);
+        pthread_mutex_lock(&pg_q_mutex);
         /* if new item is ready, copy sub elements */
         if (item->measurement != NULL) {
             new_item->measurement = pg_create_measurement_item();
@@ -71,7 +71,7 @@ pg_err_t pg_enqueue(pg_q_item_t *item) {
         pg_queue->size++;
 
         /* release mutex */
-        pthread_mutex_unlock(&pg_mutex);
+        pthread_mutex_unlock(&pg_q_mutex);
     } else {
         return PG_ERR_COULD_NOT_CREATE; /* could not create new item */
     }
@@ -87,7 +87,7 @@ pg_q_item_t* pg_dequeue(void) {
     if (!pg_queue->head) return NULL; // error this should not happen 
 
     /* protect against thread race conditions */
-    pthread_mutex_lock(&pg_mutex);
+    pthread_mutex_lock(&pg_q_mutex);
     
     /* getting the first element */
     struct pg_queue_item *item = pg_queue->head;
@@ -104,14 +104,14 @@ pg_q_item_t* pg_dequeue(void) {
     pg_queue->size--;
 
     /* release mutex */
-    pthread_mutex_unlock(&pg_mutex);
+    pthread_mutex_unlock(&pg_q_mutex);
     return item;
 }
 
 /* ========================================================================= */
 
 size_t pg_clear_queue(void) {
-    if (!pg_queue) return -1; // queue is not ready 
+    if (!pg_queue) return 0; // queue is not ready 
     if (pg_queue->size == 0) return 0; // queue is empty
 
     /* element to be dequeued */
@@ -131,7 +131,7 @@ size_t pg_get_queue_size(void) {
     if (pg_queue != NULL) {
         return pg_queue->size;
     } else {
-        return -1; // queue is not ready 
+        return 0; // queue is not ready 
     }
 }
 

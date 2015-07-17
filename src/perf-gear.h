@@ -39,7 +39,7 @@ extern "C" {
 
     /** @brief Flag to stop harvesting measurements form the queue
      */
-    extern bool pg_harvest;
+    extern volatile bool pg_harvest;
 
     /** @brief Harvester thread
      */

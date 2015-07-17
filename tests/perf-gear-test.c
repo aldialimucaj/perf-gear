@@ -59,18 +59,14 @@ void test_pg_collect() {
 
     // ---
 
-    /* wait for thread to finish */
-    int h_err;
-    int thj_result = pthread_join(harvester_th, (void**) &h_err);
-    CU_ASSERT_EQUAL(thj_result, 0);
-    CU_ASSERT_EQUAL(h_err, 0);
-    if (thj_result != 0) perror("Cant wait for harvester thread.");
-
+    result = pg_stop();
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    
     /* destroy queue */
     size_t q_size = pg_clear_queue();
     CU_ASSERT_EQUAL(q_size, 0);
     result = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    CU_ASSERT_EQUAL(result, PG_ERR_QUEUE_NOT_READY);
 }
 
 void test_pg_harvest() {
@@ -99,12 +95,9 @@ void test_pg_harvest() {
 
     // ---
 
-    /* wait for thread to finish */
-    int h_err;
-    int thj_result = pthread_join(harvester_th, (void**) &h_err);
-    CU_ASSERT_EQUAL(thj_result, 0);
-    CU_ASSERT_EQUAL(h_err, 0);
-    if (thj_result != 0) perror("Cant wait for harvester thread.");
+   
+    result = pg_stop();
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     /* destroy queue */
     size_t q_size = pg_clear_queue();
@@ -139,18 +132,15 @@ void test_pg_start() {
 
     // ---
 
-    /* wait for thread to finish */
-    int h_err;
-    int thj_result = pthread_join(harvester_th, (void**) &h_err);
-    CU_ASSERT_EQUAL(thj_result, 0);
-    CU_ASSERT_EQUAL(h_err, 0);
-    if (thj_result != 0) perror("Cant wait for harvester thread.");
+   
+    result = pg_stop();
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     /* destroy queue */
     size_t q_size = pg_clear_queue();
     CU_ASSERT_EQUAL(q_size, 0);
     result = pg_destroy_queue();
-    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    CU_ASSERT_EQUAL(result, PG_ERR_QUEUE_NOT_READY);
 }
 
 void test_pg_stop() {
