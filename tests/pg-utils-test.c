@@ -158,6 +158,18 @@ void test_pg_get_str_unit() {
     
 }
 
+void test_pg_get_str_m_type() {
+    char *type_str = pg_get_str_m_type(PG_MEASUREMENT_TYPE_HIT);
+    CU_ASSERT_STRING_EQUAL(type_str, "HIT");
+    type_str = pg_get_str_m_type(PG_MEASUREMENT_TYPE_TIME);
+    CU_ASSERT_STRING_EQUAL(type_str, "TIME");
+    type_str = pg_get_str_m_type(PG_MEASUREMENT_TYPE_RAM);
+    CU_ASSERT_STRING_EQUAL(type_str, "RAM");
+    type_str = pg_get_str_m_type(PG_MEASUREMENT_TYPE_UNKNOWN);
+    CU_ASSERT_STRING_EQUAL(type_str, "UNKOWN");
+    
+}
+
 
 
 int main() {
@@ -186,6 +198,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_get_timestamp_msec", test_pg_get_timestamp_msec);
     CU_add_test(pSuite, "test_pg_get_timestamp_usec", test_pg_get_timestamp_usec);
     CU_add_test(pSuite, "test_pg_get_str_unit", test_pg_get_str_unit);
+    CU_add_test(pSuite, "test_pg_get_str_m_type", test_pg_get_str_m_type);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

@@ -50,8 +50,9 @@ extern "C" {
      */
     typedef enum {
         PG_MEASUREMENT_TYPE_UNKNOWN = 0, /*!< is an undefined state and indicates an error. */
-        PG_MEASUREMENT_TYPE_HIT = 1, /*!< counts the hits that this event has fired. */
-        PG_MEASUREMENT_TYPE_TIME = 2 /*!< measures the time between event creation and destruction. */
+        PG_MEASUREMENT_TYPE_HIT, /*!< counts the hits that this event has fired. */
+        PG_MEASUREMENT_TYPE_TIME,   /*!< measures the time between event creation and destruction. */
+        PG_MEASUREMENT_TYPE_RAM     /*!< measures ram consumption at timestamp. */
     } pg_mtype_t;
 
     typedef enum {

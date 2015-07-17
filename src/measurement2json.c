@@ -19,11 +19,12 @@ char* pg_m2j_transform(const pg_m_item_t *measurement) {
     
     /* get string value from unit id */
     char *unit_str = pg_get_str_unit(measurement->unit);
+    char *type_str = pg_get_str_m_type(measurement->type);
     
     /* we don't yet know how much space the buffer needs, so we count.*/
     int ch_written = snprintf(NULL, 0, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
-            measurement->type,
+            type_str,
             unit_str,
             measurement->hitValue,
             param_json,
@@ -33,7 +34,7 @@ char* pg_m2j_transform(const pg_m_item_t *measurement) {
     char *result = malloc(sizeof (char)*ch_written);
     snprintf(result, ch_written, PG_TEMPLATE_JSON_MESRNT,
             measurement->path,
-            measurement->type,
+            type_str,
             unit_str,
             measurement->hitValue,
             param_json,

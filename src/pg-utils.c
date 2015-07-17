@@ -218,3 +218,23 @@ char* pg_get_str_unit(char unit) {
     }
     return unit_str;
 }
+
+/* ========================================================================= */
+
+char* pg_get_str_m_type(char typeId) {
+    char *type_str = NULL;
+    switch (typeId) {
+        case PG_MEASUREMENT_TYPE_HIT:
+            type_str = "HIT";
+            break;
+        case PG_MEASUREMENT_TYPE_TIME:
+            type_str = "TIME";
+            break;
+        case PG_MEASUREMENT_TYPE_RAM:
+            type_str = "RAM";
+            break;
+        default:
+            type_str = "UNKOWN";
+    }
+    return type_str;
+}

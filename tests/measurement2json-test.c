@@ -27,9 +27,10 @@ void test_pg_m2j_transform() {
     m->path = strdup("test/func/one");
     m->type = PG_MEASUREMENT_TYPE_HIT;
     m->hitValue = 11;
+    m->unit = PG_MEASUREMENT_UNIT_HIT;
 
     char *json_result = pg_m2j_transform(m);
-    const char *cmp_m_str = "{\"path\":\"test/func/one\",\"type\":1,\"hitValue\":11,\"sequence\":[]}";
+    const char *cmp_m_str = "{\"path\":\"test/func/one\",\"type\":\"HIT\",\"unit\":\"HITS\",\"hitValue\":11,\"sequence\":[]}";
     CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str);
     if (json_result) {
         free(json_result);
@@ -41,7 +42,7 @@ void test_pg_m2j_transform() {
     m->sequence = seq;
 
     json_result = pg_m2j_transform(m);
-    const char *cmp_m_str2 = "{\"path\":\"test/func/one\",\"type\":1,\"hitValue\":11,\"sequence\":[{\"timestamp\":3425,\"value\":624352.00}]}";
+    const char *cmp_m_str2 = "{\"path\":\"test/func/one\",\"type\":\"HIT\",\"unit\":\"HITS\",\"hitValue\":11,\"sequence\":[{\"timestamp\":3425,\"value\":624352.00}]}";
     CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str2);
     if (json_result) {
         free(json_result);
@@ -53,7 +54,7 @@ void test_pg_m2j_transform() {
     seq->next = seq2;
 
     json_result = pg_m2j_transform(m);
-    const char *cmp_m_str3 = "{\"path\":\"test/func/one\",\"type\":1,\"hitValue\":11,\"sequence\":[{\"timestamp\":3425,\"value\":624352.00},{\"timestamp\":8563,\"value\":4254.00}]}";
+    const char *cmp_m_str3 = "{\"path\":\"test/func/one\",\"type\":\"HIT\",\"unit\":\"HITS\",\"hitValue\":11,\"sequence\":[{\"timestamp\":3425,\"value\":624352.00},{\"timestamp\":8563,\"value\":4254.00}]}";
     CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str3);
     if (json_result) {
         free(json_result);
@@ -63,11 +64,12 @@ void test_pg_m2j_transform() {
     m2->path = strdup("test/m2j/params");
     m2->type = PG_MEASUREMENT_TYPE_HIT;
     m2->hitValue = 11;
+    m2->unit = PG_MEASUREMENT_UNIT_HIT;
     pg_err_t err = pg_msrt_add_param_str(m2, "key", "value");
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
     json_result = pg_m2j_transform(m2);
-    cmp_m_str3 = "{\"path\":\"test/m2j/params\",\"type\":1,\"hitValue\":11,\"key\":\"value\",\"sequence\":[]}";
+    cmp_m_str3 = "{\"path\":\"test/m2j/params\",\"type\":\"HIT\",\"unit\":\"HITS\",\"hitValue\":11,\"key\":\"value\",\"sequence\":[]}";
     CU_ASSERT_STRING_EQUAL(json_result, cmp_m_str3);
     if (json_result) {
         free(json_result);

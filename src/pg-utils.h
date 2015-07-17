@@ -150,6 +150,13 @@ extern "C" {
      * @return 
      */
     char* pg_get_str_unit(char unit);
+    
+    /** @brief Match measurement typeId to type name
+     * 
+     * @param unit
+     * @return 
+     */
+    char* pg_get_str_m_type(char typeId);
 
     /* ========================================================================= */
     /* SYSTEM UTILS */
