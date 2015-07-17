@@ -150,9 +150,9 @@ void test_pg_get_str_unit() {
     unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_BT);
     CU_ASSERT_STRING_EQUAL(unit_str, "BYTE");
     unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_KB);
-    CU_ASSERT_STRING_EQUAL(unit_str, "KILOBYTE");
+    CU_ASSERT_STRING_EQUAL(unit_str, "KIBIBYTE");
     unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_MB);
-    CU_ASSERT_STRING_EQUAL(unit_str, "MEGABYTE");
+    CU_ASSERT_STRING_EQUAL(unit_str, "MEBIBYTE");
     unit_str = pg_get_str_unit(PG_MEASUREMENT_UNIT_UNKNOWN);
     CU_ASSERT_STRING_EQUAL(unit_str, "UNKOWN");
     

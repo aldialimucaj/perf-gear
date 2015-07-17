@@ -61,8 +61,8 @@ extern "C" {
         PG_MEASUREMENT_UNIT_MS, /*!< milliseconds. */
         PG_MEASUREMENT_UNIT_S,  /*!< seconds. */
         PG_MEASUREMENT_UNIT_BT, /*!< Byte. */
-        PG_MEASUREMENT_UNIT_KB, /*!< Kilobyte. */
-        PG_MEASUREMENT_UNIT_MB  /*!< Megabyte. */
+        PG_MEASUREMENT_UNIT_KB, /*!< Kibibyte. */
+        PG_MEASUREMENT_UNIT_MB  /*!< Mebibyte. */
     } pg_munit_t;
 
     typedef enum {

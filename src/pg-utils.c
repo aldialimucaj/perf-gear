@@ -208,10 +208,10 @@ char* pg_get_str_unit(char unit) {
             unit_str = "BYTE";
             break;
         case PG_MEASUREMENT_UNIT_KB:
-            unit_str = "KILOBYTE";
+            unit_str = "KIBIBYTE";
             break;
         case PG_MEASUREMENT_UNIT_MB:
-            unit_str = "MEGABYTE";
+            unit_str = "MEBIBYTE";
             break;
         default:
             unit_str = "UNKOWN";
