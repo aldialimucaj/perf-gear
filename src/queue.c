@@ -2,6 +2,8 @@
 
 #include "queue.h"
 
+pthread_mutex_t pg_mutex;
+
 struct pg_queue* pg_init_queue(void) {
     if (pg_queue == NULL) {
         pg_queue = (struct pg_queue*) malloc(sizeof (struct pg_queue));
@@ -9,6 +11,9 @@ struct pg_queue* pg_init_queue(void) {
             pg_queue->size = 0;
             pg_queue->head = NULL;
             pg_queue->tail = NULL;
+
+            /* init mutex */
+            pthread_mutex_init(&pg_mutex, NULL);
         }
     }
 
@@ -22,6 +27,9 @@ pg_err_t pg_destroy_queue(void) {
         if (pg_queue->size == 0) {
             free(pg_queue);
             pg_queue = NULL;
+
+            /* destroy mutex */
+            pthread_mutex_destroy(&pg_mutex);
             return PG_NO_ERROR;
         } else {
             return PG_ERR_QUEUE_NOT_EMPTY;
@@ -40,6 +48,8 @@ pg_err_t pg_enqueue(pg_q_item_t *item) {
     /* creating new element */
     struct pg_queue_item *new_item = pg_create_queue_item();
     if (new_item != NULL) {
+        /* protect against thread race conditions */
+        pthread_mutex_lock(&pg_mutex);
         /* if new item is ready, copy sub elements */
         if (item->measurement != NULL) {
             new_item->measurement = pg_create_measurement_item();
@@ -60,9 +70,12 @@ pg_err_t pg_enqueue(pg_q_item_t *item) {
         }
         pg_queue->size++;
 
+        /* release mutex */
+        pthread_mutex_unlock(&pg_mutex);
     } else {
         return PG_ERR_COULD_NOT_CREATE; /* could not create new item */
     }
+
     return PG_NO_ERROR;
 }
 
@@ -73,6 +86,9 @@ pg_q_item_t* pg_dequeue(void) {
     if (pg_queue->size == 0) return NULL; // queue is empty
     if (!pg_queue->head) return NULL; // error this should not happen 
 
+    /* protect against thread race conditions */
+    pthread_mutex_lock(&pg_mutex);
+    
     /* getting the first element */
     struct pg_queue_item *item = pg_queue->head;
 
@@ -86,6 +102,9 @@ pg_q_item_t* pg_dequeue(void) {
 
     /* decrease the queue's size */
     pg_queue->size--;
+
+    /* release mutex */
+    pthread_mutex_unlock(&pg_mutex);
     return item;
 }
 
@@ -234,7 +253,7 @@ pg_mseq_t* pg_create_measurement_sequence(void) {
 
 pg_err_t pg_destroy_measurement_sequence(pg_mseq_t *item) {
     if (item) {
-        if(item->tag) free(item->tag);
+        if (item->tag) free(item->tag);
         free(item);
         item = NULL;
         return 0;
@@ -283,7 +302,7 @@ pg_err_t pg_copy_measurement_sequences(pg_m_item_t *src, pg_m_item_t *dst) {
         memcpy(dest_seq, src_current_seq, sizeof (struct pg_measurement_sequence));
         /* remove the source's next */
         dest_seq->next = NULL;
-        if(src_current_seq->tag) dest_seq->tag = PG_STRDUP(src_current_seq->tag);
+        if (src_current_seq->tag) dest_seq->tag = PG_STRDUP(src_current_seq->tag);
         pg_add_measurement_sequence(dst, dest_seq);
         // TODO: check result
     } while ((src_current_seq = src_current_seq->next) != NULL);
