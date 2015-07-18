@@ -70,8 +70,8 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
         tagStr = duk_require_string(ctx, -2);
     }
     /* at this point the type is set to 2 = TIME */
-    duk_push_string(ctx, "TIME");
-    duk_put_prop_string(ctx, -2, "type");
+    duk_push_int(ctx, 2);
+    duk_put_prop_string(ctx, -2, "typeId");
     /* set the unit id 1 = MICROSECONDS */
     duk_push_int(ctx, 2);
     duk_put_prop_string(ctx, -2, "unitId");
@@ -81,6 +81,10 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     duk_get_prop_string(ctx, -1, "length");
     int length = duk_require_int(ctx, -1);
     duk_pop(ctx);
+
+    /* set hitValue as alias for sequence.length */
+    duk_push_int(ctx, length + 1);
+    duk_put_prop_string(ctx, -3, "hitValue");
 
     //TODO: set timestamp according to configuration. default microseconds
     unsigned long long timestamp = pg_get_timestamp_usec();
@@ -98,6 +102,59 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     /* release mutex */
     pthread_mutex_unlock(&pg_dbm_mutex);
 
+    return 0;
+}
+
+/* ========================================================================= */
+
+duk_ret_t pg_br_measurement_save_ram_usage(duk_context *ctx) {
+    /* protect against thread race conditions */
+    pthread_mutex_lock(&pg_dbm_mutex);
+    /* push element that called function */
+    duk_push_this(ctx);
+    /* if string argument was passed → its the tag */
+    const char *tagStr = NULL;
+    if (duk_is_string(ctx, -2)) {
+        tagStr = duk_require_string(ctx, -2);
+    }
+    /* at this point the type is set to RAM */
+    duk_push_int(ctx, 3);
+    duk_put_prop_string(ctx, -2, "typeId");
+    duk_push_string(ctx, "RAM");
+    duk_put_prop_string(ctx, -2, "type");
+    /* set the unit id 6 = Kibibytes */
+    duk_push_int(ctx, PG_MEASUREMENT_UNIT_KB);
+    duk_put_prop_string(ctx, -2, "unitId");
+
+    /* get the array */
+    duk_get_prop_string(ctx, -1, "sequence");
+    duk_get_prop_string(ctx, -1, "length");
+    int length = duk_require_int(ctx, -1);
+    duk_pop(ctx);
+
+    /* set hitValue as alias for sequence.length */
+    duk_push_int(ctx, length + 1);
+    duk_put_prop_string(ctx, -3, "hitValue");
+
+    //TODO: set timestamp according to configuration. default microseconds
+    unsigned long long timestamp = pg_get_timestamp_usec();
+    duk_push_object(ctx);
+    duk_push_number(ctx, timestamp);
+    duk_put_prop_string(ctx, -2, "timestamp");
+    /* set ram usage */
+    size_t ram_usage = pg_get_ram_usage();
+    duk_push_number(ctx, ram_usage);
+    duk_put_prop_string(ctx, -2, "value");
+    /* add the optional tag */
+    if (tagStr) {
+        duk_push_string(ctx, tagStr);
+        duk_put_prop_string(ctx, -2, "tag");
+    }
+    /* put in array*/
+    duk_put_prop_index(ctx, -2, length);
+
+    /* release mutex */
+    pthread_mutex_unlock(&pg_dbm_mutex);
     return 0;
 }
 
@@ -134,11 +191,12 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     }
 
     switch (type_id) {
-        case 1: // type = HIT
+        case PG_MEASUREMENT_TYPE_HIT: // type = HIT
             m->hitValue = v;
             break;
-        case 2: // type = TIME
+        case PG_MEASUREMENT_TYPE_TIME: // type = TIME
         {
+            m->hitValue = v;
             duk_get_prop_string(ctx, -1, "sequence");
             duk_enum(ctx, -1, DUK_ENUM_SORT_ARRAY_INDICES);
             while (duk_next(ctx, -1, 1)) {
@@ -149,6 +207,38 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
                 pg_mseq_t *seq = pg_create_measurement_sequence();
                 seq->timestamp = ts_value;
                 seq->value = 0;
+                duk_get_prop_string(ctx, -1, "tag");
+                if (duk_is_string(ctx, -1)) seq->tag = PG_STRDUP(duk_get_string(ctx, -1));
+                /* pop string:tag */
+                duk_pop(ctx);
+
+                pg_add_measurement_sequence(m, seq);
+
+                /* pop duk_next (key, value) */
+                duk_pop_2(ctx);
+            }
+
+            duk_pop(ctx); /* pop enum object */
+            break;
+        }
+        case PG_MEASUREMENT_TYPE_RAM: // type = RAM
+        {
+            m->hitValue = v;
+            duk_get_prop_string(ctx, -1, "sequence");
+            duk_enum(ctx, -1, DUK_ENUM_SORT_ARRAY_INDICES);
+            while (duk_next(ctx, -1, 1)) {
+                duk_get_prop_string(ctx, -1, "timestamp");
+                size_t ts_value = (size_t) duk_require_number(ctx, -1);
+                /* pop number:timestamp */
+                duk_pop(ctx);
+                duk_get_prop_string(ctx, -1, "value");
+                size_t seq_value = (size_t) duk_require_number(ctx, -1);
+                /* pop number:value */
+                duk_pop(ctx);
+
+                pg_mseq_t *seq = pg_create_measurement_sequence();
+                seq->timestamp = ts_value;
+                seq->value = seq_value;
                 duk_get_prop_string(ctx, -1, "tag");
                 if (duk_is_string(ctx, -1)) seq->tag = PG_STRDUP(duk_get_string(ctx, -1));
                 /* pop string:tag */
@@ -178,20 +268,20 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
         duk_push_boolean(ctx, 1); // true
         duk_put_prop_string(ctx, -2, "published");
         /* pop this object */
-        duk_pop(ctx); 
+        duk_pop(ctx);
         /* return value */
         duk_push_boolean(ctx, 1); // true
     } else {
         duk_push_boolean(ctx, 0); // false
         duk_put_prop_string(ctx, -2, "published");
         /* pop this object */
-        duk_pop(ctx); 
+        duk_pop(ctx);
         duk_push_boolean(ctx, 0); // false
     }
 
     /* release mutex */
     pthread_mutex_unlock(&pg_dbm_mutex);
-    
+
     return 1;
 }
 

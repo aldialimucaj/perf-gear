@@ -43,6 +43,14 @@ extern "C" {
      * @return true if saved successfully
      */
     duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx);
+    
+    /** @brief Saves the RAM usage for the current moment. It will
+     * be associated with a timestamp to match the both.
+     * 
+     * @param ctx
+     * @return 
+     */
+    duk_ret_t pg_br_measurement_save_ram_usage(duk_context *ctx);
 
     /** @brief Publish this measurement when done collecting.
      * 

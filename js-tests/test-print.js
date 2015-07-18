@@ -30,4 +30,14 @@ m3.typeId = 1;
 m3.test = "dynamic params";
 print('m3.publish() = ' + m3.publish());
 print('m3.published ' + m3.published);
+
+var m4 = new Measurement("test/api/ram_usage");
+m4.saveRamUsage();
+m4.saveRamUsage();
+m4.saveRamUsage();
+print('m4.publish() = ' + m4.publish());
+print('m4.published ' + m4.published);
+
+
 p.stop();
+

@@ -177,6 +177,42 @@ void test_pg_br_measurement_save_timestamp() {
     CU_ASSERT_EQUAL(result, 0);
 }
 
+void test_pg_br_measurement_save_ram_usage() {
+    pg_init_queue();
+
+    duk_context *ctx = NULL;
+    ctx = duk_create_heap_default();
+
+    /* push the constructor */
+    duk_push_c_function(ctx, pg_br_Measurement, 1);
+    /* constructor call with argument */
+    duk_push_string(ctx, "test/api/ram_usage");
+    duk_new(ctx, 1);
+    duk_get_prop_string(ctx, -1, "name");
+    CU_ASSERT(duk_is_string(ctx, -1));
+    duk_pop(ctx);
+
+    duk_push_c_function(ctx, pg_br_measurement_save_ram_usage, 0);
+    duk_dup(ctx, -2);
+    duk_call_method(ctx, 0);
+    duk_pop(ctx);
+    duk_get_prop_string(ctx, -1, "sequence");
+    duk_get_prop_string(ctx, -1, "length");
+    CU_ASSERT_EQUAL(duk_require_int(ctx, -1), 1);
+    duk_pop_2(ctx);
+    duk_push_c_function(ctx, pg_br_measurement_publish, 0);
+    duk_dup(ctx, -2);
+    duk_call_method(ctx, 0);
+
+    duk_destroy_heap(ctx);
+
+    /* destroy queue */
+    pg_err_t result = pg_clear_queue();
+    CU_ASSERT_EQUAL(result, 1);
+    result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, 0);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -197,6 +233,7 @@ int main() {
     CU_add_test(pSuite, "test_pg_br_measurement_publish", test_pg_br_measurement_publish);
     CU_add_test(pSuite, "test_pg_br_measurement_publish2", test_pg_br_measurement_publish2);
     CU_add_test(pSuite, "test_pg_br_measurement_save_timestamp", test_pg_br_measurement_save_timestamp);
+    CU_add_test(pSuite, "test_pg_br_measurement_save_ram_usage", test_pg_br_measurement_save_ram_usage);
 
 
     /* Run all tests using the CUnit Basic interface */
