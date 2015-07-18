@@ -66,7 +66,6 @@ extern "C" {
         char* result_name_prefix; /*!< Prefix like PRE_#path#.json */
         char* result_name_suffix; /*!< Suffix like #path#_SUF.json */
         char* url; /*!< URL to post measurement if present */
-        int repeat; /*!< how many times to fetch before stopping. 0=Infinite */
     } pg_config_t;
 
     /** @brief Creates a file name compatible with fs.

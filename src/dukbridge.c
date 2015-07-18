@@ -27,7 +27,6 @@ duk_ret_t pg_br_startPerfGear(duk_context *ctx) {
 
     if (folder) c->folder = PG_STRDUP(folder);
     if (url) c->url = PG_STRDUP(url);
-    c->repeat = 100;
 
     pg_err_t e = pg_start(c);
     if (e == PG_NO_ERROR) {

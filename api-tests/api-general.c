@@ -24,8 +24,7 @@ int clean_suite(void) {
 
 void test_pseudo_main() {
     struct pg_config c = {
-        .folder = "/tmp/pg_api",
-        .repeat = 0
+        .folder = "/tmp/pg_api"
     };
     pg_err_t err;
     err = pg_start(&c);
@@ -46,8 +45,7 @@ void test_pseudo_main() {
 
 void test_pseudo_main_init() {
     struct pg_config c = {
-        .folder = "/tmp/pg_api",
-        .repeat = 0
+        .folder = "/tmp/pg_api"
     };
     pg_err_t err;
     err = pg_init();
@@ -71,8 +69,7 @@ void test_pseudo_main_init() {
 
 void test_pseudo_main_loop() {
     struct pg_config c = {
-        .folder = "/tmp/pg_api",
-        .repeat = 0
+        .folder = "/tmp/pg_api"
     };
     pg_err_t err;
     err = pg_init();
@@ -99,8 +96,7 @@ void test_pseudo_main_loop() {
 
 void test_pseudo_main_loop_timestamp() {
     struct pg_config c = {
-        .folder = "/tmp/pg_api",
-        .repeat = 0
+        .folder = "/tmp/pg_api"
     };
     pg_err_t err;
     err = pg_init();
@@ -127,8 +123,7 @@ void test_pseudo_main_loop_timestamp() {
 
 void test_pseudo_main_loop_timestamp_with_tag() {
     struct pg_config c = {
-        .folder = "/tmp/pg_api",
-        .repeat = 0
+        .folder = "/tmp/pg_api"
     };
     pg_err_t err;
     err = pg_init();

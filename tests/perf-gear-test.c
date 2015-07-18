@@ -36,8 +36,7 @@ void test_pg_init() {
 
 void test_pg_collect() {
     struct pg_config c = {
-        .folder = "/tmp/pg",
-        .repeat = 1
+        .folder = "/tmp/pg"
     };
 
     pg_err_t result = pg_collect(&c);
@@ -72,8 +71,7 @@ void test_pg_collect() {
 void test_pg_harvest() {
 
     struct pg_config c = {
-        .folder = "/tmp/pg",
-        .repeat = 10
+        .folder = "/tmp/pg"
     };
 
     pg_err_t result = pg_collect(&c);
@@ -109,8 +107,7 @@ void test_pg_harvest() {
 void test_pg_start() {
 
     struct pg_config c = {
-        .folder = "/tmp/pg",
-        .repeat = 10
+        .folder = "/tmp/pg"
     };
 
     pg_err_t result = pg_start(&c);
@@ -145,8 +142,7 @@ void test_pg_start() {
 
 void test_pg_stop() {
     struct pg_config c = {
-        .folder = "/tmp/pg",
-        .repeat = 10
+        .folder = "/tmp/pg"
     };
 
     pg_err_t result = pg_start(&c);
@@ -188,7 +184,6 @@ void test_pg_harvest_measurements(void) {
 
     pg_config_t *c = pg_create_config();
     c->folder = strdup("/tmp/");
-    c->repeat = 10;
 
     pg_harvest_measurements(c);
 

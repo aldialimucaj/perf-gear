@@ -74,8 +74,7 @@ void test_pg_br_stopPerfGear() {
     duk_new(ctx, 1);
 
     struct pg_config c = {
-        .folder = "/tmp/pg_db",
-        .repeat = 10
+        .folder = "/tmp/pg_db"
     };
     pg_start(&c);
     // ---
