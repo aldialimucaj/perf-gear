@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <curl/curl.h>
+#include <sys/resource.h>
 
 
 #define PG_FN_REPACE_CHR_FROM '/'
@@ -142,6 +143,31 @@ extern "C" {
      * @return 
      */
     unsigned long long pg_get_timestamp_usec();
+    
+    /** @brief Get the maximum resident set size of process. 
+     * RAM usage in KiB which is the sum of resources used by 
+     * all threads in the process or all children depending on the
+     * who parameter value.
+     * 
+     * @return 
+     */
+    size_t pg_get_ram_usage_who(int who);
+    
+    /** @brief Get the maximum resident set size of process. 
+     * RAM usage in KiB which is the sum of resources used by 
+     * all threads in the process.
+     * 
+     * @return 
+     */
+    size_t pg_get_ram_usage();
+    
+    /** @brief Get the maximum resident set size of process. 
+     * RAM usage in KiB which is the sum of resources used by 
+     * children of this process.
+     * 
+     * @return 
+     */
+    size_t pg_get_ram_usage_children();
     
     /** @brief Match unit id to physical name.
      * 

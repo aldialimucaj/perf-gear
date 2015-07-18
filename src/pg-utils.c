@@ -187,6 +187,34 @@ unsigned long long pg_get_timestamp_usec() {
 
 /* ========================================================================= */
 
+size_t pg_get_ram_usage_who(int who) {
+    /* otherwise undefined result */
+    if (who != RUSAGE_SELF && who != RUSAGE_CHILDREN) return 0;
+    
+    size_t ram_usage = 0;
+    struct rusage rss_usage;
+
+    if (getrusage(who, &rss_usage) == 0) {
+        ram_usage = rss_usage.ru_maxrss;
+    }
+
+    return ram_usage;
+}
+
+/* ========================================================================= */
+
+size_t pg_get_ram_usage() {
+    return pg_get_ram_usage_who(RUSAGE_SELF);
+}
+
+/* ========================================================================= */
+
+size_t pg_get_ram_usage_children() {
+    return pg_get_ram_usage_who(RUSAGE_CHILDREN);
+}
+
+/* ========================================================================= */
+
 char* pg_get_str_unit(char unit) {
     char *unit_str = NULL;
     switch (unit) {

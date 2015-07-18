@@ -170,7 +170,24 @@ void test_pg_get_str_m_type() {
     
 }
 
+void test_pg_get_ram_usage_who() {
+    long ram_size = pg_get_ram_usage_who(0);
+    CU_ASSERT(ram_size > 0);
+    ram_size = -1;
+    ram_size = pg_get_ram_usage_children(-1);
+    CU_ASSERT(ram_size >= 0);
+}
 
+void test_pg_get_ram_usage() {
+    size_t ram_size = pg_get_ram_usage();
+    CU_ASSERT(ram_size > 0);
+}
+
+void test_pg_get_ram_usage_children() {
+    long ram_size = -1;
+    ram_size = pg_get_ram_usage_children();
+    CU_ASSERT(ram_size >= 0);
+}
 
 int main() {
     CU_pSuite pSuite = NULL;
@@ -199,6 +216,9 @@ int main() {
     CU_add_test(pSuite, "test_pg_get_timestamp_usec", test_pg_get_timestamp_usec);
     CU_add_test(pSuite, "test_pg_get_str_unit", test_pg_get_str_unit);
     CU_add_test(pSuite, "test_pg_get_str_m_type", test_pg_get_str_m_type);
+    CU_add_test(pSuite, "test_pg_get_ram_usage_who", test_pg_get_ram_usage_who);
+    CU_add_test(pSuite, "test_pg_get_ram_usage", test_pg_get_ram_usage);
+    CU_add_test(pSuite, "test_pg_get_ram_usage_children", test_pg_get_ram_usage_children);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
