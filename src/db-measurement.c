@@ -1,6 +1,8 @@
 #include "../lib/duktape.h"
 #include "db-measurement.h"
 
+pthread_mutex_t pg_dbm_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 duk_ret_t pg_br_Measurement(duk_context *ctx) {
     if (duk_is_constructor_call(ctx)) {
         /* check the arguments passed - if none then hit is default */
@@ -32,6 +34,9 @@ duk_ret_t pg_br_Measurement(duk_context *ctx) {
 /* ========================================================================= */
 
 duk_ret_t pg_br_measurement_hit(duk_context *ctx) {
+    /* protect against thread race conditions */
+    pthread_mutex_lock(&pg_dbm_mutex);
+    /* push element that called function */
     duk_push_this(ctx);
     /* at this point the type is set to 1 = HIT_COUNTER */
     duk_push_int(ctx, 1);
@@ -46,12 +51,18 @@ duk_ret_t pg_br_measurement_hit(duk_context *ctx) {
     duk_push_int(ctx, ++v);
     duk_put_prop_string(ctx, -2, "hitValue");
 
+    /* release mutex */
+    pthread_mutex_unlock(&pg_dbm_mutex);
+
     return 0;
 }
 
 /* ========================================================================= */
 
 duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
+    /* protect against thread race conditions */
+    pthread_mutex_lock(&pg_dbm_mutex);
+    /* push element that called function */
     duk_push_this(ctx);
     /* if string argument was passed → its the tag */
     const char *tagStr = NULL;
@@ -59,8 +70,6 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
         tagStr = duk_require_string(ctx, -2);
     }
     /* at this point the type is set to 2 = TIME */
-    duk_push_int(ctx, 2);
-    duk_put_prop_string(ctx, -2, "typeId");
     duk_push_string(ctx, "TIME");
     duk_put_prop_string(ctx, -2, "type");
     /* set the unit id 1 = MICROSECONDS */
@@ -86,12 +95,18 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     /* put in array*/
     duk_put_prop_index(ctx, -2, length);
 
+    /* release mutex */
+    pthread_mutex_unlock(&pg_dbm_mutex);
+
     return 0;
 }
 
 /* ========================================================================= */
 
 duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
+    /* protect against thread race conditions */
+    pthread_mutex_lock(&pg_dbm_mutex);
+    /* push element that called function */
     duk_push_this(ctx);
     duk_get_prop_string(ctx, -1, "hitValue");
     int v = duk_require_int(ctx, -1);
@@ -165,7 +180,9 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
         duk_push_boolean(ctx, 0); // false
     }
 
-
+    /* release mutex */
+    pthread_mutex_unlock(&pg_dbm_mutex);
+    
     return 1;
 }
 
