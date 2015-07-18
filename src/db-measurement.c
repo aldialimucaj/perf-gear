@@ -176,7 +176,16 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
 
     if (result == PG_NO_ERROR && r_destroy == PG_NO_ERROR) {
         duk_push_boolean(ctx, 1); // true
+        duk_put_prop_string(ctx, -2, "published");
+        /* pop this object */
+        duk_pop(ctx); 
+        /* return value */
+        duk_push_boolean(ctx, 1); // true
     } else {
+        duk_push_boolean(ctx, 0); // false
+        duk_put_prop_string(ctx, -2, "published");
+        /* pop this object */
+        duk_pop(ctx); 
         duk_push_boolean(ctx, 0); // false
     }
 
