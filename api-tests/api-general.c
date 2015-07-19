@@ -192,12 +192,12 @@ void test_pseudo_main_progressive_ram_usage() {
     err = pg_save_ram_usage(m1);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 
-    void *t1 = malloc(10000000); // 10 MiB
+    void *t1 = calloc(1*1024*1024, sizeof (int)); // 1 MiB
     
     err = pg_save_ram_usage(m1);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
     
-    void *t2 = malloc(10000000); // 10 MiB
+    void *t2 = calloc(1*1024*1024, sizeof (int)); // 1 MiB
     
     err = pg_save_ram_usage(m1);
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);

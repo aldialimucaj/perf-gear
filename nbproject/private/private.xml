@@ -7,15 +7,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/a/projects/perf-gear/api-tests/api-general.c</file>
             <file>file:/home/a/projects/perf-gear/src/pg-utils.h</file>
             <file>file:/home/a/projects/perf-gear/src/queue.h</file>
-            <file>file:/home/a/projects/perf-gear/src/db-measurement.h</file>
+            <file>file:/home/a/projects/perf-gear/src/collector.h</file>
+            <file>file:/home/a/projects/perf-gear/src/dispatcher.c</file>
+            <file>file:/home/a/projects/perf-gear/tests/collector-test.c</file>
             <file>file:/home/a/projects/perf-gear/src/pg-utils.c</file>
-            <file>file:/home/a/projects/perf-gear/tests/pg-utils-test.c</file>
-            <file>file:/home/a/projects/perf-gear/src/dukbridge.c</file>
-            <file>file:/home/a/projects/perf-gear/tests/db-measurement-test.c</file>
+            <file>file:/home/a/projects/perf-gear/src/collector.c</file>
             <file>file:/home/a/projects/perf-gear/src/queue.c</file>
-            <file>file:/home/a/projects/perf-gear/src/db-measurement.c</file>
         </group>
     </open-files>
 </project-private>
