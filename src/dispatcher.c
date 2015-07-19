@@ -77,7 +77,7 @@ pg_err_t pg_dsp_net_post(const char* url, const char* json) {
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json);
         /* don't print response to standard output */
-        curl_easy_setopt(curl, CURLOPT_NOBODY, 1);
+        //curl_easy_setopt(curl, CURLOPT_NOBODY, 1);
         /* Perform the request, res will get the return code */
         res = curl_easy_perform(curl);
         /* Check for errors */

@@ -151,7 +151,7 @@ void test_pseudo_main_loop_timestamp_with_tag() {
 void test_pseudo_main_loop_ram_usage() {
     struct pg_config c = {
         .folder = "/tmp/pg_api",
-        .url = "http://localhost:3000/api/measurements"        
+        .url = "http://localhost:3000/api/measurements"
     };
     pg_err_t err;
     err = pg_init();
@@ -176,10 +176,49 @@ void test_pseudo_main_loop_ram_usage() {
     CU_ASSERT_EQUAL(err, PG_NO_ERROR);
 }
 
+void test_pseudo_main_progressive_ram_usage() {
+    struct pg_config c = {
+        .folder = "/tmp/pg_api",
+        .url = "http://localhost:3000/api/measurements"
+    };
+    pg_err_t err;
+    err = pg_init();
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    pg_m_item_t* m1 = pg_new_measurement("api/test/pseudo_main/progressive/ram", PG_MEASUREMENT_TYPE_RAM);
+    CU_ASSERT(m1 != NULL);
+
+
+    err = pg_save_ram_usage(m1);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    void *t1 = malloc(10000000); // 10 MiB
+    
+    err = pg_save_ram_usage(m1);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+    
+    void *t2 = malloc(10000000); // 10 MiB
+    
+    err = pg_save_ram_usage(m1);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    err = pg_stop_collecting(m1);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    err = pg_collect(&c);
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+
+    err = pg_stop();
+    CU_ASSERT_EQUAL(err, PG_NO_ERROR);
+ 
+    free(t1);
+    free(t2);
+}
+
 void test_pseudo_main_loop_ram_usage_with_tag() {
     struct pg_config c = {
         .folder = "/tmp/pg_api",
-        .url = "http://localhost:3000/api/measurements"        
+        .url = "http://localhost:3000/api/measurements"
     };
     pg_err_t err;
     err = pg_init();
@@ -225,6 +264,7 @@ int main() {
     CU_add_test(pSuite, "test_pseudo_main_loop_timestamp", test_pseudo_main_loop_timestamp);
     CU_add_test(pSuite, "test_pseudo_main_loop_timestamp_with_tag", test_pseudo_main_loop_timestamp_with_tag);
     CU_add_test(pSuite, "test_pseudo_main_loop_ram_usage", test_pseudo_main_loop_ram_usage);
+    CU_add_test(pSuite, "test_pseudo_main_progressive_ram_usage", test_pseudo_main_progressive_ram_usage);
     CU_add_test(pSuite, "test_pseudo_main_loop_ram_usage_with_tag", test_pseudo_main_loop_ram_usage_with_tag);
 
     /* Run all tests using the CUnit Basic interface */
