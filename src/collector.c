@@ -114,3 +114,44 @@ pg_err_t pg_save_timestamp_tag(pg_m_item_t *measurement, const char *tag) {
     seq->tag = PG_STRDUP(tag);
     return pg_add_measurement_sequence(measurement, seq);
 }
+
+/* ========================================================================= */
+
+pg_err_t pg_save_ram_usage(pg_m_item_t *measurement) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // nothing to update
+    if (measurement->type != PG_MEASUREMENT_TYPE_RAM)
+        return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
+
+    /* check if pristine otherwise cant change unit */
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+        measurement->unit = PG_MEASUREMENT_UNIT_KB;
+    } else if(measurement->unit != PG_MEASUREMENT_UNIT_KB) {
+        return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
+    }
+    
+    pg_mseq_t *seq = pg_create_measurement_sequence();
+    seq->timestamp = pg_get_timestamp_usec();
+    seq->value = pg_get_ram_usage();
+    return pg_add_measurement_sequence(measurement, seq);
+}
+
+/* ========================================================================= */
+
+pg_err_t pg_save_ram_usage_tag(pg_m_item_t *measurement, const char *tag) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // nothing to update
+    if (measurement->type != PG_MEASUREMENT_TYPE_RAM)
+        return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
+
+    /* check if pristine otherwise cant change unit */
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+        measurement->unit = PG_MEASUREMENT_UNIT_KB;
+    } else if(measurement->unit != PG_MEASUREMENT_UNIT_KB) {
+        return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
+    }
+    
+    pg_mseq_t *seq = pg_create_measurement_sequence();
+    seq->timestamp = pg_get_timestamp_usec();
+    seq->value = pg_get_ram_usage();
+    seq->tag = PG_STRDUP(tag);
+    return pg_add_measurement_sequence(measurement, seq);
+}

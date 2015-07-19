@@ -119,6 +119,63 @@ void test_pg_save_timestamp(void) {
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }
 
+void test_pg_save_timestamp_tag(void) {
+    pg_err_t result = pg_increase_hit(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+    
+    pg_m_item_t *m = pg_create_measurement_item();
+    m->type = PG_MEASUREMENT_TYPE_UNKNOWN;
+    result = pg_save_timestamp_tag(m, "fun1");
+    CU_ASSERT_EQUAL(result, PG_ERR_WRONG_MEASUREMENT_TYPE);
+
+    m->type = PG_MEASUREMENT_TYPE_TIME;
+    result = pg_save_timestamp_tag(m, "fun2");
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    
+    CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
+    
+    int destroy_res = pg_destroy_measurement_item(m);
+    CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
+}
+
+void test_pg_save_ram_usage(void) {
+    pg_err_t result = pg_increase_hit(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+    
+    pg_m_item_t *m = pg_create_measurement_item();
+    m->type = PG_MEASUREMENT_TYPE_UNKNOWN;
+    result = pg_save_ram_usage(m);
+    CU_ASSERT_EQUAL(result, PG_ERR_WRONG_MEASUREMENT_TYPE);
+
+    m->type = PG_MEASUREMENT_TYPE_RAM;
+    result = pg_save_ram_usage(m);
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    
+    CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
+    
+    int destroy_res = pg_destroy_measurement_item(m);
+    CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
+}
+
+void test_pg_save_ram_usage_tag(void) {
+    pg_err_t result = pg_increase_hit(NULL);
+    CU_ASSERT_EQUAL(result, PG_ERR_NO_MEASUREMENT);
+    
+    pg_m_item_t *m = pg_create_measurement_item();
+    m->type = PG_MEASUREMENT_TYPE_UNKNOWN;
+    result = pg_save_ram_usage_tag(m, "fun1");
+    CU_ASSERT_EQUAL(result, PG_ERR_WRONG_MEASUREMENT_TYPE);
+
+    m->type = PG_MEASUREMENT_TYPE_RAM;
+    result = pg_save_ram_usage_tag(m, "fun2");
+    CU_ASSERT_EQUAL(result, PG_NO_ERROR);
+    
+    CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
+    
+    int destroy_res = pg_destroy_measurement_item(m);
+    CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
+}
+
 int main() {
     CU_pSuite pSuite = NULL;
 
@@ -139,6 +196,9 @@ int main() {
     CU_add_test(pSuite, "test_pg_publish_measurement", test_pg_publish_measurement);
     CU_add_test(pSuite, "test_pg_increase_hit", test_pg_increase_hit);
     CU_add_test(pSuite, "test_pg_save_timestamp", test_pg_save_timestamp);
+    CU_add_test(pSuite, "test_pg_save_timestamp_tag", test_pg_save_timestamp_tag);
+    CU_add_test(pSuite, "test_pg_save_ram_usage", test_pg_save_ram_usage);
+    CU_add_test(pSuite, "test_pg_save_ram_usage_tag", test_pg_save_ram_usage_tag);
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

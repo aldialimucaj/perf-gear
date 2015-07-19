@@ -91,6 +91,29 @@ extern "C" {
      */
     pg_err_t pg_save_timestamp_tag(pg_m_item_t *measurement, const char *tag);
 
+    /** @brief Save the RAM consumption with timestamp into the sequence.
+     * 
+     * This enables perf-gear to track RAM consumption in that moment.
+     * The value will be saved with a timestamp to better track changes.
+     * 
+     * @param measurement
+     * @return 
+     */
+    pg_err_t pg_save_ram_usage(pg_m_item_t *measurement);
+    
+     /** @brief Save the RAM consumption with timestamp and tag into the sequence.
+     * 
+     * This enables perf-gear to track RAM consumption in that moment.
+     * The value will be saved with a timestamp to better track changes.
+     * Additionally you can add a tag to track
+     * where this call was made
+     * 
+     * @param measurement
+     * @param tag
+     * @return 
+     */
+    pg_err_t pg_save_ram_usage_tag(pg_m_item_t *measurement, const char *tag);
+
 
 #ifdef	__cplusplus
 }
