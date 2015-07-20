@@ -216,6 +216,7 @@ pg_err_t pg_copy_measurement_item(pg_m_item_t *src, pg_m_item_t *dst) {
     dst->path = NULL;
     dst->param = NULL;
     dst->unit = src->unit;
+    dst->type = src->type;
 
     /* copy the path */
     if (src->path) {

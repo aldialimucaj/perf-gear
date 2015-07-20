@@ -48,8 +48,8 @@ void test_pg_br_Measurement() {
     CU_ASSERT_STRING_EQUAL(duk_require_string(ctx, -1), "test/api/constructor");
     duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "type");
-    CU_ASSERT_STRING_EQUAL(duk_require_string(ctx, -1), "TYPE_UNKNOWN");
+    duk_get_prop_string(ctx, -1, "typeId");
+    CU_ASSERT_EQUAL(duk_require_number(ctx, -1), 0);
     duk_pop(ctx);
 
     duk_destroy_heap(ctx);

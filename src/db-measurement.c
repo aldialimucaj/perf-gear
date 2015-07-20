@@ -18,8 +18,6 @@ duk_ret_t pg_br_Measurement(duk_context *ctx) {
 
         duk_push_int(ctx, 0);
         duk_put_prop_string(ctx, -2, "typeId");
-        duk_push_string(ctx, "TYPE_UNKNOWN");
-        duk_put_prop_string(ctx, -2, "type");
         duk_push_int(ctx, 0);
         duk_put_prop_string(ctx, -2, "unitId");
         duk_push_int(ctx, 0);
@@ -292,7 +290,7 @@ pg_err_t pg_br_msrt_add_params(duk_context *ctx, pg_m_item_t *m) {
     while (duk_next(ctx, -1, 1)) {
         const char *param_key = duk_require_string(ctx, -2);
         if (!strcmp(param_key, "name") || !strcmp(param_key, "hitValue") ||
-                !strcmp(param_key, "typeId")) {
+                !strcmp(param_key, "type")) {
             duk_pop_2(ctx); /* pop key/value */
             continue;
         }

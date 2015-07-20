@@ -12,8 +12,8 @@
             <file>file:/home/a/projects/perf-gear/src/queue.h</file>
             <file>file:/home/a/projects/perf-gear/src/collector.h</file>
             <file>file:/home/a/projects/perf-gear/src/dispatcher.c</file>
-            <file>file:/home/a/projects/perf-gear/tests/collector-test.c</file>
             <file>file:/home/a/projects/perf-gear/src/pg-utils.c</file>
+            <file>file:/home/a/projects/perf-gear/tests/collector-test.c</file>
             <file>file:/home/a/projects/perf-gear/src/collector.c</file>
             <file>file:/home/a/projects/perf-gear/src/queue.c</file>
         </group>

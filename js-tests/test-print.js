@@ -26,7 +26,7 @@ print('m2.published ' + m2.published);
 
 
 var m3 = new Measurement("test/api/params");
-m3.typeId = 1;
+m3.hit();
 m3.test = "dynamic params";
 print('m3.publish() = ' + m3.publish());
 print('m3.published ' + m3.published);
