@@ -65,7 +65,9 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     /* if string argument was passed → its the tag */
     const char *tagStr = NULL;
     
-    tagStr = duk_safe_to_string(ctx, -2);
+    if(duk_is_valid_index(ctx, -2)){
+        tagStr = duk_safe_to_string(ctx, -2);
+    }
     
     /* at this point the type is set to 2 = TIME */
     duk_push_int(ctx, 2);
@@ -112,7 +114,7 @@ duk_ret_t pg_br_measurement_save_ram_usage(duk_context *ctx) {
     duk_push_this(ctx);
     /* if string argument was passed → its the tag */
     const char *tagStr = NULL;
-    if (duk_is_string(ctx, -2)) {
+    if(duk_is_valid_index(ctx, -2)){
         tagStr = duk_require_string(ctx, -2);
     }
     /* at this point the type is set to RAM */
@@ -204,7 +206,7 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
                 duk_pop(ctx);
                 pg_mseq_t *seq = pg_create_measurement_sequence();
                 seq->timestamp = ts_value;
-                seq->value = 0;
+                seq->value = ts_value;
                 duk_get_prop_string(ctx, -1, "tag");
                 if (duk_is_string(ctx, -1)) seq->tag = PG_STRDUP(duk_get_string(ctx, -1));
                 /* pop string:tag */
