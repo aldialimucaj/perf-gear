@@ -24,6 +24,18 @@ m2.sequence.forEach(function(s, i) {
 print('m2.publish() = ' + m2.publish());
 print('m2.published ' + m2.published);
 
+var m21 = new Measurement("test/api/save_timestamp_50");
+
+m21.saveTimestamp("Start");
+for (var i = 1; i < 51; i++) {
+  var result = Math.sin(i);
+  m21.saveTimestamp(i);
+}
+m21.saveTimestamp("End");
+
+print('m21.publish() = ' + m21.publish());
+print('m21.published ' + m21.published);
+
 
 var m3 = new Measurement("test/api/params");
 m3.hit();

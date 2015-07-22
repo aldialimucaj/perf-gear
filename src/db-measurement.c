@@ -64,9 +64,9 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     duk_push_this(ctx);
     /* if string argument was passed → its the tag */
     const char *tagStr = NULL;
-    if (duk_is_string(ctx, -2)) {
-        tagStr = duk_require_string(ctx, -2);
-    }
+    
+    tagStr = duk_safe_to_string(ctx, -2);
+    
     /* at this point the type is set to 2 = TIME */
     duk_push_int(ctx, 2);
     duk_put_prop_string(ctx, -2, "typeId");
