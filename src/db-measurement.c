@@ -65,7 +65,7 @@ duk_ret_t pg_br_measurement_save_timestamp(duk_context *ctx) {
     /* if string argument was passed → its the tag */
     const char *tagStr = NULL;
     
-    if(duk_is_valid_index(ctx, -2)){
+    if(duk_is_valid_index(ctx, -2) && !duk_is_null_or_undefined(ctx, -2)){
         tagStr = duk_safe_to_string(ctx, -2);
     }
     
@@ -114,8 +114,8 @@ duk_ret_t pg_br_measurement_save_ram_usage(duk_context *ctx) {
     duk_push_this(ctx);
     /* if string argument was passed → its the tag */
     const char *tagStr = NULL;
-    if(duk_is_valid_index(ctx, -2)){
-        tagStr = duk_require_string(ctx, -2);
+    if(duk_is_valid_index(ctx, -2) && !duk_is_null_or_undefined(ctx, -2)){
+        tagStr = duk_safe_to_string(ctx, -2);
     }
     /* at this point the type is set to RAM */
     duk_push_int(ctx, 3);
