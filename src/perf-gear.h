@@ -110,5 +110,18 @@ extern "C" {
 }
 #endif
 
+#define PG_INIT() pg_init()
+#define PG_COLLECT(x) pg_collect(x)
+#define PG_START(x) pg_start(x)
+#define PG_STOP() pg_stop()
+#define PG_NEW_MEASUREMENT(x, y) pg_new_measurement(x, y) // returns measurement item
+#define PG_STOP_COLLECTING(x) pg_stop_collecting(x)
+#define PG_INCREASE_HIT(x) pg_increase_hit(x)
+#define PG_SAVE_TIMESTAMP(x) pg_save_timestamp(x)
+#define PG_SAVE_TIMESTAMP_TAG(x, y) pg_save_timestamp_tag(x, y)
+#define PG_SAVE_RAM_USAGE(x) pg_save_ram_usage(x)
+#define PG_SAVE_RAM_USAGE_TAG(x, y) pg_save_ram_usage_tag(x, y)
+
+
 #endif	/* PERF_GEAR_H */
 
