@@ -28,3 +28,6 @@ SConscript('tests/SConscript', variant_dir='#build/' + build_mode + '/'+project,
 
 project = 'js-tests'
 SConscript('js-tests/SConscript', variant_dir='#build/' + build_mode + '/'+project, duplicate=0)
+
+project = 'api-tests'
+SConscript('api-tests/SConscript', variant_dir='#build/' + build_mode + '/'+project, duplicate=0)

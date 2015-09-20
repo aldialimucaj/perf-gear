@@ -1,0 +1,21 @@
+project = 'api-tests'
+
+Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
+localenv = env.Clone()
+
+buildroot = '../build/' + build_mode
+targetpath = buildroot + '/' + project
+
+if build_mode == 'debug':
+    localenv.Append(CCFLAGS=debugcflags)
+elif build_mode == 'cov':
+    localenv.Append(CCFLAGS=covcflags)
+else:
+    localenv.Append(CCFLAGS=releaseflags)
+
+
+
+c_example_1 = 'c-example1.c'
+
+e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl'])
+e.Program(c_example_1)
