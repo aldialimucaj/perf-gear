@@ -1,3 +1,5 @@
+import os
+
 project = 'perf-gear'
 
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
@@ -13,3 +15,7 @@ else:
     localenv.Append(CCFLAGS=releaseflags)
 
 localenv.Library(project, pg_src)
+shlib = localenv.SharedLibrary(project, pg_src)
+
+prefix = "/usr/local"
+res = env.Alias("install", env.Install(os.path.join(prefix, "lib"), shlib))
