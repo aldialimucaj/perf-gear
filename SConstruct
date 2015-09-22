@@ -1,4 +1,7 @@
 
+import SCons
+import os
+
 build_mode = ARGUMENTS.get('mode','debug')
 
 if not ( build_mode in ['debug', 'release', 'cov']):
@@ -16,6 +19,22 @@ env=Environment(LIBPATH = lib_path)
 Export('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 
 env.SConsignFile()
+
+
+# define the custom function
+from SCons.Script.SConscript import SConsEnvironment
+SConsEnvironment.Chmod = SCons.Action.ActionFactory(os.chmod, lambda dest, mode: 'Chmod("%s", 0%o)' % (dest, mode))
+
+def InstallPerm(env, dest, files, perm):
+    obj = env.Install(dest, files)
+    for i in obj:
+        env.AddPostAction(i, env.Chmod(str(i), perm))
+    return dest
+
+# put this function "in" scons
+SConsEnvironment.InstallPerm = InstallPerm
+
+SConsEnvironment.InstallHeader = lambda env, dest, files: InstallPerm(env, dest, files, 0644)
 
 project = 'lib'
 SConscript('lib/SConscript', variant_dir='#build/' + build_mode + '/'+project, duplicate=0)

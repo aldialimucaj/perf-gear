@@ -11,7 +11,7 @@
 #ifndef DUKBRIDGE_H
 #define	DUKBRIDGE_H
 
-#include "../lib/duktape.h"
+#include "duktape.h"
 #include "perf-gear.h"
 #include "collector.h"
 #include "pg-utils.h"

@@ -19,7 +19,7 @@
 #include <time.h>
 #include <pthread.h>
 
-#include "../lib/duktape.h"
+#include "duktape.h"
 
 #include "queue.h"
 #include "measurement2json.h"
@@ -53,7 +53,7 @@ extern "C" {
      * 
      * @return 
      */
-    pg_err_t pg_init();
+    PG_PUBLIC_API pg_err_t pg_init();
     
     /** @brief Starts the collecting mechanisms. 
      * 
@@ -62,7 +62,7 @@ extern "C" {
      * @param config
      * @return 
      */
-    pg_err_t pg_collect(pg_config_t *config);
+    PG_PUBLIC_API pg_err_t pg_collect(pg_config_t *config);
 
     /** @brief Starts the writing and collecting mechanisms.
      * 
@@ -73,13 +73,13 @@ extern "C" {
      * @param config
      * @return 
      */
-    pg_err_t pg_start(pg_config_t *config);
+    PG_PUBLIC_API pg_err_t pg_start(pg_config_t *config);
 
     /** @brief Stop the measurement
      * 
      * @return 
      */
-    pg_err_t pg_stop();
+    PG_PUBLIC_API pg_err_t pg_stop();
 
 
     /** @brief Collect finished measurements from the queue.
@@ -102,7 +102,7 @@ extern "C" {
      * @param ctx
      * @return 
      */
-    pg_err_t pg_register_js_functions(duk_context *ctx);
+    PG_PUBLIC_API pg_err_t pg_register_js_functions(duk_context *ctx);
 
 
 

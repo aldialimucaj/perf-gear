@@ -124,6 +124,9 @@
       <compileType>
         <cTool>
           <standard>3</standard>
+          <incDir>
+            <pElem>lib</pElem>
+          </incDir>
           <commandLine>-fomit-frame-pointer -Wall -Wextra</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
@@ -224,8 +227,6 @@
       <item path="lib/duktape.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="lib/duktape.h" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="lib/perf-gear-stubs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -404,8 +405,6 @@
       </item>
       <item path="lib/duktape.h" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="lib/perf-gear-stubs.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/collector.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/collector.h" ex="false" tool="3" flavor2="0">
@@ -572,8 +571,6 @@
       <item path="lib/duktape.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="lib/duktape.h" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="lib/perf-gear-stubs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/collector.c" ex="false" tool="0" flavor2="9">
       </item>

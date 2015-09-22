@@ -1,4 +1,7 @@
+import os
+
 project = 'duktape'
+prefix = "/usr/local"
 
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 localenv = env.Clone()
@@ -14,3 +17,5 @@ else:
 
 
 env.Library(project, duk_src)
+
+res = env.Alias("install", env.InstallHeader(os.path.join(prefix, "include/perf-gear"), Glob('*.h')))

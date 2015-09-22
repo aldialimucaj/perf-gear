@@ -17,7 +17,7 @@ else:
 
 js_test_1 = 'js-runner.c'
 
-e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl'])
+e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl'], CPPPATH = ['../lib'])
 e.Program(js_test_1)
 
 _tests = Glob('*.js')
