@@ -1,6 +1,23 @@
 import os
+import SCons
 
 project = 'perf-gear'
+prefix = "/usr/local"
+
+# define the custom function
+from SCons.Script.SConscript import SConsEnvironment
+SConsEnvironment.Chmod = SCons.Action.ActionFactory(os.chmod, lambda dest, mode: 'Chmod("%s", 0%o)' % (dest, mode))
+
+def InstallPerm(env, dest, files, perm):
+    obj = env.Install(dest, files)
+    for i in obj:
+        env.AddPostAction(i, env.Chmod(str(i), perm))
+    return dest
+
+# put this function "in" scons
+SConsEnvironment.InstallPerm = InstallPerm
+
+SConsEnvironment.InstallHeader = lambda env, dest, files: InstallPerm(env, dest, files, 0644)
 
 Import('env', 'build_mode', 'debugcflags', 'releasecflags', 'covcflags')
 localenv = env.Clone()
@@ -17,5 +34,5 @@ else:
 localenv.Library(project, pg_src)
 shlib = localenv.SharedLibrary(project, pg_src)
 
-prefix = "/usr/local"
 res = env.Alias("install", env.Install(os.path.join(prefix, "lib"), shlib))
+res = env.Alias("install", env.InstallHeader(os.path.join(prefix, "include/"+project), Glob('*.h')))
