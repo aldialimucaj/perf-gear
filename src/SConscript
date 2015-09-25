@@ -16,7 +16,3 @@ else:
     localenv.Append(CCFLAGS=releaseflags)
 
 localenv.Library(project, pg_src)
-shlib = localenv.SharedLibrary(project, pg_src)
-
-res = env.Alias("install", env.Install(os.path.join(prefix, "lib"), shlib))
-res = env.Alias("install", env.InstallHeader(os.path.join(prefix, "include/"+project), Glob('*.h')))

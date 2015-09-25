@@ -16,10 +16,9 @@ else:
 
 c_example_1 = 'c-example1.c'
 
-e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl'], CPPPATH = ['../lib'])
+e = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl'], CPPPATH = ['../lib', '../src'])
 e.Program(c_example_1)
 
 c_example_2 = 'c-example2.c'
 
-e2 = localenv.Clone(LIBS = ['perf-gear', 'duktape', 'm' , 'pthread', 'curl'])
-e2.Program(c_example_2)
+e.Program(c_example_2)

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../src/perf-gear.h"
+#include "perf-gear.h"
 
 int add(int a, int b) {
     pg_m_item_t* m1 = PG_NEW_MEASUREMENT("examples/c/example1/add", PG_MEASUREMENT_TYPE_HIT);

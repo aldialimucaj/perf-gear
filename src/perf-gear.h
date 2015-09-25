@@ -33,6 +33,8 @@
 #define HARVEST_WAIT_10MS 10L * MILLISECOND
 #define HARVEST_WAIT_100MS 100L * MILLISECOND
 
+#define PG_LOCALHOST_URL "http://localhost:3000/api/measurements"
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
