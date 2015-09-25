@@ -112,6 +112,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>lib</Elem>
+    <Elem>src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -221,6 +222,13 @@
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
+      </folder>
+      <folder path="f1">
+        <cTool>
+          <incDir>
+            <pElem>src</pElem>
+          </incDir>
+        </cTool>
       </folder>
       <item path="js-tests/js-runner.c" ex="false" tool="0" flavor2="0">
       </item>

@@ -90,7 +90,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libperf-gear.${CND_DLIB_EXT}: ${OBJEC
 ${OBJECTDIR}/js-tests/js-runner.o: js-tests/js-runner.c 
 	${MKDIR} -p ${OBJECTDIR}/js-tests
 	${RM} "$@.d"
-	$(COMPILE.c) -g -Werror -Ilib -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/js-tests/js-runner.o js-tests/js-runner.c
+	$(COMPILE.c) -g -Werror -Ilib -Isrc -std=c99 -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/js-tests/js-runner.o js-tests/js-runner.c
 
 ${OBJECTDIR}/lib/duktape.o: lib/duktape.c 
 	${MKDIR} -p ${OBJECTDIR}/lib
@@ -261,7 +261,7 @@ ${OBJECTDIR}/js-tests/js-runner_nomain.o: ${OBJECTDIR}/js-tests/js-runner.o js-t
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.c) -g -Werror -Ilib -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/js-tests/js-runner_nomain.o js-tests/js-runner.c;\
+	    $(COMPILE.c) -g -Werror -Ilib -Isrc -std=c99 -fPIC  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/js-tests/js-runner_nomain.o js-tests/js-runner.c;\
 	else  \
 	    ${CP} ${OBJECTDIR}/js-tests/js-runner.o ${OBJECTDIR}/js-tests/js-runner_nomain.o;\
 	fi

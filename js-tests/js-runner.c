@@ -5,9 +5,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../src/perf-gear.h"
-#include "../src/dukbridge.h"
-#include "../lib/duktape.h"
+#include "perf-gear.h"
+#include "dukbridge.h"
+#include "duktape.h"
 
 int main(int argc, const char *argv[]) {
     duk_context *ctx = NULL;
