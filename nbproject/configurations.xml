@@ -303,6 +303,10 @@
         <cTool>
           <developmentMode>5</developmentMode>
           <standard>3</standard>
+          <incDir>
+            <pElem>lib</pElem>
+            <pElem>src</pElem>
+          </incDir>
           <commandLine>-Wall -Wextra</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
@@ -479,6 +483,10 @@
       <compileType>
         <cTool>
           <standard>3</standard>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>lib</pElem>
+          </incDir>
           <commandLine>-fprofile-arcs -ftest-coverage -fomit-frame-pointer -Wall -Wextra</commandLine>
           <warningLevel>3</warningLevel>
         </cTool>
@@ -573,6 +581,13 @@
             <linkerOptionItem>-lcunit</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
+      </folder>
+      <folder path="f1">
+        <cTool>
+          <incDir>
+            <pElem>src</pElem>
+          </incDir>
+        </cTool>
       </folder>
       <item path="js-tests/js-runner.c" ex="false" tool="0" flavor2="0">
       </item>
