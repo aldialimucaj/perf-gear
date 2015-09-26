@@ -23,6 +23,20 @@ int clean_suite(void) {
     return 0;
 }
 
+void test_pg_delete_measurement(void) {
+    pg_init_queue();
+    
+    char *path = "pg/collector/pg_delete_measurement";
+    pg_m_item_t *m = pg_new_measurement(path, PG_MEASUREMENT_TYPE_HIT);
+    CU_ASSERT_PTR_NOT_NULL(m);
+
+    int result = pg_delete_measurement(m);
+    CU_ASSERT_EQUAL(result, 0);
+
+    result = pg_destroy_queue();
+    CU_ASSERT_EQUAL(result, 0);
+}
+
 void test_pg_start_collecting(void) {
     pg_init_queue();
 
@@ -30,7 +44,7 @@ void test_pg_start_collecting(void) {
     pg_m_item_t *m = pg_new_measurement(path, PG_MEASUREMENT_TYPE_HIT);
     CU_ASSERT_PTR_NOT_NULL(m);
 
-    int result = pg_destroy_measurement_item(m);
+    int result = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(result, 0);
 
     result = pg_destroy_queue();
@@ -68,7 +82,7 @@ void test_pg_publish_measurement() {
     result = pg_publish_measurement(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
     
-    result = pg_destroy_measurement_item(m);
+    result = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
 
     size_t queue_size = pg_get_queue_size();
@@ -96,7 +110,7 @@ void test_pg_increase_hit(void) {
     result = pg_increase_hit(m);
     CU_ASSERT_EQUAL(result, PG_NO_ERROR);
     CU_ASSERT_EQUAL(m->hitValue, 1);
-    int destroy_res = pg_destroy_measurement_item(m);
+    int destroy_res = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }
 
@@ -115,7 +129,7 @@ void test_pg_save_timestamp(void) {
     
     CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
     
-    int destroy_res = pg_destroy_measurement_item(m);
+    int destroy_res = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }
 
@@ -134,7 +148,7 @@ void test_pg_save_timestamp_tag(void) {
     
     CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
     
-    int destroy_res = pg_destroy_measurement_item(m);
+    int destroy_res = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }
 
@@ -153,7 +167,7 @@ void test_pg_save_ram_usage(void) {
     
     CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
     
-    int destroy_res = pg_destroy_measurement_item(m);
+    int destroy_res = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }
 
@@ -172,7 +186,7 @@ void test_pg_save_ram_usage_tag(void) {
     
     CU_ASSERT_EQUAL(pg_count_measurement_sequences(m), 1);
     
-    int destroy_res = pg_destroy_measurement_item(m);
+    int destroy_res = pg_delete_measurement(m);
     CU_ASSERT_EQUAL(destroy_res, PG_NO_ERROR);
 }
 
@@ -191,6 +205,7 @@ int main() {
     }
 
     /* Add the tests to the suite */
+    CU_add_test(pSuite, "pg_delete_measurement", test_pg_delete_measurement);
     CU_add_test(pSuite, "test_pg_start_collecting", test_pg_start_collecting);
     CU_add_test(pSuite, "test_pg_stop_collecting", test_pg_stop_collecting);
     CU_add_test(pSuite, "test_pg_publish_measurement", test_pg_publish_measurement);

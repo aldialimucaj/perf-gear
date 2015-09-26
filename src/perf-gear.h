@@ -124,6 +124,10 @@ extern "C" {
 #define PG_SAVE_RAM_USAGE(x) pg_save_ram_usage(x)
 #define PG_SAVE_RAM_USAGE_TAG(x, y) pg_save_ram_usage_tag(x, y)
 
+/* MACROS */
+#define PG_AUTO_HIT(x) pg_increase_hit(pg_new_measurement(x, PG_MEASUREMENT_UNIT_HIT))
+
+
 
 #endif	/* PERF_GEAR_H */
 

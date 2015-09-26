@@ -1,6 +1,7 @@
 // file: perf-gear.c
 
 #include "perf-gear.h"
+#include "linked-list.h"
 
 volatile bool pg_harvest = false;
 pthread_attr_t attr;
@@ -51,6 +52,13 @@ pg_err_t pg_start(pg_config_t *config) {
 
 pg_err_t pg_stop() {
     pg_err_t r;
+    
+    /* make sure no measurement was forgot in the cache list */
+    pg_m_item_t *m = NULL;
+    while((m = pg_ll_pop()) != NULL){
+        pg_stop_collecting(m);
+    }
+    
     /* lock */
     pthread_mutex_lock(&pg_q_mutex);
     /* this flag turns of the harvester loop */

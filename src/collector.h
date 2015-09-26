@@ -37,6 +37,16 @@ extern "C" {
      * @return measurement_item or NULL
      */
     pg_m_item_t* pg_new_measurement(const char *path, pg_mtype_t type);
+    
+    
+    /** @brief Discard this measurement 
+     * 
+     * The measurement will not be published.
+     * 
+     * @param measurement
+     * @return 
+     */
+    pg_err_t pg_delete_measurement(pg_m_item_t *measurement);
 
 
     /** @brief Stop collecting and publish the measurement.

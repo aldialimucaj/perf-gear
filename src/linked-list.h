@@ -68,7 +68,7 @@ extern "C" {
      * @param path
      * @return 
      */
-    pg_m_item_t* pg_ll_get(char *path);
+    pg_m_item_t* pg_ll_get(const char *path);
 
     /** @brief Returns the last element of the list.
      * 

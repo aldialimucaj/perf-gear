@@ -1,12 +1,17 @@
 #include "collector.h"
 #include "pg-utils.h"
+#include "linked-list.h"
 
 pg_m_item_t* pg_new_measurement(const char *path, pg_mtype_t type) {
     if (!path) return NULL; /* no path */
     if (type <= PG_MEASUREMENT_TYPE_UNKNOWN) return NULL; /* no type */
+    pg_m_item_t *measurement = NULL;
+
+    /* if this measurement path exists, dont dupplicate! */
+    if ((measurement = pg_ll_get(path)) != NULL) return measurement;
 
     /* this is the new measurement object that will collect all data */
-    pg_m_item_t *measurement = pg_create_measurement_item();
+    measurement = pg_create_measurement_item();
     /* if no path allocate the new one */
     if (!measurement->path) {
         measurement->path = PG_STRDUP(path);
@@ -15,8 +20,22 @@ pg_m_item_t* pg_new_measurement(const char *path, pg_mtype_t type) {
     /* set the type */
     measurement->type = type;
 
+    /* add to list for lookup convenience */
+    pg_ll_add(measurement);
+
     return measurement;
 }
+
+/* ========================================================================= */
+
+pg_err_t pg_delete_measurement(pg_m_item_t *measurement) {
+    if (!measurement) return PG_ERR_NO_MEASUREMENT; // no measurement to destroy
+    
+    /* delete from cache if exists */
+    pg_ll_pull(measurement->path);
+    
+    return pg_destroy_measurement_item(measurement);
+}   
 
 /* ========================================================================= */
 
@@ -54,6 +73,11 @@ pg_err_t pg_publish_measurement(pg_m_item_t *measurement) {
         result = pg_destroy_queue_item(item);
     }
 
+    /* remove from the cache if exists */
+    if (result == PG_NO_ERROR) {
+        pg_ll_pull(measurement->path);
+    }
+
     return result;
 }
 
@@ -64,9 +88,9 @@ pg_err_t pg_increase_hit(pg_m_item_t *measurement) {
     if (measurement->type != PG_MEASUREMENT_TYPE_HIT)
         return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
     /* check if pristine otherwise cant change unit */
-    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN) {
         measurement->unit = PG_MEASUREMENT_UNIT_HIT;
-    } else if(measurement->unit != PG_MEASUREMENT_UNIT_HIT) {
+    } else if (measurement->unit != PG_MEASUREMENT_UNIT_HIT) {
         return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
     }
 
@@ -82,12 +106,12 @@ pg_err_t pg_save_timestamp(pg_m_item_t *measurement) {
         return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
 
     /* check if pristine otherwise cant change unit */
-    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN) {
         measurement->unit = PG_MEASUREMENT_UNIT_US;
-    } else if(measurement->unit != PG_MEASUREMENT_UNIT_US) {
+    } else if (measurement->unit != PG_MEASUREMENT_UNIT_US) {
         return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
     }
-    
+
     pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = pg_get_timestamp_usec();
     seq->value = 0;
@@ -102,12 +126,12 @@ pg_err_t pg_save_timestamp_tag(pg_m_item_t *measurement, const char *tag) {
         return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
 
     /* check if pristine otherwise cant change unit */
-    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN) {
         measurement->unit = PG_MEASUREMENT_UNIT_US;
-    } else if(measurement->unit != PG_MEASUREMENT_UNIT_US) {
+    } else if (measurement->unit != PG_MEASUREMENT_UNIT_US) {
         return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
     }
-    
+
     pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = pg_get_timestamp_usec();
     seq->value = 0;
@@ -123,12 +147,12 @@ pg_err_t pg_save_ram_usage(pg_m_item_t *measurement) {
         return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
 
     /* check if pristine otherwise cant change unit */
-    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN) {
         measurement->unit = PG_MEASUREMENT_UNIT_KB;
-    } else if(measurement->unit != PG_MEASUREMENT_UNIT_KB) {
+    } else if (measurement->unit != PG_MEASUREMENT_UNIT_KB) {
         return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
     }
-    
+
     pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = pg_get_timestamp_usec();
     seq->value = pg_get_ram_usage();
@@ -143,12 +167,12 @@ pg_err_t pg_save_ram_usage_tag(pg_m_item_t *measurement, const char *tag) {
         return PG_ERR_WRONG_MEASUREMENT_TYPE; // wrong type
 
     /* check if pristine otherwise cant change unit */
-    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN){
+    if (measurement->unit == PG_MEASUREMENT_UNIT_UNKNOWN) {
         measurement->unit = PG_MEASUREMENT_UNIT_KB;
-    } else if(measurement->unit != PG_MEASUREMENT_UNIT_KB) {
+    } else if (measurement->unit != PG_MEASUREMENT_UNIT_KB) {
         return PG_ERR_MEASUREMENT_UNIT_CANT_CHANGE;
     }
-    
+
     pg_mseq_t *seq = pg_create_measurement_sequence();
     seq->timestamp = pg_get_timestamp_usec();
     seq->value = pg_get_ram_usage();

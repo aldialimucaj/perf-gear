@@ -39,7 +39,7 @@ pg_err_t pg_ll_add(pg_m_item_t *item) {
 
 /* ========================================================================= */
 
-pg_m_item_t* pg_ll_get(char *path) {
+pg_m_item_t* pg_ll_get(const char *path) {
     if (!path) return NULL; // no path;
     if (!pg_ll_first_item) return NULL; // no pg_ll_first_item;
 
