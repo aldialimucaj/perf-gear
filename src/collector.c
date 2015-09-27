@@ -47,7 +47,7 @@ pg_err_t pg_stop_collecting(pg_m_item_t *measurement) {
 
     /* we destroy the measurement anyway */
     if (result || true)
-        result = pg_destroy_measurement_item(measurement);
+        result = pg_delete_measurement(measurement);
 
     return result;
 }
@@ -71,11 +71,6 @@ pg_err_t pg_publish_measurement(pg_m_item_t *measurement) {
     /* after enqueue we can delete the measurement */
     if (result == PG_NO_ERROR) {
         result = pg_destroy_queue_item(item);
-    }
-
-    /* remove from the cache if exists */
-    if (result == PG_NO_ERROR) {
-        pg_ll_pull(measurement->path);
     }
 
     return result;

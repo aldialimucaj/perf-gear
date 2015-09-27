@@ -260,11 +260,9 @@ duk_ret_t pg_br_measurement_publish(duk_context *ctx) {
     //TODO: sequences need special case
 
     /* publish */
-    pg_err_t result = pg_publish_measurement(m);
-    /* publishing creates a copy we need to delete this one */
-    pg_err_t r_destroy = pg_destroy_measurement_item(m);
+    pg_err_t result = pg_stop_collecting(m);
 
-    if (result == PG_NO_ERROR && r_destroy == PG_NO_ERROR) {
+    if (result == PG_NO_ERROR) {
         duk_push_boolean(ctx, 1); // true
         duk_put_prop_string(ctx, -2, "published");
         /* pop this object */
