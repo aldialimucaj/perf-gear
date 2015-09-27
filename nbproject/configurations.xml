@@ -10,6 +10,7 @@
       <itemPath>src/dukbridge.h</itemPath>
       <itemPath>src/linked-list.h</itemPath>
       <itemPath>src/measurement2json.h</itemPath>
+      <itemPath>src/perf-gear-stubs.h</itemPath>
       <itemPath>src/perf-gear.h</itemPath>
       <itemPath>src/pg-utils.h</itemPath>
       <itemPath>src/queue.h</itemPath>
@@ -260,6 +261,8 @@
       </item>
       <item path="src/measurement2json.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/perf-gear-stubs.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/perf-gear.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/perf-gear.h" ex="false" tool="3" flavor2="0">
@@ -441,6 +444,8 @@
       </item>
       <item path="src/measurement2json.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/perf-gear-stubs.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/perf-gear.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/perf-gear.h" ex="false" tool="3" flavor2="0">
@@ -618,6 +623,8 @@
       <item path="src/measurement2json.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/measurement2json.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/perf-gear-stubs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/perf-gear.c" ex="false" tool="0" flavor2="0">
       </item>
