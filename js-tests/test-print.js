@@ -36,7 +36,6 @@ m21.saveTimestamp("End");
 print('m21.publish() = ' + m21.publish());
 print('m21.published ' + m21.published);
 
-
 var m3 = new Measurement("test/api/params");
 m3.hit();
 m3.test = "dynamic params";
@@ -45,11 +44,14 @@ print('m3.published ' + m3.published);
 
 var m4 = new Measurement("test/api/ram_usage");
 m4.saveRamUsage();
+var b1 = new Duktape.Buffer(60000);
+for (var i = 0; i < b1.length; i++) b1[i] = 0x41 + i;
 m4.saveRamUsage();
+var b2 = new Duktape.Buffer(60000);
+for (var i = 0; i < b2.length; i++) b2[i] = 0x41 + i;
 m4.saveRamUsage();
 print('m4.publish() = ' + m4.publish());
 print('m4.published ' + m4.published);
 
 
 p.stop();
-
